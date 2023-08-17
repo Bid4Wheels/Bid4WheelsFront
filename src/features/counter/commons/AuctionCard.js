@@ -20,6 +20,9 @@ const AuctionCard = ({ auction }) => {
         color = '#FFCD4B';
         if (timeDifferenceInHours < 1) {
             color = '#E67754';
+            if (timeDifferenceInHours < 0) {
+                color = '#D9D9D9';
+            }
         }
     }
 
@@ -68,7 +71,9 @@ const AuctionCard = ({ auction }) => {
                         >
                             {timeDifferenceInHours > 0
                                 ? `${timeDifferenceInHours}:${timeDifferenceInMinutes % 60}`
-                                : `00:${timeDifferenceInMinutes}`}
+                                : timeDifferenceInMinutes > 0
+                                ? `00:${timeDifferenceInMinutes}`
+                                : 'Closed'}
                         </Box>
                         <Box display="flex" gap="3px">
                             {auction.tags.map((tag, index) => (
