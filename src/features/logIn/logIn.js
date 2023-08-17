@@ -15,12 +15,16 @@ export function LogIn() {
 
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-            <Grid item xs={12} md={6} style={{ padding: '0 20px' }}>
+            <Grid item xs={12} md={5} style={{ padding: '0 20px' }}>
                 <Box display="flex" justifyContent="center">
-                    <img src={B4W_logo} alt="B4W logo" />
+                    <img
+                        src={B4W_logo}
+                        alt="B4W logo"
+                        style={{ maxWidth: '80%', height: 'auto' }}
+                    />
                 </Box>
             </Grid>
-            <Grid item xs={12} md={6} style={{ padding: '0 20px' }}>
+            <Grid item xs={12} md={5} style={{ padding: '0 20px' }}>
                 <Box display="flex" flexDirection="column" alignItems="center">
                     <TextField
                         id="emailField"
@@ -50,12 +54,29 @@ export function LogIn() {
                             ),
                         }}
                     />
-                    <Link href="#" variant="body2">
-                        {'Forgot your password?'}
-                    </Link>
-                    <Box display="flex" justifyContent="center" width="100%">
-                        <Button variant="contained">Log In</Button>
-                        <Button variant="outlined" onClick={() => nav('/signup')}>
+                    <Box
+                        display="flex"
+                        marginY="20px"
+                        justifyContent="space-between"
+                        width="100%"
+                        marginBottom="12px"
+                    >
+                        <Link href="#" variant="body2">
+                            Forgot your password?
+                        </Link>
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" width="80%" margin="10px">
+                        <Button
+                            variant="contained"
+                            style={{ backgroundColor: '#00d591', color: 'white', width: '40%' }}
+                        >
+                            Log In
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            style={{ color: '#00d591', width: '40%' }}
+                            onClick={() => nav('/signup')}
+                        >
                             Sign Up
                         </Button>
                     </Box>
