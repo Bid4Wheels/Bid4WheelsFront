@@ -51,9 +51,11 @@ export function LogIn() {
                                 <InputAdornment position="end">
                                     <IconButton onClick={handleTogglePassword} edge="end">
                                         {showPassword ? (
-                                            <VisibilityOffOutlinedIcon />
+                                            <VisibilityOffOutlinedIcon
+                                                style={{ color: '#000000' }}
+                                            />
                                         ) : (
-                                            <VisibilityOutlinedIcon />
+                                            <VisibilityOutlinedIcon style={{ color: '#000000' }} />
                                         )}
                                     </IconButton>
                                 </InputAdornment>
@@ -79,13 +81,13 @@ export function LogIn() {
                             Forgot Your Password?
                         </Link>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" width="80%" margin="15px">
+                    <Box display="flex" justifyContent="space-between" width="100%" margin="15px">
                         <Button
                             variant="contained"
                             style={{
                                 backgroundColor: '#00d591',
                                 color: 'white',
-                                width: '40%',
+                                width: '45%',
                             }}
                         >
                             Log In
@@ -94,7 +96,7 @@ export function LogIn() {
                             variant="outlined"
                             style={{
                                 color: '#00d591',
-                                width: '40%',
+                                width: '45%',
                             }}
                             onClick={() => nav('/signup')}
                         >
