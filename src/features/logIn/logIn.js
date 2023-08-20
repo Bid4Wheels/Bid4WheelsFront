@@ -1,6 +1,6 @@
-import { Box, Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, Grid, IconButton, InputAdornment, TextField } from '@mui/material';
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -15,7 +15,7 @@ export function LogIn() {
 
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-            <Grid item xs={12} md={5} style={{ padding: '0 20px' }}>
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
                 <Box display="flex" justifyContent="center">
                     <img
                         src={B4W_logo}
@@ -24,8 +24,14 @@ export function LogIn() {
                     />
                 </Box>
             </Grid>
-            <Grid item xs={12} md={5} style={{ padding: '0 20px' }}>
-                <Box display="flex" flexDirection="column" alignItems="center">
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    margin="auto"
+                    maxWidth="400px"
+                >
                     <TextField
                         id="emailField"
                         label="Email"
@@ -61,20 +67,35 @@ export function LogIn() {
                         width="100%"
                         marginBottom="12px"
                     >
-                        <Link href="#" variant="body2">
-                            Forgot your password?
+                        <Link
+                            href="#"
+                            variant="body2"
+                            className="hover-underline"
+                            style={{
+                                color: '#00d591',
+                                textDecoration: 'none',
+                            }}
+                        >
+                            Forgot Your Password?
                         </Link>
                     </Box>
-                    <Box display="flex" justifyContent="space-between" width="80%" margin="10px">
+                    <Box display="flex" justifyContent="space-between" width="80%" margin="15px">
                         <Button
                             variant="contained"
-                            style={{ backgroundColor: '#00d591', color: 'white', width: '40%' }}
+                            style={{
+                                backgroundColor: '#00d591',
+                                color: 'white',
+                                width: '40%',
+                            }}
                         >
                             Log In
                         </Button>
                         <Button
                             variant="outlined"
-                            style={{ color: '#00d591', width: '40%' }}
+                            style={{
+                                color: '#00d591',
+                                width: '40%',
+                            }}
                             onClick={() => nav('/signup')}
                         >
                             Sign Up
