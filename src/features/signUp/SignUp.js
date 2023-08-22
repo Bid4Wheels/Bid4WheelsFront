@@ -119,8 +119,8 @@ export function SignUp() {
                             variant="standard"
                             sx={{ marginBottom: '20px' }}
                             onChange={(e) => setPassword(e.target.value)}
-                            onFocus={() => setPasswordTooltipOpen(true)} // Open tooltip on focus
-                            onBlur={() => setPasswordTooltipOpen(false)} // Close tooltip on blur
+                            onFocus={() => setPasswordTooltipOpen(true)}
+                            onBlur={() => setPasswordTooltipOpen(false)}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
