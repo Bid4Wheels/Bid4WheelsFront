@@ -9,7 +9,7 @@ import {
 } from 'date-fns';
 
 const AuctionCard = ({ auction }) => {
-    const { endDate } = auction;
+    const AucitonCard = (auction) => { const {endDate, image, carName, tags} = auction
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(endDate, now);
     const timeDifferenceInMinutes = differenceInMinutes(endDate, now);
@@ -46,8 +46,8 @@ const AuctionCard = ({ auction }) => {
                             borderBottom: '0px',
                         }}
                         component="img"
-                        src={auction.image}
-                        alt={auction.carName}
+                        src={image}
+                        alt={carName}
                     />
                     <CardContent
                         sx={{
@@ -58,7 +58,7 @@ const AuctionCard = ({ auction }) => {
                         }}
                     >
                         <Typography gutterBottom variant="XSmall" component="div">
-                            {auction.carName}
+                            {carName}
                         </Typography>
                         <Box
                             sx={{
@@ -78,7 +78,7 @@ const AuctionCard = ({ auction }) => {
                             </Typography>
                         </Box>
                         <Box display="flex" gap="3px">
-                            {auction.tags.map((tag, index) => (
+                            {tags.map((tag, index) => (
                                 <Box
                                     key={index}
                                     sx={{
