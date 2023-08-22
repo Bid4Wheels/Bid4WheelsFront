@@ -134,18 +134,16 @@ export function SignUp() {
                                     <InputAdornment position="end">
                                         <Tooltip
                                             title={
-                                                <h4>
-                                                    <span>
-                                                        Password must contain:
-                                                        <br />
-                                                        - 8 characters minimum
-                                                        <br />
-                                                        - 1 uppercase letter
-                                                        <br />
-                                                        - 1 lowercase letter
-                                                        <br />- 1 number
-                                                    </span>
-                                                </h4>
+                                                <span>
+                                                    Password must contain:
+                                                    <br />
+                                                    - 8 characters minimum
+                                                    <br />
+                                                    - 1 uppercase letter
+                                                    <br />
+                                                    - 1 lowercase letter
+                                                    <br />- 1 number
+                                                </span>
                                             }
                                             open={passwordTooltipOpen}
                                             placement="bottom-end"
