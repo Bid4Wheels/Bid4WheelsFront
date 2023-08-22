@@ -195,7 +195,6 @@ export function SignUp() {
                                 <Checkbox
                                     checked={acceptTerms}
                                     onChange={(e) => setAcceptTerms(e.target.checked)}
-                                    style={{ cursor: 'pointer' }}
                                 />
                             }
                             label={
@@ -208,15 +207,19 @@ export function SignUp() {
                                         style={{
                                             color: 'blue',
                                             textDecoration: 'none',
-                                            cursor: 'pointer',
                                         }}
+                                        onMouseEnter={(e) =>
+                                            (e.target.style.textDecoration = 'underline')
+                                        }
+                                        onMouseLeave={(e) =>
+                                            (e.target.style.textDecoration = 'none')
+                                        }
                                     >
                                         Terms & Conditions
                                     </a>
                                 </span>
                             }
                             sx={{ marginBottom: '20px' }}
-                            style={{ cursor: 'pointer' }}
                         />
                     </FormControl>
                     <div
