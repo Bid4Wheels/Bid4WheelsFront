@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
+import colors from '../../../utils/desgin/Colors';
+import { color } from '@mui/system';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -161,8 +163,8 @@ function formToComplete({ userInfo, setUserInfo }) {
                         sx={{
                             width: '110px',
                             height: '50px',
-                            backgroundColor: '#00d591',
-                            '&:hover': { backgroundColor: '#009f76' },
+                            backgroundColor: colors.water_green,
+                            '&:hover': { backgroundColor: colors.on_stand_water_green },
                         }}
                         onClick={handleConfirmButton}
                     >
@@ -170,7 +172,10 @@ function formToComplete({ userInfo, setUserInfo }) {
                     </Button>
                     <Button
                         variant="outlined"
-                        sx={{ color: '#00d591', '&:hover': { color: '#009f76' } }}
+                        sx={{
+                            color: colors.water_green,
+                            '&:hover': { color: colors.on_stand_water_green },
+                        }}
                     >
                         CHANGE PASSWORD
                     </Button>
@@ -187,7 +192,10 @@ function uploadImage() {
             <Button
                 variant="contained"
                 component="label"
-                sx={{ backgroundColor: '#00d591', '&:hover': { backgroundColor: '#009f76' } }}
+                sx={{
+                    backgroundColor: colors.water_green,
+                    '&:hover': { backgroundColor: colors.on_stand_water_green },
+                }}
             >
                 Upload Image
                 <input type="file" accept="image/*" hidden />
