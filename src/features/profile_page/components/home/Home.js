@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { ButtonsContainer, DataContainer, Header, Wrapper } from './styledHome';
 import { Button } from '@mui/material';
-import { useParams } from 'react-router-dom';
 import { ProfileCard } from './ProfileCard';
 
 export const Home = () => {
     const { userId } = useParams();
+    //hardcodeado de momento, una vez este la api hay que cambiar esto
+    const loggedInUserId = '1';
+    const canEdit = userId === loggedInUserId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
@@ -30,7 +33,7 @@ export const Home = () => {
                 </ButtonsContainer>
             </Header>
             <DataContainer>
-                <ProfileCard />
+                <ProfileCard canEdit={canEdit} userId={userId} />
             </DataContainer>
         </Wrapper>
     );

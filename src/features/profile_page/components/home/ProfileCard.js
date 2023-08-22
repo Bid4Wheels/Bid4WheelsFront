@@ -14,7 +14,8 @@ import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Button } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
-export const ProfileCard = () => {
+//imagen, username,mail y numero de telefono hardcodeado de momento. Una vez este la api hay que obtener la informacion a traves de userId
+export const ProfileCard = ({ canEdit, userId }) => {
     return (
         <ProfileCardDiv>
             <ImageContainer
@@ -29,12 +30,14 @@ export const ProfileCard = () => {
                 <PhoneIcon />
                 <Phone>+54113232323232</Phone>
             </PhoneRow>
-            <EditButton>
-                <Button>
-                    <EditText>Edit</EditText>
-                </Button>
-                <EditIcon style={{ color: 'white' }} />
-            </EditButton>
+            {canEdit && (
+                <EditButton>
+                    <Button>
+                        <EditText>Edit</EditText>
+                    </Button>
+                    <EditIcon style={{ color: 'white' }} />
+                </EditButton>
+            )}
         </ProfileCardDiv>
     );
 };
