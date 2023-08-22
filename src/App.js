@@ -1,7 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Counter } from './features/counter/Counter';
+import { SignUp } from './features/signUp/SignUp';
 import './App.css';
 
 function App() {
@@ -9,7 +9,8 @@ function App() {
         <div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" component={Counter} />
+                    <Route path="/" Component={Counter} />
+                    <Route path="/signup" Component={SignUp} />
                 </Routes>
             </BrowserRouter>
         </div>
