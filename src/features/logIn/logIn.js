@@ -97,6 +97,7 @@ export function LogIn() {
                             style={{
                                 color: '#00d591',
                                 width: '45%',
+                                borderColor: '#34eb93',
                             }}
                             onClick={() => nav('/signup')}
                         >
