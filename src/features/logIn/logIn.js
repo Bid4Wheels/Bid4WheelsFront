@@ -51,11 +51,9 @@ export function LogIn() {
                                 <InputAdornment position="end">
                                     <IconButton onClick={handleTogglePassword} edge="end">
                                         {showPassword ? (
-                                            <VisibilityOffOutlinedIcon
-                                                style={{ color: '#000000' }}
-                                            />
+                                            <VisibilityOffOutlinedIcon />
                                         ) : (
-                                            <VisibilityOutlinedIcon style={{ color: '#000000' }} />
+                                            <VisibilityOutlinedIcon />
                                         )}
                                     </IconButton>
                                 </InputAdornment>

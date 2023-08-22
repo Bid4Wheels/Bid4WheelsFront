@@ -134,16 +134,18 @@ export function SignUp() {
                                     <InputAdornment position="end">
                                         <Tooltip
                                             title={
-                                                <span>
-                                                    Password must contain:
-                                                    <br />
-                                                    - 8 characters minimum
-                                                    <br />
-                                                    - 1 uppercase letter
-                                                    <br />
-                                                    - 1 lowercase letter
-                                                    <br />- 1 number
-                                                </span>
+                                                <h4>
+                                                    <span>
+                                                        Password must contain:
+                                                        <br />
+                                                        - 8 characters minimum
+                                                        <br />
+                                                        - 1 uppercase letter
+                                                        <br />
+                                                        - 1 lowercase letter
+                                                        <br />- 1 number
+                                                    </span>
+                                                </h4>
                                             }
                                             open={passwordTooltipOpen}
                                             placement="bottom-end"
@@ -155,9 +157,9 @@ export function SignUp() {
                                                 edge="end"
                                             >
                                                 {showPassword ? (
-                                                    <VisibilityOutlinedIcon />
-                                                ) : (
                                                     <VisibilityOffOutlinedIcon />
+                                                ) : (
+                                                    <VisibilityOutlinedIcon />
                                                 )}
                                             </IconButton>
                                         </Tooltip>
@@ -181,9 +183,9 @@ export function SignUp() {
                                             edge="end"
                                         >
                                             {showPassword ? (
-                                                <VisibilityOutlinedIcon />
-                                            ) : (
                                                 <VisibilityOffOutlinedIcon />
+                                            ) : (
+                                                <VisibilityOutlinedIcon />
                                             )}
                                         </IconButton>
                                     </InputAdornment>
