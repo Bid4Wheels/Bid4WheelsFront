@@ -205,7 +205,7 @@ export function SignUp() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         style={{
-                                            color: 'blue',
+                                            color: '#34eb93',
                                             textDecoration: 'none',
                                         }}
                                         onMouseEnter={(e) =>
