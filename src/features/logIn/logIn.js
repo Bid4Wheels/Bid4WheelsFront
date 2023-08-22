@@ -51,11 +51,9 @@ export function LogIn() {
                                 <InputAdornment position="end">
                                     <IconButton onClick={handleTogglePassword} edge="end">
                                         {showPassword ? (
-                                            <VisibilityOffOutlinedIcon
-                                                style={{ color: '#000000' }}
-                                            />
+                                            <VisibilityOffOutlinedIcon />
                                         ) : (
-                                            <VisibilityOutlinedIcon style={{ color: '#000000' }} />
+                                            <VisibilityOutlinedIcon />
                                         )}
                                     </IconButton>
                                 </InputAdornment>
@@ -97,6 +95,7 @@ export function LogIn() {
                             style={{
                                 color: '#00d591',
                                 width: '45%',
+                                borderColor: '#34eb93',
                             }}
                             onClick={() => nav('/signup')}
                         >
