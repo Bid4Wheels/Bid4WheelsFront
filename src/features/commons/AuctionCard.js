@@ -7,6 +7,7 @@ import {
     differenceInDays,
     differenceInMinutes,
 } from 'date-fns';
+import colors from '../../utils/desgin/Colors';
 
 const AuctionCard = ({ auction }) => {
     const AucitonCard = (auction) => { const {endDate, image, carName, tags} = auction
@@ -15,13 +16,13 @@ const AuctionCard = ({ auction }) => {
     const timeDifferenceInMinutes = differenceInMinutes(endDate, now);
     const timeDifferenceInDays = differenceInDays(endDate, now);
 
-    let color = '#75EB3E';
+    let color = colors.green;
     if (timeDifferenceInDays < 1) {
-        color = '#FFCD4B';
+        color = colors.yellow;
         if (timeDifferenceInHours < 1) {
-            color = '#E67754';
+            color = colors.red;
             if (timeDifferenceInHours < 0) {
-                color = '#D9D9D9';
+                color = colors.grey;
             }
         }
     }
@@ -82,7 +83,7 @@ const AuctionCard = ({ auction }) => {
                                 <Box
                                     key={index}
                                     sx={{
-                                        backgroundColor: '#D9D9D9',
+                                        backgroundColor: colors.grey,
                                         borderRadius: '10px',
                                         padding: '4px 8px',
                                         display: 'inline-block',
