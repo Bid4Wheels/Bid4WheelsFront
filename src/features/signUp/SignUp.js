@@ -12,6 +12,7 @@ import {
     Box,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
@@ -63,7 +64,7 @@ export function SignUp() {
     return (
         <Grid
             container
-            spacing={1}
+            spacing={0}
             justifyContent="center"
             alignItems="center"
             padding="2rem"
@@ -72,12 +73,19 @@ export function SignUp() {
             <Grid item xs={12} md={6} className="logo">
                 <Box
                     sx={{
-                        border: '1px red dashed',
                         width: '70%',
-                        height: '500px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
                         margin: '0 auto',
                     }}
-                />
+                >
+                    <img
+                        src={B4W_logo}
+                        alt="B4W logo"
+                        style={{ maxWidth: '100%', height: 'auto' }}
+                    />
+                </Box>
             </Grid>
             <Grid item xs={12} md={6} className="form">
                 <Box sx={{ width: '70%', margin: '0 auto', padding: '1rem' }}>
