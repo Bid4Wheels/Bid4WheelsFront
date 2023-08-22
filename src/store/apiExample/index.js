@@ -7,26 +7,26 @@ export const cardApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://pokeapi.co/api/v2%22%7D)',
         reducerPath: 'cardApi',
-        endpoints: (builder) => ({
-            getPokemonById: builder.query({
-                query: (id) => `pokemon/${id}`,
+    }),
+    endpoints: (builder) => ({
+        getPokemonById: builder.query({
+            query: (id) => `pokemon/${id}`,
+        }),
+        getPokemonList: builder.query({
+            query: (page) => ({
+                url: 'pokemon',
+                params: { limit: PAGE_SIZE, offset: PAGE_SIZE * (page + 1) },
             }),
-            getPokemonList: builder.query({
-                query: (page) => ({
-                    url: 'pokemon',
-                    params: { limit: PAGE_SIZE, offset: PAGE_SIZE * (page + 1) },
-                }),
-                serializeQueryArgs: ({ endpointName }) => {
-                    return endpointName;
-                },
-                merge: (currentCache, newItems) => {
-                    currentCache.push(...newItems);
-                },
-                transformResponse: (response) => response.results,
-                forceRefetch({ currentArg, previousArg }) {
-                    return currentArg !== previousArg;
-                },
-            }),
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            merge: (currentCache, newItems) => {
+                currentCache.push(...newItems);
+            },
+            transformResponse: (response) => response.results,
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg;
+            },
         }),
     }),
 });
