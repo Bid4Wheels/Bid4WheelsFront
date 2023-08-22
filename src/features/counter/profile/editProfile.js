@@ -111,7 +111,7 @@ function formToComplete({ userInfo, setUserInfo }) {
 
     return (
         <Box>
-            <form>
+            <form onSubmit={() => handleConfirmButton}>
                 <TextField
                     label="Email"
                     name="email"
@@ -147,34 +147,35 @@ function formToComplete({ userInfo, setUserInfo }) {
                 <TextField
                     label="Phone number"
                     name="PhoneNumber"
-                    type="text"
+                    type="tel"
                     margin="normal"
                     variant="standard"
                     fullWidth
                     onChange={handlePhoneChange}
                     value={userInfo.phone}
                 />
+                <Stack spacing={2} direction="row" marginTop={4}>
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{
+                            width: '110px',
+                            height: '50px',
+                            backgroundColor: '#00d591',
+                            '&:hover': { backgroundColor: '#009f76' },
+                        }}
+                        onClick={handleConfirmButton}
+                    >
+                        CONFIRM
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        sx={{ color: '#00d591', '&:hover': { color: '#009f76' } }}
+                    >
+                        CHANGE PASSWORD
+                    </Button>
+                </Stack>
             </form>
-            <Stack spacing={2} direction="row" marginTop={4}>
-                <Button
-                    variant="contained"
-                    sx={{
-                        width: '110px',
-                        height: '50px',
-                        backgroundColor: '#00d591',
-                        '&:hover': { backgroundColor: '#009f76' },
-                    }}
-                    onClick={handleConfirmButton}
-                >
-                    CONFIRM
-                </Button>
-                <Button
-                    variant="outlined"
-                    sx={{ color: '#00d591', '&:hover': { color: '#009f76' } }}
-                >
-                    CHANGE PASSWORD
-                </Button>
-            </Stack>
         </Box>
     );
 }
