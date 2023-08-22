@@ -57,7 +57,7 @@ const AuctionCard = ({ auction }) => {
                             },
                         }}
                     >
-                        <Typography gutterBottom variant="p" component="div">
+                        <Typography gutterBottom variant="XSmall" component="div">
                             {auction.carName}
                         </Typography>
                         <Box
@@ -69,11 +69,13 @@ const AuctionCard = ({ auction }) => {
                                 marginBottom: '8px',
                             }}
                         >
-                            {timeDifferenceInHours > 0
-                                ? `${timeDifferenceInHours}:${timeDifferenceInMinutes % 60}`
-                                : timeDifferenceInMinutes > 0
-                                ? `00:${timeDifferenceInMinutes}`
-                                : 'Closed'}
+                            <Typography gutterBottom variant="Small">
+                                {timeDifferenceInHours > 0
+                                    ? `${timeDifferenceInHours}:${timeDifferenceInMinutes % 60}`
+                                    : timeDifferenceInMinutes > 0
+                                    ? `00:${timeDifferenceInMinutes}`
+                                    : 'Closed'}
+                            </Typography>
                         </Box>
                         <Box display="flex" gap="3px">
                             {auction.tags.map((tag, index) => (
@@ -86,7 +88,7 @@ const AuctionCard = ({ auction }) => {
                                         display: 'inline-block',
                                     }}
                                 >
-                                    <Typography gutterBottom variant="p" component="div">
+                                    <Typography gutterBottom variant="XSmall" component="div">
                                         {tag}
                                     </Typography>
                                 </Box>
