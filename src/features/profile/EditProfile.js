@@ -10,8 +10,7 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import colors from '../../../utils/desgin/Colors';
-import { color } from '@mui/system';
+import colors from '../../utils/desgin/Colors';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
