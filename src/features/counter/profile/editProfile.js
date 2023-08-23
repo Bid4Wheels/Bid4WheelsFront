@@ -73,12 +73,13 @@ export function EditProfileModal({ open, onClose }) {
 }
 
 function formToComplete({ userInfo, setUserInfo }) {
-    const handleConfirmButton = () => {
+    const handleConfirmButton = (event) => {
         if (validatePhone(userInfo.phone)) {
             //complete with what we want to do
             console.log('si');
         } else {
             //complete with error message
+            event.preventDefault();
             console.log('no');
         }
     };
