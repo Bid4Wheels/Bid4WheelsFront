@@ -15,6 +15,7 @@ function App() {
                     <Route path="/signup" Component={SignUp} />
                     <Route path="/login" Component={LogIn} />
                     <Route path="/user/:userId" Component={ProfilePage} />
+                    <Route path="/user" Component={ProfilePage} />
                 </Routes>
             </BrowserRouter>
         </div>

@@ -7,8 +7,7 @@ import colors from '../../../../utils/desgin/Colors';
 
 export const ProfilePage = () => {
     const { userId } = useParams();
-    const loggedInUserId = '1';
-    const canEdit = userId === loggedInUserId;
+    const canEdit = !userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
