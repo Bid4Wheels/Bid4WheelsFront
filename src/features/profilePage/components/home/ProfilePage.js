@@ -5,13 +5,18 @@ import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 
-export const Home = () => {
+export const ProfilePage = () => {
     const { userId } = useParams();
     const loggedInUserId = '1';
     const canEdit = userId === loggedInUserId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
+    const initialState = {
+        username: 'Username',
+        mail: 'mail@mail.com',
+        phone: '+541132323232',
+    };
 
     return (
         <Box sx={{ padding: '5%' }}>
@@ -21,7 +26,6 @@ export const Home = () => {
                     display: 'flex',
                     justifyContent: 'flex-end',
                     width: '100%',
-                    height: '0.05%',
                 }}
             >
                 <Box
@@ -30,23 +34,15 @@ export const Home = () => {
                 >
                     <Button
                         variant={historyIsClicked ? 'contained' : 'outlined'}
-                        sx={{
+                        style={{
                             backgroundColor: historyIsClicked ? colors.water_green : 'transparent',
                             color: historyIsClicked ? 'white' : colors.water_green,
                             borderColor: colors.water_green,
                             boxShadow: theme.shadows[3],
-                            fontFamily: 'Roboto',
                             fontSize: theme.typography.Small.fontSize,
                             fontWeight: 500,
                             letterSpacing: '0.4px',
                             textTransform: 'uppercase',
-                            '&:hover': {
-                                backgroundColor: historyIsClicked
-                                    ? colors.water_green
-                                    : 'transparent',
-                                color: historyIsClicked ? 'white' : colors.water_green,
-                                borderColor: colors.water_green,
-                            },
                         }}
                         onClick={handleHistoryClick}
                     >
@@ -54,23 +50,15 @@ export const Home = () => {
                     </Button>
                     <Button
                         variant={historyIsClicked ? 'outlined' : 'contained'}
-                        sx={{
+                        style={{
                             backgroundColor: historyIsClicked ? 'transparent' : colors.water_green,
                             color: historyIsClicked ? colors.water_green : 'white',
                             borderColor: colors.water_green,
                             boxShadow: theme.shadows[3],
-                            fontFamily: 'Roboto',
                             fontSize: theme.typography.Small.fontSize,
                             fontWeight: 500,
                             letterSpacing: '0.4px',
                             textTransform: 'uppercase',
-                            '&:hover': {
-                                backgroundColor: historyIsClicked
-                                    ? 'transparent'
-                                    : colors.water_green,
-                                color: historyIsClicked ? colors.water_green : 'white',
-                                borderColor: colors.water_green,
-                            },
                         }}
                         onClick={handleReviewClick}
                     >
@@ -79,7 +67,12 @@ export const Home = () => {
                 </Box>
             </Box>
             <Box className="DataContainer" sx={{ display: 'flex' }}>
-                <ProfileCard canEdit={canEdit} userId={userId} />
+                <ProfileCard
+                    canEdit={canEdit}
+                    Username={initialState.username}
+                    Email={initialState.mail}
+                    Phone={initialState.phone}
+                />
             </Box>
         </Box>
     );

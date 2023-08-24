@@ -1,12 +1,12 @@
 import React from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box, Typography, Avatar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 
-export const ProfileCard = ({ canEdit, userId }) => {
+export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
     return (
         <Box
             sx={{
@@ -15,29 +15,19 @@ export const ProfileCard = ({ canEdit, userId }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 12,
-                border: '3px solid #00d591',
+                border: '3px solid',
+                borderColor: colors.water_green,
                 background: 'white',
                 alignItems: 'center',
                 justifyContent: 'center',
             }}
         >
-            <img
-                src={'https://upload.wikimedia.org/wikipedia/commons/d/d8/Dulce_de_membrillo.jpg'}
-                alt="Profile"
-                style={{
-                    alignSelf: 'center',
-                    width: 274,
-                    height: 274,
-                    flexShrink: 0,
-                    borderRadius: '75%',
-                }}
-            />
+            <Avatar sx={{ width: 274, height: 274, marginBottom: 2 }}></Avatar>
             <Typography
                 variant="h4"
                 sx={{
                     color: 'black',
-                    fontFamily: 'Roboto', // Use Roboto font
-                    fontSize: theme.typography.XxLarge.fontSize, // Use theme size
+                    fontSize: theme.typography.XxLarge.fontSize,
                     fontWeight: 500,
                     lineHeight: '26px',
                     letterSpacing: 0.46,
@@ -45,7 +35,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                     marginBottom: 2,
                 }}
             >
-                hola
+                {Username}
             </Typography>
             <Box
                 sx={{
@@ -62,12 +52,11 @@ export const ProfileCard = ({ canEdit, userId }) => {
                     variant="body1"
                     sx={{
                         color: 'black',
-                        fontFamily: 'Roboto',
                         fontSize: theme.typography.Medium.fontSize,
                         textDecoration: 'underline',
                     }}
                 >
-                    example@mail.com
+                    {Email}
                 </Typography>
             </Box>
             <Box
@@ -84,25 +73,20 @@ export const ProfileCard = ({ canEdit, userId }) => {
                     variant="body1"
                     sx={{
                         color: 'black',
-                        fontFamily: 'Roboto',
                         fontSize: theme.typography.Medium.fontSize,
                     }}
                 >
-                    +54113232323232
+                    {Phone}
                 </Typography>
             </Box>
             {canEdit && (
-                <button
+                <Button
                     className="EditButton"
                     style={{
                         display: 'flex',
-                        width: 100,
-                        height: 49,
-                        padding: '6px 16px',
                         flexDirection: 'row',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        flexShrink: 0,
                         borderRadius: 4,
                         backgroundColor: colors.water_green,
                         boxShadow: theme.shadows[3],
@@ -117,7 +101,6 @@ export const ProfileCard = ({ canEdit, userId }) => {
                             justifyContent: 'center',
                             '& .EditText': {
                                 color: 'white',
-                                fontFamily: 'Roboto',
                                 fontSize: theme.typography.Small.fontSize,
                                 fontWeight: 500,
                                 letterSpacing: '0.4px',
@@ -128,7 +111,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                         <div className="EditText">Edit</div>
                         <EditIcon style={{ color: 'white' }} />
                     </Button>
-                </button>
+                </Button>
             )}
         </Box>
     );
