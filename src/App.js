@@ -1,8 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
+import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Counter } from './features/counter/Counter';
-import './App.css';
+import { SignUp } from './features/signUp/SignUp';
+import { LogIn } from './features/logIn/logIn';
 import { Home } from './features/profile_page/components/home/Home';
 
 function App() {
@@ -11,6 +12,8 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" Component={Counter} />
+                    <Route path="/signup" Component={SignUp} />
+                    <Route path="/login" Component={LogIn} />
                     <Route path="/user/:userId" Component={Home} />
                 </Routes>
             </BrowserRouter>
