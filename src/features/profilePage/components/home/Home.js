@@ -32,7 +32,7 @@ export const Home = () => {
                         variant={historyIsClicked ? 'contained' : 'outlined'}
                         sx={{
                             backgroundColor: historyIsClicked ? colors.water_green : 'transparent',
-                            color: historyIsClicked ? '#fff' : colors.water_green,
+                            color: historyIsClicked ? 'white' : colors.water_green,
                             borderColor: colors.water_green,
                             boxShadow: theme.shadows[3],
                             fontFamily: 'Roboto',
@@ -44,7 +44,7 @@ export const Home = () => {
                                 backgroundColor: historyIsClicked
                                     ? colors.water_green
                                     : 'transparent',
-                                color: historyIsClicked ? '#fff' : colors.water_green,
+                                color: historyIsClicked ? 'white' : colors.water_green,
                                 borderColor: colors.water_green,
                             },
                         }}
@@ -56,7 +56,7 @@ export const Home = () => {
                         variant={historyIsClicked ? 'outlined' : 'contained'}
                         sx={{
                             backgroundColor: historyIsClicked ? 'transparent' : colors.water_green,
-                            color: historyIsClicked ? colors.water_green : '#fff',
+                            color: historyIsClicked ? colors.water_green : 'white',
                             borderColor: colors.water_green,
                             boxShadow: theme.shadows[3],
                             fontFamily: 'Roboto',
@@ -68,7 +68,7 @@ export const Home = () => {
                                 backgroundColor: historyIsClicked
                                     ? 'transparent'
                                     : colors.water_green,
-                                color: historyIsClicked ? colors.water_green : '#fff',
+                                color: historyIsClicked ? colors.water_green : 'white',
                                 borderColor: colors.water_green,
                             },
                         }}

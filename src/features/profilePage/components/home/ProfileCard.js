@@ -16,7 +16,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                 flexDirection: 'column',
                 borderRadius: 12,
                 border: '3px solid #00d591',
-                background: '#fff',
+                background: 'white',
                 alignItems: 'center',
                 justifyContent: 'center',
             }}
@@ -35,7 +35,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
             <Typography
                 variant="h4"
                 sx={{
-                    color: '#000',
+                    color: 'black',
                     fontFamily: 'Roboto', // Use Roboto font
                     fontSize: theme.typography.XxLarge.fontSize, // Use theme size
                     fontWeight: 500,
@@ -61,7 +61,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                 <Typography
                     variant="body1"
                     sx={{
-                        color: '#000',
+                        color: 'black',
                         fontFamily: 'Roboto',
                         fontSize: theme.typography.Medium.fontSize,
                         textDecoration: 'underline',
@@ -83,7 +83,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                 <Typography
                     variant="body1"
                     sx={{
-                        color: '#000',
+                        color: 'black',
                         fontFamily: 'Roboto',
                         fontSize: theme.typography.Medium.fontSize,
                     }}
@@ -105,8 +105,7 @@ export const ProfileCard = ({ canEdit, userId }) => {
                         flexShrink: 0,
                         borderRadius: 4,
                         backgroundColor: colors.water_green,
-                        boxShadow:
-                            '0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)',
+                        boxShadow: theme.shadows[3],
                         border: 'none',
                         marginTop: 2,
                     }}
@@ -117,9 +116,11 @@ export const ProfileCard = ({ canEdit, userId }) => {
                             alignItems: 'center',
                             justifyContent: 'center',
                             '& .EditText': {
-                                color: '#fff',
+                                color: 'white',
                                 fontFamily: 'Roboto',
                                 fontSize: theme.typography.Small.fontSize,
+                                fontWeight: 500,
+                                letterSpacing: '0.4px',
                                 textTransform: 'uppercase',
                             },
                         }}
