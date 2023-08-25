@@ -79,32 +79,17 @@ export function SignUp() {
     };
 
     return (
-        <Grid
-            container
-            spacing={0}
-            justifyContent="center"
-            alignItems="center"
-            padding="2rem"
-            height="100vh"
-        >
-            <Grid item xs={12} md={6} className="logo">
-                <Box
-                    sx={{
-                        width: '70%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: '0 auto',
-                    }}
-                >
+        <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
+                <Box display="flex" justifyContent="center">
                     <img
                         src={B4W_logo}
                         alt="B4W logo"
-                        style={{ maxWidth: '100%', height: 'auto' }}
+                        style={{ maxWidth: '80%', height: 'auto' }}
                     />
                 </Box>
             </Grid>
-            <Grid item xs={12} md={6} className="form">
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
                 <Box sx={{ width: '70%', margin: '0 auto', padding: '1rem' }}>
                     <FormControl sx={{ width: '100%' }}>
                         <TextField

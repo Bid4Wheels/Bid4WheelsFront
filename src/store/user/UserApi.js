@@ -13,7 +13,6 @@ export const userApi = createApi({
                 url: '/',
                 method: 'POST',
                 body: payload,
-                
             }),
         }),
     }),
