@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
 import { Button, Box, Typography, Avatar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
+import { EditProfileModal } from './EditProfile';
 
 export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
+    const [openEditModal, setOpenEditModal] = useState(false);
+    const handleOpenEditModal = () => setOpenEditModal(true);
+    const handleCloseEditModal = () => setOpenEditModal(false);
+
     return (
         <Box
             sx={{
@@ -107,10 +112,12 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
                                 textTransform: 'uppercase',
                             },
                         }}
+                        onClick={handleOpenEditModal}
                     >
                         <div className="EditText">Edit</div>
                         <EditIcon style={{ color: 'white' }} />
                     </Button>
+                    <EditProfileModal open={openEditModal} onClose={handleCloseEditModal} />
                 </Button>
             )}
         </Box>
