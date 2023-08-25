@@ -4,14 +4,16 @@ import { baseUrl } from '../../features/commons/Constants';
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: baseUrl,
+        baseUrl: `${baseUrl}user`,
     }),
+
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (payload) => ({
-                url: '/user',
+                url: '/',
                 method: 'POST',
                 body: payload,
+                
             }),
         }),
     }),

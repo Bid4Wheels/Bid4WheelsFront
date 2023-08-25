@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useSignUpMutation } from '../../store/user/UserApi';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
@@ -26,8 +27,24 @@ export function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
-
     const navigate = useNavigate();
+    const [signUp, { isLoading }] = useSignUpMutation();
+
+    const handleSignUp = async () => {
+        const payload = {
+            name: name,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber,
+            password: password,
+        };
+        //console.log(payload);
+        const result = await signUp(payload).unwrap();
+        console.log(result);
+        if (result.status === 200) {
+            navigate('/login');
+        }
+    };
 
     const handleLogin = () => {
         navigate('/login');
@@ -238,6 +255,7 @@ export function SignUp() {
                             }}
                             variant="contained"
                             disabled={isSignUpDisabled()}
+                            onClick={handleSignUp}
                         >
                             Sign Up
                         </Button>
