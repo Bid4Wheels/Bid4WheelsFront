@@ -16,6 +16,7 @@ import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSignUpMutation } from '../../store/user/UserApi';
+import colors from '../../utils/desgin/Colors';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
@@ -38,12 +39,10 @@ export function SignUp() {
             phoneNumber: phoneNumber,
             password: password,
         };
-        //console.log(payload);
-        const result = await signUp(payload).unwrap();
-        console.log(result);
-        if (result.status === 200) {
-            navigate('/login');
-        }
+        console.log(payload);
+        //const response = await signUp(payload).unwrap();
+        //console.log(response);
+        //navigate('/login');
     };
 
     const handleLogin = () => {
@@ -207,7 +206,7 @@ export function SignUp() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         style={{
-                                            color: '#34eb93',
+                                            color: colors.water_green,
                                             textDecoration: 'none',
                                         }}
                                         onMouseEnter={(e) =>
@@ -231,15 +230,15 @@ export function SignUp() {
                             sx={{
                                 width: '60%',
                                 padding: '10px',
-                                backgroundColor: '#34eb93',
+                                backgroundColor: colors.water_green,
                                 marginRight: '20px',
                                 ':hover': {
-                                    backgroundColor: '#34eb90',
+                                    backgroundColor: colors.water_green,
                                     color: 'white',
                                 },
                             }}
                             variant="contained"
-                            disabled={isSignUpDisabled()}
+                            disabled={isSignUpDisabled() || isLoading}
                             onClick={handleSignUp}
                         >
                             Sign Up
@@ -248,12 +247,12 @@ export function SignUp() {
                             sx={{
                                 width: '40%',
                                 padding: '10px',
-                                color: '#34eb93',
-                                borderColor: '#34eb93',
+                                color: colors.water_green,
+                                borderColor: colors.water_green,
                                 ':hover': {
-                                    backgroundColor: '#34eb93',
+                                    backgroundColor: colors.water_green,
                                     color: 'white',
-                                    borderColor: '#34eb93',
+                                    borderColor: colors.water_green,
                                 },
                             }}
                             variant="outlined"

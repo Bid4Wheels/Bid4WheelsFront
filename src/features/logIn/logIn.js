@@ -85,17 +85,23 @@ export function LogIn() {
                             style={{
                                 backgroundColor: '#00d591',
                                 color: 'white',
-                                width: '45%',
+                                width: '46%',
                             }}
                         >
                             Log In
                         </Button>
                         <Button
                             variant="outlined"
-                            style={{
+                            sx={{
+                                width: '46%',
+                                padding: '10px',
                                 color: '#00d591',
-                                width: '45%',
-                                borderColor: '#34eb93',
+                                borderColor: '#00d591',
+                                ':hover': {
+                                    backgroundColor: '#00d591',
+                                    color: 'white',
+                                    borderColor: '#00d591',
+                                },
                             }}
                             onClick={() => nav('/signup')}
                         >

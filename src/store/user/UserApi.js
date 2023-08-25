@@ -4,7 +4,7 @@ import { baseUrl } from '../../features/commons/Constants';
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}user`,
+        baseUrl: `${baseUrl}/user`,
     }),
 
     endpoints: (builder) => ({
@@ -12,6 +12,9 @@ export const userApi = createApi({
             query: (payload) => ({
                 url: '/',
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: payload,
             }),
         }),
