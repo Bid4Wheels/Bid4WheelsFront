@@ -10,7 +10,7 @@ export const userApi = createApi({
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (payload) => ({
-                url: '/',
+                url: '',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

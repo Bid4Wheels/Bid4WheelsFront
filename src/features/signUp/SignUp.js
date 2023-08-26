@@ -40,9 +40,15 @@ export function SignUp() {
             password: password,
         };
         console.log(payload);
-        //const response = await signUp(payload).unwrap();
-        //console.log(response);
-        //navigate('/login');
+        try {
+            const response = await signUp(payload).unwrap();
+            console.log(response);
+            console.log('Sign up successful!');
+            navigate('/login');
+        } catch (error) {
+            console.log('Sign up failed.');
+            console.log(error);
+        }
     };
 
     const handleLogin = () => {
