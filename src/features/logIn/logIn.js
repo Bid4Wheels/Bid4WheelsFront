@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import {
     Alert,
     Box,
@@ -13,11 +14,14 @@ import {
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useLogInMutation } from '../../store/user/userAPI';
+import colors from '../../utils/desgin/Colors';
+import { useLogInMutation } from '../../store/user/UserApi';
+import { setUser } from '../../store/user/UserSlice';
 
 export function LogIn() {
-    const [showPassword, setShowPassword] = useState(false);
     const nav = useNavigate();
+    const dispatch = useDispatch();
+    const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [logIn, { isLoading, isError }] = useLogInMutation();
@@ -37,12 +41,27 @@ export function LogIn() {
     const handleLogIn = async () => {
         const payload = { email, password };
         try {
-            await logIn(payload).unwrap();
+            const response = await logIn(payload).unwrap();
+            const { token, id } = response;
+            dispatch(setUser({ token, id }));
             nav('/');
         } catch (err) {
             console.error(err);
         }
     };
+
+    function handleError() {
+        if ((password == '') & (email == '')) {
+            return (
+                <Alert severity="error">Please fill the email and password fields to log in</Alert>
+            );
+        }
+        return (
+            <Alert severity="error">
+                There was an error while logging in. Check your email/password and try again
+            </Alert>
+        );
+    }
 
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
@@ -93,12 +112,7 @@ export function LogIn() {
                             ),
                         }}
                     />
-                    {isError && (
-                        <Alert severity="error">
-                            There was an error while logging in. Check your email/password and try
-                            again
-                        </Alert>
-                    )}
+                    {isError && handleError()}
                     <Box
                         display="flex"
                         marginY="20px"
@@ -122,22 +136,40 @@ export function LogIn() {
                         <Button
                             variant="contained"
                             style={{
-                                backgroundColor: '#00d591',
+                                backgroundColor: isLoading ? colors.grey : colors.water_green,
                                 color: 'white',
-                                width: '45%',
+                                width: '46%',
                             }}
                             onClick={handleLogIn}
                             disabled={isLoading}
                         >
                             Log In
-                            {isLoading && <CircularProgress size="20%" color="inherit" />}
+                            {isLoading && (
+                                <CircularProgress
+                                    size={24}
+                                    sx={{
+                                        color: 'inherit',
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}
+                                />
+                            )}
                         </Button>
                         <Button
                             variant="outlined"
-                            style={{
-                                color: '#00d591',
-                                width: '45%',
-                                borderColor: '#34eb93',
+                            sx={{
+                                color: colors.water_green,
+                                borderColor: colors.water_green,
+                                width: '46%',
+                                padding: '10px',
+                                '&:hover': {
+                                    backgroundColor: colors.water_green,
+                                    color: 'white',
+                                    borderColor: colors.water_green,
+                                },
                             }}
                             onClick={() => nav('/signup')}
                         >

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export const UserApiSlice = createApi({
+export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://api.bid4wheels.rellum.com.ar/user' }),
     endpoints: (builder) => ({
@@ -14,4 +14,4 @@ export const UserApiSlice = createApi({
     }),
 });
 
-export const { useLogInMutation } = UserApiSlice;
+export const { useLogInMutation } = userApi;
