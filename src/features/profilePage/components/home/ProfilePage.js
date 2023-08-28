@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Box } from '@mui/material';
+import { Button, Box, CircularProgress, Typography } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
+import { useGetUserByIdQuery } from '../../../../store/user/UserApi';
 
 export const ProfilePage = () => {
     const { userId } = useParams();
@@ -11,11 +12,37 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-    const initialState = {
-        username: 'Username',
-        mail: 'mail@mail.com',
-        phone: '+541132323232',
-    };
+
+    const { data: userData, isLoading, isError, error } = useGetUserByIdQuery(userId);
+
+    if (isLoading) {
+        return (
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: '100vh',
+                    color: colors.water_green,
+                }}
+            >
+                <CircularProgress size={80} />
+            </div>
+        );
+    }
+    if (isError) {
+        return (
+            <Typography>
+                sx=
+                {{
+                    color: 'black',
+                    fontSize: theme.typography.Medium.fontSize,
+                    textDecoration: 'underline',
+                }}
+                {error.message}
+            </Typography>
+        );
+    }
 
     return (
         <Box sx={{ padding: '5%' }}>
@@ -68,9 +95,9 @@ export const ProfilePage = () => {
             <Box className="DataContainer" sx={{ display: 'flex' }}>
                 <ProfileCard
                     canEdit={canEdit}
-                    Username={initialState.username}
-                    Email={initialState.mail}
-                    Phone={initialState.phone}
+                    Username={userData.name}
+                    Email={userData.email}
+                    Phone={userData.phoneNumber}
                 />
             </Box>
         </Box>
