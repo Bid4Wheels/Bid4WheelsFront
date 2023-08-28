@@ -74,10 +74,19 @@ export function EditProfileModal({ open, onClose }) {
 
 function formToComplete({ userInfo, setUserInfo }) {
     const [updateUser] = useUpdateUserMutation();
-    const handleConfirmButton = (event) => {
+    const handleConfirmButton = async (event) => {
         if (validatePhone(userInfo.phone)) {
-            updateUser(userInfo);
-            console.log('si');
+            const updatedUser = {
+                name: userInfo.name,
+                lastName: userInfo.lastName,
+                phoneNumber: userInfo.phone,
+            };
+            try {
+                await updateUser(updatedUser);
+                console.log('si');
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             //complete with error message
             event.preventDefault();
