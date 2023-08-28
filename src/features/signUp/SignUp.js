@@ -10,6 +10,7 @@ import {
     Tooltip,
     Grid,
     Box,
+    CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import B4W_logo from '../commons/B4W_logo.svg';
@@ -76,12 +77,20 @@ export function SignUp() {
     };
 
     const validatePhoneNumber = (phoneNumber) => {
-        return /^[0-9]{10}$/.test(phoneNumber);
+        return /^[0-9]{14,}$/.test(phoneNumber);
     };
 
     const validatePassword = (password) => {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
     };
+
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+                <CircularProgress />
+            </Grid>
+        );
+    }
 
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
