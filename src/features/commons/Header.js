@@ -36,7 +36,7 @@ const Header = () => {
     }
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: 'white' }}>
+        <AppBar position="static" sx={{ backgroundColor: 'white', minWidth: '700px' }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <img
@@ -45,7 +45,14 @@ const Header = () => {
                         onClick={handleLogoClick}
                         style={{ marginLeft: '1rem', cursor: 'pointer' }}
                     />
-                    <Box sx={{ ml: '2rem', display: 'flex' }}>
+                    <Box
+                        sx={{
+                            ml: '2rem',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <Typography
                             variant="h7"
                             sx={{
@@ -63,7 +70,8 @@ const Header = () => {
                             sx={{
                                 color: 'black',
                                 cursor: 'pointer',
-                                marginLeft: '1rem',
+                                ml: '1rem',
+                                mr: '1rem',
                                 fontWeight: location.pathname === '/auction/new' ? 650 : 400,
                             }}
                             onClick={handleCreateAuctionClick}
