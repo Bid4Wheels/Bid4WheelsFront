@@ -12,6 +12,7 @@ import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import { useUpdateUserMutation } from '../../../../store/user/userApi';
+import { useParams } from 'react-router';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -74,6 +75,8 @@ export function EditProfileModal({ open, onClose }) {
 
 function formToComplete({ userInfo, setUserInfo }) {
     const [updateUser] = useUpdateUserMutation();
+    const userId = useParams().userId;
+    console.log(userId);
     const handleConfirmButton = async (event) => {
         if (validatePhone(userInfo.phone)) {
             const updatedUser = {
@@ -82,7 +85,7 @@ function formToComplete({ userInfo, setUserInfo }) {
                 phoneNumber: userInfo.phone,
             };
             try {
-                await updateUser(updatedUser);
+                await updateUser(userId, updatedUser);
                 console.log('si');
             } catch (error) {
                 console.log(error);
@@ -116,10 +119,8 @@ function formToComplete({ userInfo, setUserInfo }) {
     };
 
     const validatePhone = (phone) => {
-        const phonePattern = /^[+]*[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
-        if (phonePattern.test(phone) && (phone.length === 10 || phone.length === 14)) {
-            return true;
-        }
+        const phonePattern = /^[0-9]{14,}$/;
+        return phonePattern.test(phone);
     };
 
     return (
