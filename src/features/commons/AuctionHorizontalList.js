@@ -54,9 +54,10 @@ const MockupAuctionCards = () => {
                     style={{
                         display: 'flex',
                         flexWrap: 'nowrap',
-                        overflowX: 'hidden', // Hide the horizontal scrollbar
+                        overflowX: 'hidden',
+                        scrollBehavior: 'smooth',
                     }}
-                    onWheel={handleWheelScroll} // Disable mouse wheel scrolling
+                    onWheel={handleWheelScroll}
                 >
                     {auctions.map((auction, index) => (
                         <AuctionCard
