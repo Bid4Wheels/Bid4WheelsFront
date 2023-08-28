@@ -11,6 +11,7 @@ import {
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
+import { useUpdateUserMutation } from '../../../../store/user/userApi';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -72,9 +73,10 @@ export function EditProfileModal({ open, onClose }) {
 }
 
 function formToComplete({ userInfo, setUserInfo }) {
+    const [updateUser] = useUpdateUserMutation();
     const handleConfirmButton = (event) => {
         if (validatePhone(userInfo.phone)) {
-            //complete with what we want to do
+            updateUser(userInfo);
             console.log('si');
         } else {
             //complete with error message
