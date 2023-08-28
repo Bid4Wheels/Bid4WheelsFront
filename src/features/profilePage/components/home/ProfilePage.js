@@ -95,9 +95,9 @@ export const ProfilePage = () => {
             <Box className="DataContainer" sx={{ display: 'flex' }}>
                 <ProfileCard
                     canEdit={canEdit}
-                    Username={userData.name}
-                    Email={userData.email}
-                    Phone={userData.phoneNumber}
+                    Username={userData?.name}
+                    Email={userData?.email}
+                    Phone={userData?.phoneNumber}
                 />
             </Box>
         </Box>
