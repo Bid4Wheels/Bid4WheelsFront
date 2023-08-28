@@ -40,15 +40,13 @@ export function SignUp() {
             phoneNumber: phoneNumber,
             password: password,
         };
-        console.log(payload);
+
         try {
-            const response = await signUp(payload).unwrap();
-            console.log(response);
+            await signUp(payload).unwrap();
             console.log('Sign up successful!');
             navigate('/login');
         } catch (error) {
             console.log('Sign up failed.');
-            console.log(error);
         }
     };
 
