@@ -9,5 +9,6 @@ export const store = configureStore({
         [cardApiSlice.reducerPath]: cardApiSlice.reducer,
         [userApi.reducerPath]: userApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cardApiSlice.middleware),
+    middleware: (getDefaultMiddleware) =>
+        getDefaultMiddleware().concat(cardApiSlice.middleware).concat(userApi.middleware),
 });

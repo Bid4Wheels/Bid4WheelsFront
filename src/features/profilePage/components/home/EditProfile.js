@@ -78,14 +78,18 @@ function formToComplete({ userInfo, setUserInfo }) {
     const userId = useParams().userId;
     console.log(userId);
     const handleConfirmButton = async (event) => {
+        event.preventDefault();
         if (validatePhone(userInfo.phone)) {
             const updatedUser = {
-                name: userInfo.name,
-                lastName: userInfo.lastName,
-                phoneNumber: userInfo.phone,
+                id: userId,
+                userInfo: {
+                    name: userInfo.name,
+                    lastName: userInfo.lastName,
+                    phoneNumber: userInfo.phone,
+                },
             };
             try {
-                await updateUser(userId, updatedUser);
+                await updateUser(updatedUser);
                 console.log('si');
             } catch (error) {
                 console.log(error);
@@ -125,7 +129,7 @@ function formToComplete({ userInfo, setUserInfo }) {
 
     return (
         <Box>
-            <form onSubmit={() => handleConfirmButton}>
+            <form onSubmit={(e) => handleConfirmButton(e)}>
                 <TextField
                     label="Email"
                     name="email"
@@ -178,7 +182,6 @@ function formToComplete({ userInfo, setUserInfo }) {
                             backgroundColor: colors.water_green,
                             '&:hover': { backgroundColor: colors.on_stand_water_green },
                         }}
-                        onClick={handleConfirmButton}
                     >
                         CONFIRM
                     </Button>
