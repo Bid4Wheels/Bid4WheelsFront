@@ -4,6 +4,7 @@ import { Box, Button, Grid, IconButton, InputAdornment, TextField } from '@mui/m
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import colors from '../../utils/desgin/Colors';
 
 export function LogIn() {
     const [showPassword, setShowPassword] = useState(false);
@@ -83,7 +84,7 @@ export function LogIn() {
                         <Button
                             variant="contained"
                             style={{
-                                backgroundColor: '#00d591',
+                                backgroundColor: colors.water_green,
                                 color: 'white',
                                 width: '46%',
                             }}
@@ -95,12 +96,12 @@ export function LogIn() {
                             sx={{
                                 width: '46%',
                                 padding: '10px',
-                                color: '#00d591',
-                                borderColor: '#00d591',
+                                color: colors.water_green,
+                                borderColor: colors.water_green,
                                 ':hover': {
-                                    backgroundColor: '#00d591',
+                                    backgroundColor: colors.water_green,
                                     color: 'white',
-                                    borderColor: '#00d591',
+                                    borderColor: colors.water_green,
                                 },
                             }}
                             onClick={() => nav('/signup')}
