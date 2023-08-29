@@ -14,11 +14,14 @@ export const userApi = createApi({
     }),
     endpoints: (builder) => ({
         updateUser: builder.mutation({
-            query: (userId, userInfo) => ({
-                url: `/${userId}`,
-                method: 'PATCH',
-                body: userInfo,
-            }),
+            query(payload) {
+                const { id: userId, userInfo } = payload;
+                return {
+                    url: `/${userId}`,
+                    method: 'PATCH',
+                    body: userInfo,
+                };
+            },
         }),
     }),
 });
