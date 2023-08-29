@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Box, CircularProgress, Typography } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
@@ -12,37 +12,24 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-
     const { data: userData, isLoading, isError, error } = useGetUserByIdQuery(userId);
-
-    if (isLoading) {
-        return (
-            <div
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: '100vh',
-                    color: colors.water_green,
-                }}
-            >
-                <CircularProgress size={80} />
-            </div>
-        );
-    }
-    if (isError) {
-        return (
-            <Typography>
-                sx=
-                {{
-                    color: 'black',
-                    fontSize: theme.typography.Medium.fontSize,
-                    textDecoration: 'underline',
-                }}
-                {error.message}
-            </Typography>
-        );
-    }
+    const [userProfileData, setUserProfileData] = useState({
+        username: '',
+        mail: '',
+        phone: '',
+    });
+    const fullNameBuilder = (name, lastName) => {
+        return name + ' ' + lastName;
+    };
+    useEffect(() => {
+        if (!isLoading && !isError && userData) {
+            setUserProfileData({
+                username: fullNameBuilder(userData.name, userData.surname),
+                mail: userData.email,
+                phone: userData.phoneNumber,
+            });
+        }
+    }, [userData, isLoading, isError]);
 
     return (
         <Box sx={{ padding: '5%' }}>
@@ -95,9 +82,9 @@ export const ProfilePage = () => {
             <Box className="DataContainer" sx={{ display: 'flex' }}>
                 <ProfileCard
                     canEdit={canEdit}
-                    Username={userData?.name}
-                    Email={userData?.email}
-                    Phone={userData?.phoneNumber}
+                    Username={userProfileData.username}
+                    Email={userProfileData.mail}
+                    Phone={userProfileData.phone}
                 />
             </Box>
         </Box>
