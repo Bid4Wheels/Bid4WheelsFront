@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { userApi } from './user/UserApi';
-import userReducer from './user/UserSlice';
-import { authApi } from './auth/AuthApi';
+import { userApi } from './user/userApi';
+import userReducer from './user/userSlice';
+import { authApi } from './auth/authApi';
 import { persistReducer } from 'redux-persist';
 
 const reducers = combineReducers({
