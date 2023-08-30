@@ -11,7 +11,7 @@ import {
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
-import { useUpdateUserMutation } from '../../../../store/user/userApi';
+import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
 
 export function EditProfileModal({ open, onClose }) {
