@@ -75,7 +75,7 @@ export function SignUp() {
     };
 
     const validatePhoneNumber = (phoneNumber) => {
-        return /^[0-9]{14,}$/.test(phoneNumber);
+        return /^[0-9+]{14,}$/.test(phoneNumber);
     };
 
     const validatePassword = (password) => {
