@@ -15,8 +15,8 @@ import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import colors from '../../utils/desgin/Colors';
-import { useLogInMutation } from '../../store/auth/authApi';
-import { setUser } from '../../store/user/userSlice';
+import { useLogInMutation } from '../../store/auth/AuthApi';
+import { setUser } from '../../store/user/UserSlice';
 
 export function LogIn() {
     const nav = useNavigate();

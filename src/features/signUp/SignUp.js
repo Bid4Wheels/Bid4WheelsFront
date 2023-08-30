@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useSignUpMutation } from '../../store/user/userApi';
+import { useSignUpMutation } from '../../store/user/UserApi';
 import colors from '../../utils/desgin/Colors';
 
 export function SignUp() {
