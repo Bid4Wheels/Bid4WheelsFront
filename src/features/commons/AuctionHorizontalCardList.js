@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import AuctionCard from './AuctionCard';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 
-const MockupAuctionCards = () => {
+const AuctionHorizontalCardList = () => {
     const [auctions, setAuctions] = useState([
         {
             endDate: new Date('2023-09-10T18:30:00'),
@@ -75,4 +75,4 @@ const MockupAuctionCards = () => {
     );
 };
 
-export default MockupAuctionCards;
+export default AuctionHorizontalCardList;
