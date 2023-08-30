@@ -79,7 +79,11 @@ function formToComplete({ userInfo, setUserInfo }) {
     console.log(userId);
     const handleConfirmButton = async (event) => {
         event.preventDefault();
-        if (validatePhone(userInfo.phone)) {
+        if (
+            validatePhone(userInfo.phone) &&
+            validateName(userInfo.name) &&
+            validateLastName(userInfo.lastName)
+        ) {
             const updatedUser = {
                 id: userId,
                 userInfo: {
@@ -96,7 +100,6 @@ function formToComplete({ userInfo, setUserInfo }) {
             }
         } else {
             //complete with error message
-            event.preventDefault();
             console.log('no');
         }
     };
@@ -125,6 +128,14 @@ function formToComplete({ userInfo, setUserInfo }) {
     const validatePhone = (phone) => {
         const phonePattern = /^[0-9]{14,}$/;
         return phonePattern.test(phone);
+    };
+
+    const validateName = (name) => {
+        return name !== '';
+    };
+
+    const validateLastName = (lastName) => {
+        return lastName !== '';
     };
 
     return (
