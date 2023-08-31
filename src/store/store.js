@@ -1,30 +1,11 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import { userApi } from './user/UserApi';
-import userReducer from './user/UserSlice';
-import { authApi } from './auth/AuthApi';
-import { persistReducer } from 'redux-persist';
-import { authenticatedUserApi } from './user/authenticatedUserApi';
-
-const reducers = combineReducers({
-    user: userReducer,
-    [userApi.reducerPath]: userApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
-    [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
-});
-
-const persistConfig = {
-    key: 'root',
-    storage: localStorage,
-};
-
-const persistedReducer = persistReducer(persistConfig, reducers);
+import { configureStore } from '@reduxjs/toolkit';
+import counterReducer from './counter/counterSlice';
+import { cardApiSlice } from './apiExample';
 
 export const store = configureStore({
-    reducer: persistedReducer,
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(
-            userApi.middleware,
-            authApi.middleware,
-            authenticatedUserApi.middleware,
-        ),
+    reducer: {
+        counter: counterReducer,
+        [cardApiSlice.reducerPath]: cardApiSlice.reducer,
+    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(cardApiSlice.middleware),
 });
