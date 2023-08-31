@@ -4,7 +4,7 @@ import { Button, Box } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
-import { useGetUserByIdQuery } from '../../../../store/user/userAPI';
+import { useGetUserByIdQuery } from '../../../../store/user/UserApi';
 
 export const ProfilePage = () => {
     const { userId } = useParams();
