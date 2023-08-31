@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import counterReducer from './counter/counterSlice';
 import { cardApiSlice } from './apiExample';
-import { userApi } from './user/UserApi';
+import { userApi } from './user/userAPI';
 import userReducer from './user/UserSlice';
 import { persistReducer } from 'redux-persist';
 
