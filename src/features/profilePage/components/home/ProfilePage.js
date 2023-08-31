@@ -24,7 +24,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         if (!isLoading && !isError && userData) {
             setUserProfileData({
-                username: fullNameBuilder(userData.name, userData.surname),
+                username: fullNameBuilder(userData.name, userData.lastname),
                 mail: userData.email,
                 phone: userData.phoneNumber,
             });
