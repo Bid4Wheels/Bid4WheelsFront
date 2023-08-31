@@ -18,7 +18,17 @@ export const userApi = createApi({
                 body: payload,
             }),
         }),
+        getUserById: builder.query({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'GET',
+                headers: {
+                    Authorization:
+                        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW51bWFzam9hbkBnbWFpbC5jb20iLCJpYXQiOjE2OTMyNTE5NjcsImV4cCI6MTY5Mzg1Njc2N30.4B0KPdII3_uj7hlA6IeU8mzSIo458fCuiS1j8oJR49c',
+                },
+            }),
+        }),
     }),
 });
 
-export const { useSignUpMutation } = userApi;
+export const { useSignUpMutation, useGetUserByIdQuery } = userApi;
