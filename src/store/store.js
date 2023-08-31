@@ -3,11 +3,13 @@ import { userApi } from './user/UserApi';
 import userReducer from './user/UserSlice';
 import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
+import { authenticatedUserApi } from './user/authenticatedUserApi';
 
 const reducers = combineReducers({
     user: userReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
 });
 
 const persistConfig = {
@@ -20,5 +22,9 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(userApi.middleware, authApi.middleware),
+        getDefaultMiddleware().concat(
+            userApi.middleware,
+            authApi.middleware,
+            authenticatedUserApi.middleware,
+        ),
 });

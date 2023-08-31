@@ -10,7 +10,9 @@ import {
 } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
-import colors from '../../utils/desgin/Colors';
+import colors from '../../../../utils/desgin/Colors';
+import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
+import { useParams } from 'react-router';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -72,13 +74,32 @@ export function EditProfileModal({ open, onClose }) {
 }
 
 function formToComplete({ userInfo, setUserInfo }) {
-    const handleConfirmButton = (event) => {
-        if (validatePhone(userInfo.phone)) {
-            //complete with what we want to do
-            console.log('si');
+    const [updateUser] = useUpdateUserMutation();
+    const userId = useParams().userId;
+    console.log(userId);
+    const handleConfirmButton = async (event) => {
+        event.preventDefault();
+        if (
+            validatePhone(userInfo.phone) &&
+            validateName(userInfo.name) &&
+            validateLastName(userInfo.lastName)
+        ) {
+            const updatedUser = {
+                id: userId,
+                userInfo: {
+                    name: userInfo.name,
+                    lastName: userInfo.lastName,
+                    phoneNumber: userInfo.phone,
+                },
+            };
+            try {
+                await updateUser(updatedUser);
+                console.log('si');
+            } catch (error) {
+                console.log(error);
+            }
         } else {
             //complete with error message
-            event.preventDefault();
             console.log('no');
         }
     };
@@ -105,15 +126,21 @@ function formToComplete({ userInfo, setUserInfo }) {
     };
 
     const validatePhone = (phone) => {
-        const phonePattern = /^[+]*[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/;
-        if (phonePattern.test(phone) && (phone.length === 10 || phone.length === 14)) {
-            return true;
-        }
+        const phonePattern = /^[0-9]{14,}$/;
+        return phonePattern.test(phone);
+    };
+
+    const validateName = (name) => {
+        return name !== '';
+    };
+
+    const validateLastName = (lastName) => {
+        return lastName !== '';
     };
 
     return (
         <Box>
-            <form onSubmit={() => handleConfirmButton}>
+            <form onSubmit={(e) => handleConfirmButton(e)}>
                 <TextField
                     label="Email"
                     name="email"
@@ -166,7 +193,6 @@ function formToComplete({ userInfo, setUserInfo }) {
                             backgroundColor: colors.water_green,
                             '&:hover': { backgroundColor: colors.on_stand_water_green },
                         }}
-                        onClick={handleConfirmButton}
                     >
                         CONFIRM
                     </Button>
