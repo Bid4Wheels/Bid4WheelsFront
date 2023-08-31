@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const authenticatedUserApi = createApi({
-    reducerPath: 'userApi',
+    reducerPath: 'authenticatedUserApi',
     baseQuery: fetchBaseQuery({
         baseUrl: 'https://api.bid4wheels.com/user',
         prepareHeaders: (headers) => {
