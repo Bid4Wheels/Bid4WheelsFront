@@ -9,8 +9,7 @@ import {
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionCard = ({ auction }) => {
-    const AucitonCard = (auction) => { const {endDate, image, carName, tags} = auction
+const AuctionCard = ({ endDate, image, carName, tags }) => {
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(endDate, now);
     const timeDifferenceInMinutes = differenceInMinutes(endDate, now);

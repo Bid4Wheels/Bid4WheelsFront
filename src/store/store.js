@@ -1,16 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import counterReducer from './counter/counterSlice';
-import { cardApiSlice } from './apiExample';
-import { userApi } from './user/userAPI';
+import { userApi } from './user/UserApi';
 import userReducer from './user/UserSlice';
+import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
 import { authenticatedUserApi } from './user/authenticatedUserApi';
 
 const reducers = combineReducers({
-    counter: counterReducer,
     user: userReducer,
-    [cardApiSlice.reducerPath]: cardApiSlice.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
 });
 
@@ -25,8 +23,8 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(
-            cardApiSlice.middleware,
             userApi.middleware,
+            authApi.middleware,
             authenticatedUserApi.middleware,
         ),
 });

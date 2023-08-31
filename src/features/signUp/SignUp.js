@@ -10,11 +10,14 @@ import {
     Tooltip,
     Grid,
     Box,
+    CircularProgress,
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import B4W_logo from '../commons/B4W_logo.svg';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { useSignUpMutation } from '../../store/user/UserApi';
+import colors from '../../utils/desgin/Colors';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
@@ -26,8 +29,26 @@ export function SignUp() {
     const [showPassword, setShowPassword] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
-
     const navigate = useNavigate();
+    const [signUp, { isLoading }] = useSignUpMutation();
+
+    const handleSignUp = async () => {
+        const payload = {
+            name: name,
+            lastName: lastName,
+            email: email,
+            phoneNumber: phoneNumber,
+            password: password,
+        };
+
+        try {
+            await signUp(payload).unwrap();
+            console.log('Sign up successful!');
+            navigate('/login');
+        } catch (error) {
+            console.log('Sign up failed.');
+        }
+    };
 
     const handleLogin = () => {
         navigate('/login');
@@ -54,40 +75,33 @@ export function SignUp() {
     };
 
     const validatePhoneNumber = (phoneNumber) => {
-        return /^[0-9]{10}$/.test(phoneNumber);
+        return /^[0-9+]{14,}$/.test(phoneNumber);
     };
 
     const validatePassword = (password) => {
         return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
     };
 
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+                <CircularProgress />
+            </Grid>
+        );
+    }
+
     return (
-        <Grid
-            container
-            spacing={0}
-            justifyContent="center"
-            alignItems="center"
-            padding="2rem"
-            height="100vh"
-        >
-            <Grid item xs={12} md={6} className="logo">
-                <Box
-                    sx={{
-                        width: '70%',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        margin: '0 auto',
-                    }}
-                >
+        <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
+                <Box display="flex" justifyContent="center">
                     <img
                         src={B4W_logo}
                         alt="B4W logo"
-                        style={{ maxWidth: '100%', height: 'auto' }}
+                        style={{ maxWidth: '80%', height: 'auto' }}
                     />
                 </Box>
             </Grid>
-            <Grid item xs={12} md={6} className="form">
+            <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
                 <Box sx={{ width: '70%', margin: '0 auto', padding: '1rem' }}>
                     <FormControl sx={{ width: '100%' }}>
                         <TextField
@@ -205,7 +219,7 @@ export function SignUp() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         style={{
-                                            color: '#34eb93',
+                                            color: colors.water_green,
                                             textDecoration: 'none',
                                         }}
                                         onMouseEnter={(e) =>
@@ -229,15 +243,16 @@ export function SignUp() {
                             sx={{
                                 width: '60%',
                                 padding: '10px',
-                                backgroundColor: '#34eb93',
+                                backgroundColor: colors.water_green,
                                 marginRight: '20px',
                                 ':hover': {
-                                    backgroundColor: '#34eb90',
+                                    backgroundColor: colors.water_green,
                                     color: 'white',
                                 },
                             }}
                             variant="contained"
-                            disabled={isSignUpDisabled()}
+                            disabled={isSignUpDisabled() || isLoading}
+                            onClick={handleSignUp}
                         >
                             Sign Up
                         </Button>
@@ -245,12 +260,12 @@ export function SignUp() {
                             sx={{
                                 width: '40%',
                                 padding: '10px',
-                                color: '#34eb93',
-                                borderColor: '#34eb93',
+                                color: colors.water_green,
+                                borderColor: colors.water_green,
                                 ':hover': {
-                                    backgroundColor: '#34eb93',
+                                    backgroundColor: colors.water_green,
                                     color: 'white',
-                                    borderColor: '#34eb93',
+                                    borderColor: colors.water_green,
                                 },
                             }}
                             variant="outlined"
