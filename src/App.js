@@ -5,6 +5,7 @@ import { SignUp } from './features/signUp/SignUp';
 import { LogIn } from './features/logIn/logIn';
 import { ProfilePage } from './features/profilePage/components/home/ProfilePage';
 import Header from './features/commons/Header';
+import { Dashboard } from './features/dashboard/Dashboard';
 
 function App() {
     return (
@@ -12,7 +13,7 @@ function App() {
             <BrowserRouter>
                 <Header />
                 <Routes>
-                    <Route path="/" />
+                    <Route path="/" Component={Dashboard} />
                     <Route path="/signup" Component={SignUp} />
                     <Route path="/login" Component={LogIn} />
                     <Route path="/user/:userId" Component={ProfilePage} />
