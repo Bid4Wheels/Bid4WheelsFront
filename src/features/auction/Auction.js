@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Chip, Box, Toolbar, Avatar } from '@mui/material';
+import { Grid, Typography, Chip, Box, Toolbar, Avatar, Paper } from '@mui/material';
 import { useParams } from 'react-router';
 import { TechnicalInfo } from './TechnicalInfo';
+import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
-import theme from '../../utils/desgin/Theme';
+import car1 from './car1.jpeg';
+import car2 from './car2.jpeg';
+import car3 from './car3.jpeg';
+import car4 from './car4.jpeg';
+import car5 from './car5.jpg';
 
 export function Auction() {
     const id = useParams().auctionId;
@@ -11,15 +16,11 @@ export function Auction() {
     const [info, setInfo] = useState({
         title: '2018 Toyota Camry',
         tags: ['Sedan', 'Low mileage', 'Great condition', 'One owner'],
-        images: [
-            'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-            'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-            'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-            'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-        ],
+        images: [car1, car2, car3, car4, car5],
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis',
         brand: 'Toyota',
+        color: 'Black',
         fuelType: 'Gasoline',
         basePrice: 10000,
         year: 2018,
@@ -38,8 +39,6 @@ export function Auction() {
         return <div>Invalid auction id</div>;
     }
 
-    const [index, setIndex] = useState(0);
-
     return (
         <Grid
             container
@@ -48,9 +47,11 @@ export function Auction() {
                 gap: 2,
                 padding: '30px',
                 paddingTop: '10px',
+                justifyContent: 'space-between',
+                flexDirection: { xs: 'column', sm: 'row' },
             }}
         >
-            <Grid item xs={12} sm={7}>
+            <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
                         2018 Toyota Camry
@@ -59,33 +60,10 @@ export function Auction() {
                 <Box
                     sx={{
                         marginTop: '10px',
-                        height: '35%',
-                        display: 'flex',
-                        padding: '10px',
                     }}
                 >
-                    <img
-                        src={info.images[0]}
-                        alt="car"
-                        style={{
-                            objectFit: 'cover',
-                            maxWidth: '50%',
-                            borderRadius: '10px',
-                            marginRight: '10px',
-                        }}
-                    />
-                    <img
-                        src={info.images[1]}
-                        alt="car"
-                        style={{
-                            objectFit: 'cover',
-                            maxWidth: '50%',
-                            borderRadius: '10px',
-                            marginLeft: '10px',
-                        }}
-                    />
+                    <ImageCarousel images={info.images} />
                 </Box>
-
                 <Grid
                     container
                     sx={{ marginTop: 2, display: 'flex', alignItems: 'center', padding: '10px' }}
@@ -148,7 +126,15 @@ export function Auction() {
                             padding: '10px',
                         }}
                     >
-                        <Box item sx={{ display: 'flex', width: '45%' }}>
+                        <Box
+                            item
+                            sx={{
+                                display: 'flex',
+                                width: '45%',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
                             <Box>
                                 <Avatar sx={{ width: '80px', height: '80px' }}></Avatar>
                             </Box>
@@ -177,8 +163,8 @@ export function Auction() {
                                 alignItems: 'center',
                             }}
                         >
-                            <Typography fontWeight={650}>Auction ending date:&nbsp;</Typography>
-                            {info.endDate}
+                            <Typography fontWeight={650}>Auction ending date:</Typography>
+                            <Typography ml={1}>{info.endDate}</Typography>
                         </Box>
                         {window === 'info' ? (
                             <TechnicalInfo info={info} />
@@ -187,6 +173,11 @@ export function Auction() {
                         )}
                     </Grid>
                 </Grid>
+            </Grid>
+            <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
+                <Paper sx={{ padding: '20px', borderRadius: '5px', width: '100%' }}>
+                    <Typography variant="h5">Bids</Typography>
+                </Paper>
             </Grid>
         </Grid>
     );
