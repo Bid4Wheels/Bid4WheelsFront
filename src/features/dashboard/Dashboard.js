@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Box, Button } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import CloseIcon from '@mui/icons-material/Close';
+import { Filter } from '../filter/Filter';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
@@ -73,7 +74,7 @@ export function Dashboard() {
                     </Button>
                 </Box>
             </Box>
-            {isFilterOpen && <Box style={{ marginTop: '10px' }}>Filter Elements</Box>}
+            {isFilterOpen && <Filter />}
         </Box>
     );
 }
