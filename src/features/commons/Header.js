@@ -37,7 +37,8 @@ const Header = () => {
     if (
         location.pathname === '/login' ||
         location.pathname === '/signup' ||
-        location.pathname === '/validateIdentity'
+        location.pathname === '/validateIdentity' ||
+        location.pathname === '/changePassword'
     ) {
         return null;
     }
