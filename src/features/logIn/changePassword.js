@@ -148,7 +148,7 @@ function ChangePassword() {
                         variant="contained"
                         type="submit"
                         sx={{
-                            width: '130px',
+                            width: '100px',
                             height: '40px',
                             backgroundColor: colors.water_green,
                             '&:hover': { backgroundColor: colors.on_stand_water_green },
