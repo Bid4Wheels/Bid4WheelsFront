@@ -16,6 +16,7 @@ const theme = createTheme({
         XxLarge: { fontSize: '50px' },
         XLarge: { fontSize: '40px' },
         Medium: { fontSize: '24px' },
+        SemiSmall: { fontSize: '20px' },
         Small: { fontSize: '16px' },
         Xsmall: { fontSize: '14px' },
     },
