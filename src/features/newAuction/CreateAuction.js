@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -9,6 +9,8 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
+    Fab,
+    Chip,
 } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import image from '../commons/new_auction.png';
@@ -23,12 +25,70 @@ const fuelTypeOptions = ['Gasoline', 'Diesel', 'Electric'];
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('2');
     const [selectedGear, setSelectedGear] = useState('');
+    const [tags, setTags] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [brandValue, setBrandValue] = useState('');
+    const [colorValue, setColorValue] = useState('');
+    const [fuelTypeValue, setFuelTypeValue] = useState('');
+    const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true);
+    const [modelValue, setModeValue] = useState('');
+    const [startingPrice, setStartingPrice] = useState('');
+    const [years, setYears] = useState('');
+    const [mileage, setMileage] = useState('');
+
     const handleDoorsChange = (event) => {
         setSelectedDoors(event.target.value);
     };
     const handleGearChange = (event) => {
         setSelectedGear(event.target.value);
     };
+    useEffect(() => {
+        setIsNextButtonDisabled(
+            !brandValue ||
+                !colorValue ||
+                !fuelTypeValue ||
+                !selectedDoors ||
+                !selectedGear ||
+                !modelValue ||
+                !startingPrice ||
+                !years ||
+                !mileage,
+        );
+        console.log(
+            brandValue,
+            colorValue,
+            fuelTypeValue,
+            selectedDoors,
+            selectedGear,
+            startingPrice,
+            modelValue,
+            years,
+            mileage,
+        );
+    }, [
+        brandValue,
+        colorValue,
+        fuelTypeValue,
+        selectedDoors,
+        selectedGear,
+        startingPrice,
+        modelValue,
+        years,
+        mileage,
+    ]);
+
+    const addTag = () => {
+        if (inputValue.trim() === '') return;
+
+        setTags([...tags, inputValue]);
+        setInputValue('');
+    };
+
+    const removeTag = (tagToRemove) => {
+        const updatedTags = tags.filter((tag) => tag !== tagToRemove);
+        setTags(updatedTags);
+    };
+
     return (
         <Box>
             <Typography
@@ -105,13 +165,15 @@ const CreateAuction = () => {
                         marginTop: '60px',
                         marginLeft: '80px',
                         flexWrap: 'wrap',
+                        width: '100%',
                     }}
                 >
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
-                            flex: 1,
+                            flexWrap: 'wrap-reverse',
+                            width: '50%',
                         }}
                     >
                         <Box
@@ -123,27 +185,42 @@ const CreateAuction = () => {
                         >
                             <Autocomplete
                                 disablePortal
-                                id="combo-box-demo"
+                                id="brand-autocomplete"
                                 options={brandOptions}
                                 sx={{ width: 275 }}
                                 renderInput={(params) => <TextField {...params} label="Brand" />}
+                                value={brandValue}
+                                onChange={(event, newValue) => {
+                                    setBrandValue(newValue);
+                                }}
                             />
+
                             <Autocomplete
                                 disablePortal
-                                id="combo-box-demo"
+                                id="color-autocomplete"
                                 options={colorOptions}
                                 sx={{ width: 275, marginTop: '60px' }}
                                 renderInput={(params) => <TextField {...params} label="Color" />}
+                                value={colorValue}
+                                onChange={(event, newValue) => {
+                                    setColorValue(newValue);
+                                }}
                             />
+
                             <Autocomplete
                                 disablePortal
-                                id="combo-box-demo"
+                                id="fuel-type-autocomplete"
                                 options={fuelTypeOptions}
                                 sx={{ width: 275, marginTop: '60px' }}
                                 renderInput={(params) => (
                                     <TextField {...params} label="Fuel Type" />
                                 )}
+                                value={fuelTypeValue}
+                                onChange={(event, newValue) => {
+                                    setFuelTypeValue(newValue);
+                                }}
                             />
+
                             <FormControl sx={{ marginTop: '50px' }}>
                                 <FormLabel
                                     id="demo-row-radio-buttons-group-label"
@@ -272,6 +349,7 @@ const CreateAuction = () => {
                                 label="Model"
                                 sx={{ width: 300, height: '100%', marginTop: '10px' }}
                                 variant="standard"
+                                onChange={(e) => setModeValue(e.target.value)}
                             />
                             <TextField
                                 label="Starting price"
@@ -283,26 +361,90 @@ const CreateAuction = () => {
                                 variant="standard"
                                 defaultValue="Starting price"
                                 type="number"
+                                onChange={(e) => setStartingPrice(e.target.value)}
                             />
                             <TextField
                                 label="Years"
                                 sx={{ width: 300, marginTop: '69px', height: '100%' }}
                                 variant="standard"
                                 type="number"
+                                onChange={(e) => setYears(e.target.value)}
                             />
                             <TextField
                                 label="Mileage"
                                 sx={{ width: 300, marginTop: '60px', height: '100%' }}
                                 variant="standard"
                                 type="number"
+                                onChange={(e) => setMileage(e.target.value)}
                             />
                         </Box>
-                        <img
-                            src={image} // Replace with your image source
-                            alt="Auction Image"
-                            style={{ width: '451px', height: '377px', marginLeft: '80px' }}
-                        />
                     </Box>
+
+                    <img
+                        src={image}
+                        alt="Auction Image"
+                        style={{
+                            width: '25%',
+                            height: '50%',
+                            marginLeft: '100px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            maxWidth: '100%',
+                        }}
+                    />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            width: '50%', // Adjust the width as needed
+                            marginBottom: '200px',
+                        }}
+                    >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <TextField
+                                label="New Tag"
+                                sx={{ width: '85%' }}
+                                variant="standard"
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
+                            <Fab
+                                onClick={addTag}
+                                size="small"
+                                sx={{
+                                    alignSelf: 'flex-start',
+                                    marginTop: '10px',
+                                    marginLeft: '30px',
+                                }}
+                            >
+                                +
+                            </Fab>
+                        </Box>
+                        <Box sx={{ marginTop: '10px' }}>
+                            {tags.map((tag, index) => (
+                                <Chip
+                                    key={index}
+                                    label={tag}
+                                    onDelete={() => removeTag(tag)}
+                                    deleteIcon={'x'}
+                                    sx={{ margin: '2px' }}
+                                />
+                            ))}
+                        </Box>
+                    </Box>
+                </Box>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                        marginTop: '40px',
+                        width: '50px',
+                    }}
+                >
+                    <Button variant="contained" color="primary" disabled={isNextButtonDisabled}>
+                        Next
+                    </Button>
                 </Box>
             </form>
         </Box>
