@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Typography, Chip, Box, Toolbar, Avatar, Paper } from '@mui/material';
 import { useParams } from 'react-router';
+import {
+    differenceInHours,
+    differenceInDays,
+    differenceInMinutes,
+    differenceInSeconds,
+} from 'date-fns';
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
@@ -27,13 +33,33 @@ export function Auction() {
         mileage: 10000,
         doors: 4,
         gearShift: 'Automatic',
-        endDate: '2021-10-10',
+        endDate: new Date('2023-09-07T22:30:00'),
     });
     const [user, setUser] = useState({
         name: 'John Doe',
         avatar: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         rating: 4.5,
     });
+
+    const now = new Date();
+    const timeDifferenceInHours = differenceInHours(info.endDate, now);
+    const timeDifferenceInMinutes = differenceInMinutes(info.endDate, now);
+    const timeDifferenceInSeconds = differenceInSeconds(info.endDate, now);
+    const timeDifferenceInDays = differenceInDays(info.endDate, now);
+
+    let color = colors.green;
+
+    if (timeDifferenceInDays < 0) {
+        // Subasta ya terminada (Gris)
+        color = colors.grey;
+    } else if (timeDifferenceInDays < 1) {
+        // Menos de un día (Amarillo)
+        color = colors.yellow;
+        if (timeDifferenceInHours < 1) {
+            // Menos de una hora (Rojo)
+            color = colors.red;
+        }
+    }
 
     if (!id) {
         return <div>Invalid auction id</div>;
@@ -57,16 +83,37 @@ export function Auction() {
                         2018 Toyota Camry
                     </Typography>
                 </Box>
+
                 <Box
+                    item
                     sx={{
                         marginTop: '10px',
                     }}
                 >
                     <ImageCarousel images={info.images} />
                 </Box>
+                <Box
+                    sx={{
+                        backgroundColor: color,
+                        borderRadius: '5px',
+                        padding: '6px 15px',
+                        width: '95%',
+                    }}
+                >
+                    <Typography sx={{ fontWeight: 400, fontSize: '18px' }}>
+                        Time Left: {timeDifferenceInHours}:
+                        {timeDifferenceInMinutes < 10
+                            ? `0${timeDifferenceInMinutes}`
+                            : `${timeDifferenceInMinutes % 60}`}
+                        :
+                        {timeDifferenceInSeconds < 10
+                            ? `0${timeDifferenceInSeconds % 60}`
+                            : `${timeDifferenceInSeconds % 60}`}
+                    </Typography>
+                </Box>
                 <Grid
                     container
-                    sx={{ marginTop: 2, display: 'flex', alignItems: 'center', padding: '10px' }}
+                    sx={{ marginTop: 1, display: 'flex', alignItems: 'center', padding: '10px' }}
                     spacing={1}
                 >
                     <Typography variant="h5">Tags:</Typography>
@@ -75,7 +122,11 @@ export function Auction() {
                             <Chip
                                 label={tag}
                                 size="medium"
-                                sx={{ backgroundColor: colors.water_green, color: 'white' }}
+                                sx={{
+                                    backgroundColor: colors.water_green,
+                                    color: 'white',
+                                    fontSize: '15px',
+                                }}
                             />
                         </Grid>
                     ))}
@@ -117,57 +168,9 @@ export function Auction() {
                             Questions & Comments
                         </Typography>
                     </Toolbar>
-                    <Grid
-                        container
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: '10px',
-                        }}
-                    >
-                        <Box
-                            item
-                            sx={{
-                                display: 'flex',
-                                width: '45%',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Box>
-                                <Avatar sx={{ width: '80px', height: '80px' }}></Avatar>
-                            </Box>
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'center',
-                                    padding: '10px',
-                                    gap: '8px',
-                                    ml: '10px',
-                                }}
-                            >
-                                <Typography fontSize={'22px'} fontWeight={650}>
-                                    {user.name}
-                                </Typography>
-                                <Typography>User Rating: {user.rating}</Typography>
-                            </Box>
-                        </Box>
-                        <Box
-                            item
-                            sx={{
-                                width: '45%',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Typography fontWeight={650}>Auction ending date:</Typography>
-                            <Typography ml={1}>{info.endDate}</Typography>
-                        </Box>
+                    <Grid container>
                         {window === 'info' ? (
-                            <TechnicalInfo info={info} />
+                            <TechnicalInfo info={info} user={user} />
                         ) : (
                             <Typography>Questions & Comments</Typography>
                         )}
