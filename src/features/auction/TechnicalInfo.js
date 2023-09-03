@@ -4,7 +4,14 @@ import { Grid, Typography, Box, Avatar } from '@mui/material';
 export function TechnicalInfo({ info, user }) {
     return (
         <Grid container>
-            <Grid item sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Grid
+                container
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center',
+                }}
+            >
                 <Box
                     item
                     sx={{
