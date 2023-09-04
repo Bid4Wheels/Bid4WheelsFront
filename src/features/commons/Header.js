@@ -10,7 +10,7 @@ const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const user = useSelector((state) => state.user);
-    const userId = user.id;
+    const userId = user.userId;
     //const token = user.token;
 
     const handleLogoClick = () => {
