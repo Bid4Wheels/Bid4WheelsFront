@@ -1,16 +1,15 @@
 import React from 'react';
 import { AuthenticatedUser } from './AuthenticatedUser';
 import Header from './Header';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
-export const PrivateRoute = ({ path, Component }) => {
+export const PrivateRoute = ({ Component }) => {
     const loggedIn = AuthenticatedUser();
+    if (!Component) return loggedIn ? <Header /> : <Navigate to="/login" replace />;
     return loggedIn ? (
         <>
             <Header />
-            <Routes>
-                <Route path={path} Component={Component} />
-            </Routes>
+            <Component />
         </>
     ) : (
         <Navigate to="/login" replace />
