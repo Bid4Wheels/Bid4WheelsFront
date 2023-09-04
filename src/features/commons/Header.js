@@ -9,9 +9,8 @@ import colors from '../../utils/desgin/Colors';
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userId = '1';
-    //const user = useSelector((state) => state.user);
-    //const userId = user.id;
+    const user = useSelector((state) => state.user);
+    const userId = user.userId;
     //const token = user.token;
 
     const handleLogoClick = () => {
