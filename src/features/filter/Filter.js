@@ -180,6 +180,16 @@ function customAutocomplete(opts, label, setConstant) {
 }
 
 function customMinMaxField(fieldName, min, max, setMin, setMax) {
+    const handleMinChange = (event) => {
+        const value = event.target.value.replace(/\D/g, '');
+        setMin(value);
+    };
+
+    const handleMaxChange = (event) => {
+        const value = event.target.value.replace(/\D/g, '');
+        setMax(value);
+    };
+
     return (
         <Grid
             container
@@ -200,23 +210,23 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
                     <TextField
                         label="Min"
                         variant="standard"
-                        inputProps={{ maxLength: 10 }}
+                        inputProps={{ maxLength: 10, type: 'text', style: { textAlign: 'center' } }}
                         fullWidth
                         color="water_green"
                         style={{ marginRight: '8px' }}
                         value={min}
-                        onChange={(event) => setMin(event.target.value)}
+                        onChange={handleMinChange}
                     />
                     <span>-</span>
                     <TextField
                         label="Max"
                         variant="standard"
-                        inputProps={{ maxLength: 10 }}
+                        inputProps={{ maxLength: 10, type: 'text', style: { textAlign: 'center' } }}
                         fullWidth
                         color="water_green"
                         style={{ marginLeft: '8px' }}
                         value={max}
-                        onChange={(event) => setMax(event.target.value)}
+                        onChange={handleMaxChange}
                     />
                 </Box>
             </Grid>
