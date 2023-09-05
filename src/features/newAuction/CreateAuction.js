@@ -187,7 +187,18 @@ const CreateAuction = () => {
                                 disablePortal
                                 id="brand-autocomplete"
                                 options={brandOptions}
-                                sx={{ width: 275 }}
+                                sx={{
+                                    width: 275,
+                                    '&.Mui-focused .MuiInputLabel-outlined': {
+                                        color: colors.water_green,
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                }}
                                 renderInput={(params) => <TextField {...params} label="Brand" />}
                                 value={brandValue}
                                 onChange={(event, newValue) => {
@@ -200,7 +211,19 @@ const CreateAuction = () => {
                                 disablePortal
                                 id="color-autocomplete"
                                 options={colorOptions}
-                                sx={{ width: 275, marginTop: '60px' }}
+                                sx={{
+                                    width: 275,
+                                    marginTop: '60px',
+                                    '&.Mui-focused .MuiInputLabel-outlined': {
+                                        color: colors.water_green,
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                }}
                                 renderInput={(params) => <TextField {...params} label="Color" />}
                                 value={colorValue}
                                 onChange={(event, newValue) => {
@@ -213,7 +236,19 @@ const CreateAuction = () => {
                                 disablePortal
                                 id="fuel-type-autocomplete"
                                 options={fuelTypeOptions}
-                                sx={{ width: 275, marginTop: '60px' }}
+                                sx={{
+                                    width: 275,
+                                    marginTop: '60px',
+                                    '&.Mui-focused .MuiInputLabel-outlined': {
+                                        color: colors.water_green,
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: colors.water_green,
+                                    },
+                                }}
                                 renderInput={(params) => (
                                     <TextField {...params} label="Fuel Type" />
                                 )}
