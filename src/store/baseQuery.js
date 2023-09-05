@@ -1,6 +1,4 @@
-import React from 'react';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query';
-import { useSelector } from 'react-redux';
 
 export const createBaseQuery = (baseUrl) => {
     return fetchBaseQuery({
