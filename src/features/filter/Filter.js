@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     Autocomplete,
     Box,
@@ -12,38 +12,25 @@ import {
 } from '@mui/material';
 import { CheckBox } from '@mui/icons-material';
 import colors from '../../utils/desgin/Colors';
+import { BRANDS, COLORS, FUEL_TYPES, CAR_DOORS, GEAR_SHIFT_TYPES } from '../../utils/constants';
 
 export function Filter() {
     return (
-        <Grid container sx={{ border: '1px solid #ccc', padding: '20px', gap: '20px' }}>
+        <Grid
+            container
+            sx={{
+                border: '1px solid',
+                borderRadius: '5px',
+                borderColor: colors.water_green,
+                padding: '20px',
+                gap: '20px',
+                marginTop: '10px',
+            }}
+        >
             <Grid item sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-demo-brand"
-                    sx={{
-                        width: 300,
-                        '& .MuiInputBase-input:focus': { borderColor: 'aquamarine' },
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Brand" />}
-                />
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-demo-color"
-                    sx={{
-                        width: 300,
-                        '& .MuiInputBase-input:focus': { borderColor: 'aquamarine' },
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Color" />}
-                />
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-demo-fuel"
-                    sx={{
-                        width: 300,
-                        '& .MuiInputBase-input:focus': { borderColor: 'aquamarine' },
-                    }}
-                    renderInput={(params) => <TextField {...params} label="Fuel Type" />}
-                />
+                {customAutocomplete(BRANDS, 'Brand')}
+                {customAutocomplete(COLORS, 'Color')}
+                {customAutocomplete(FUEL_TYPES, 'Fuel Type')}
             </Grid>
             <Grid
                 item
@@ -55,83 +42,26 @@ export function Filter() {
                     textAlign: 'center',
                 }}
             >
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                        <Box display="flex" alignItems="center">
-                            <span>Price</span>
-                            <TextField
-                                label="Min"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                marginLeft="8px"
-                                style={{ marginRight: '8px' }}
-                            />
-                            <span>-</span>
-                            <TextField
-                                label="Max"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                style={{ marginLeft: '8px' }}
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                        <Box display="flex" alignItems="center">
-                            <span>Years</span>
-                            <TextField
-                                label="Min"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                marginLeft="8px"
-                                style={{ marginRight: '8px' }}
-                            />
-                            <span>-</span>
-                            <TextField
-                                label="Max"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                style={{ marginLeft: '8px' }}
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid item>
-                        <Box display="flex" alignItems="center">
-                            <span>Mileage</span>
-                            <TextField
-                                label="Min"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                marginLeft="8px"
-                                style={{ marginRight: '8px' }}
-                            />
-                            <span>-</span>
-                            <TextField
-                                label="Max"
-                                variant="standard"
-                                inputProps={{ maxLength: 10 }}
-                                fullWidth
-                                style={{ marginLeft: '8px' }}
-                            />
-                        </Box>
-                    </Grid>
-                </Grid>
-                <TextField label="Model" variant="standard" />
-                <Button
-                    variant="contained"
-                    maxWidth="25%"
-                    sx={{ backgroundColor: colors.water_green }}
-                >
-                    Apply
-                </Button>
+                {customMinMaxField('Price')}
+                {customMinMaxField('Years')}
+                {customMinMaxField('Mileage')}
+                <TextField
+                    label="Model"
+                    variant="standard"
+                    sx={{ width: '95%', maxWidth: '400px', height: '56px' }}
+                />
+                <Box justifyContent="center">
+                    <Button
+                        variant="contained"
+                        sx={{
+                            backgroundColor: colors.water_green,
+                            maxWidth: '100px',
+                            width: '50%',
+                        }}
+                    >
+                        Apply
+                    </Button>
+                </Box>
             </Grid>
             <Grid
                 item
@@ -140,37 +70,119 @@ export function Filter() {
                     display: 'flex',
                     flexDirection: 'column',
                     gap: '20px',
-                    alignItems: 'center',
+                    paddingLeft: '20px',
                 }}
             >
                 <Autocomplete
                     multiple
+                    freeSolo
+                    sx={{ width: '95%', maxWidth: '400px', height: '56px' }}
                     id="tags-standard"
                     options={top100Films.map((option) => option.title)}
-                    defaultValue={[top100Films[13].title]}
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
-                            // eslint-disable-next-line react/jsx-key
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                            <Chip
+                                variant="outlined"
+                                label={option}
+                                key={index}
+                                {...getTagProps({ index })}
+                            />
                         ))
                     }
                     renderInput={(params) => (
                         <TextField {...params} variant="standard" label="Tags" placeholder="Tag" />
                     )}
                 />
-                <Typography fontWeight="bold">Car Doors</Typography>
-                <FormGroup sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                    <FormControlLabel control={<CheckBox />} label="2" />
-                    <FormControlLabel control={<CheckBox />} label="3" />
-                    <FormControlLabel control={<CheckBox />} label="4" />
-                    <FormControlLabel control={<CheckBox />} label="5" />
-                </FormGroup>
-                <Typography fontWeight="bold">Gear Shift Type</Typography>
-                <FormGroup sx={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-                    <FormControlLabel control={<CheckBox />} label="Manual" />
-                    <FormControlLabel control={<CheckBox />} label="Automatic" />
-                </FormGroup>
+                {customCheckBoxMapping('Car Doors', CAR_DOORS)}
+                {customCheckBoxMapping('Gear Shift Type', GEAR_SHIFT_TYPES)}
             </Grid>
+        </Grid>
+    );
+}
+
+function customAutocomplete(opts, label) {
+    return (
+        <Autocomplete
+            disablePortal
+            id="combo-box-demo-brand"
+            options={opts}
+            sx={{
+                width: '95%',
+                height: '56px',
+            }}
+            renderInput={(params) => <TextField {...params} label={label} />}
+        />
+    );
+}
+
+function customMinMaxField(fieldName) {
+    return (
+        <Grid
+            container
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyItems: 'center',
+                alignItems: 'baseline',
+                width: '95%',
+                height: '56px',
+            }}
+        >
+            <Grid item xs={4}>
+                <Typography>{fieldName}</Typography>
+            </Grid>
+            <Grid item xs={8}>
+                <Box display="flex" alignItems="center">
+                    <TextField
+                        label="Min"
+                        variant="standard"
+                        inputProps={{ maxLength: 10 }}
+                        fullWidth
+                        style={{ marginRight: '8px' }}
+                    />
+                    <span>-</span>
+                    <TextField
+                        label="Max"
+                        variant="standard"
+                        inputProps={{ maxLength: 10 }}
+                        fullWidth
+                        style={{ marginLeft: '8px' }}
+                    />
+                </Box>
+            </Grid>
+        </Grid>
+    );
+}
+
+function customCheckBoxMapping(title, opts) {
+    return (
+        <Grid
+            container
+            sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: '95%',
+                height: '56px',
+                justifyContent: 'center',
+            }}
+        >
+            <Typography fontWeight="bold">{title}</Typography>
+            <FormGroup
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    gap: '15px',
+                }}
+            >
+                {opts.map((opt) => (
+                    <FormControlLabel
+                        control={<CheckBox color={colors.water_green} />}
+                        key={opt}
+                        label={opt}
+                    />
+                ))}
+            </FormGroup>
         </Grid>
     );
 }
