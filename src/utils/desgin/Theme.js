@@ -1,4 +1,6 @@
+import colors from './Colors';
 import { createTheme } from '@mui/material/styles';
+
 const theme = createTheme({
     typography: {
         fontFamily: [
@@ -20,5 +22,14 @@ const theme = createTheme({
         Small: { fontSize: '16px' },
         Xsmall: { fontSize: '14px' },
     },
+    palette: {
+        water_green: {
+            main: colors.water_green,
+            light: colors.water_green,
+            dark: colors.water_green,
+            contrastText: '#FFFFFF',
+        },
+    },
 });
+
 export default theme;

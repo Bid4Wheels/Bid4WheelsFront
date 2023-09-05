@@ -16,6 +16,7 @@ import colors from '../../utils/desgin/Colors';
 import image from '../commons/new_auction.png';
 
 import Autocomplete from '@mui/material/Autocomplete';
+import { useNavigate } from 'react-router-dom';
 
 // Sample data sources
 const brandOptions = ['Brand 1', 'Brand 2', 'Brand 3'];
@@ -31,10 +32,16 @@ const CreateAuction = () => {
     const [colorValue, setColorValue] = useState('');
     const [fuelTypeValue, setFuelTypeValue] = useState('');
     const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true);
-    const [modelValue, setModeValue] = useState('');
+    const [modelValue, setModelValue] = useState('');
     const [startingPrice, setStartingPrice] = useState('');
     const [years, setYears] = useState('');
     const [mileage, setMileage] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleCancelClick = () => {
+        navigate('/user');
+    };
 
     const handleDoorsChange = (event) => {
         setSelectedDoors(event.target.value);
@@ -54,17 +61,6 @@ const CreateAuction = () => {
                 !years ||
                 !mileage,
         );
-        console.log(
-            brandValue,
-            colorValue,
-            fuelTypeValue,
-            selectedDoors,
-            selectedGear,
-            startingPrice,
-            modelValue,
-            years,
-            mileage,
-        );
     }, [
         brandValue,
         colorValue,
@@ -79,7 +75,6 @@ const CreateAuction = () => {
 
     const addTag = () => {
         if (inputValue.trim() === '') return;
-
         setTags([...tags, inputValue]);
         setInputValue('');
     };
@@ -152,7 +147,12 @@ const CreateAuction = () => {
                         marginRight: '20px',
                     }}
                 >
-                    <Button variant="text" sx={{ color: colors.water_green }}>
+                    <Button
+                        variant="text"
+                        sx={{ color: colors.water_green }}
+                        onClick={handleCancelClick}
+                        color="water_green"
+                    >
                         <Typography variant="SemiSmall">X Cancel</Typography>
                     </Button>
                 </Box>
@@ -161,7 +161,8 @@ const CreateAuction = () => {
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
                         marginTop: '60px',
                         marginLeft: '80px',
                         flexWrap: 'wrap',
@@ -172,7 +173,6 @@ const CreateAuction = () => {
                         sx={{
                             display: 'flex',
                             flexDirection: 'row',
-                            flexWrap: 'wrap-reverse',
                             width: '50%',
                         }}
                     >
@@ -193,6 +193,7 @@ const CreateAuction = () => {
                                 onChange={(event, newValue) => {
                                     setBrandValue(newValue);
                                 }}
+                                color="water_green"
                             />
 
                             <Autocomplete
@@ -205,6 +206,7 @@ const CreateAuction = () => {
                                 onChange={(event, newValue) => {
                                     setColorValue(newValue);
                                 }}
+                                color="water_green"
                             />
 
                             <Autocomplete
@@ -219,12 +221,14 @@ const CreateAuction = () => {
                                 onChange={(event, newValue) => {
                                     setFuelTypeValue(newValue);
                                 }}
+                                color="water_green"
                             />
 
                             <FormControl sx={{ marginTop: '50px' }}>
                                 <FormLabel
                                     id="demo-row-radio-buttons-group-label"
                                     sx={{ color: 'inherit', fontWeight: 'bold' }}
+                                    color="water_green"
                                 >
                                     Car doors
                                 </FormLabel>
@@ -298,6 +302,7 @@ const CreateAuction = () => {
                                 <FormLabel
                                     id="demo-row-radio-buttons-group-label"
                                     sx={{ color: 'inherit', fontWeight: 'bold' }}
+                                    color="water_green"
                                 >
                                     Gear shift type
                                 </FormLabel>
@@ -342,71 +347,73 @@ const CreateAuction = () => {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                marginBottom: '285px',
                             }}
                         >
                             <TextField
                                 label="Model"
-                                sx={{ width: 300, height: '100%', marginTop: '10px' }}
+                                sx={{ width: 300, marginTop: '10px' }}
                                 variant="standard"
-                                onChange={(e) => setModeValue(e.target.value)}
+                                onChange={(e) => setModelValue(e.target.value)}
+                                color="water_green"
                             />
                             <TextField
                                 label="Starting price"
                                 sx={{
                                     width: 300,
                                     marginTop: '69px',
-                                    height: '100%',
                                 }}
                                 variant="standard"
                                 defaultValue="Starting price"
                                 type="number"
                                 onChange={(e) => setStartingPrice(e.target.value)}
+                                color="water_green"
                             />
                             <TextField
                                 label="Years"
-                                sx={{ width: 300, marginTop: '69px', height: '100%' }}
+                                sx={{ width: 300, marginTop: '69px' }}
                                 variant="standard"
                                 type="number"
                                 onChange={(e) => setYears(e.target.value)}
+                                color="water_green"
                             />
                             <TextField
                                 label="Mileage"
-                                sx={{ width: 300, marginTop: '60px', height: '100%' }}
+                                sx={{ width: 300, marginTop: '69px' }}
                                 variant="standard"
                                 type="number"
                                 onChange={(e) => setMileage(e.target.value)}
+                                color="water_green"
                             />
                         </Box>
                     </Box>
-
-                    <img
-                        src={image}
-                        alt="Auction Image"
-                        style={{
-                            width: '25%',
-                            height: '50%',
-                            marginLeft: '100px',
+                    <Box
+                        sx={{
                             display: 'flex',
+                            flexDirection: 'row',
+                            width: '50%',
+                            height: '625px',
+                            alignContent: 'center',
                             justifyContent: 'center',
-                            maxWidth: '100%',
                         }}
-                    />
+                    >
+                        <img src={image} alt="Auction Image" width={451} height={377} />
+                    </Box>
                     <Box
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            width: '50%', // Adjust the width as needed
-                            marginBottom: '200px',
+                            width: '50%',
+                            marginBottom: '60px',
                         }}
                     >
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Box style={{ display: 'flex', alignItems: 'center' }}>
                             <TextField
                                 label="New Tag"
                                 sx={{ width: '85%' }}
                                 variant="standard"
                                 value={inputValue}
                                 onChange={(e) => setInputValue(e.target.value)}
+                                color="water_green"
                             />
                             <Fab
                                 onClick={addTag}
@@ -416,6 +423,7 @@ const CreateAuction = () => {
                                     marginTop: '10px',
                                     marginLeft: '30px',
                                 }}
+                                color="water_green"
                             >
                                 +
                             </Fab>
@@ -428,6 +436,7 @@ const CreateAuction = () => {
                                     onDelete={() => removeTag(tag)}
                                     deleteIcon={'x'}
                                     sx={{ margin: '2px' }}
+                                    color="water_green"
                                 />
                             ))}
                         </Box>
@@ -437,12 +446,16 @@ const CreateAuction = () => {
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
-                        flexDirection: 'column',
-                        marginTop: '40px',
-                        width: '50px',
+                        alignItems: 'center',
+                        marginBottom: '20px',
                     }}
                 >
-                    <Button variant="contained" color="primary" disabled={isNextButtonDisabled}>
+                    <Button
+                        variant="contained"
+                        disabled={isNextButtonDisabled}
+                        sx={{ paddingX: '50px', paddingY: '20px', color: 'white' }}
+                        color="water_green"
+                    >
                         Next
                     </Button>
                 </Box>
