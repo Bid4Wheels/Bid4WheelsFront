@@ -163,7 +163,7 @@ const CreateAuction = () => {
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginTop: '60px',
+                        marginTop: '50px',
                         marginLeft: '80px',
                         flexWrap: 'wrap',
                         width: '100%',
@@ -382,42 +382,61 @@ const CreateAuction = () => {
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
+                                gap: '30px',
                             }}
                         >
                             <TextField
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
                                 label="Model"
                                 sx={{ width: 300, marginTop: '10px' }}
                                 variant="standard"
                                 onChange={(e) => setModelValue(e.target.value)}
                                 color="water_green"
+                                placeholder="Model"
                             />
                             <TextField
                                 label="Starting price"
                                 sx={{
                                     width: 300,
-                                    marginTop: '69px',
                                 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                placeholder="Starting price"
                                 variant="standard"
-                                defaultValue="Starting price"
                                 type="number"
                                 onChange={(e) => setStartingPrice(e.target.value)}
                                 color="water_green"
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             />
                             <TextField
                                 label="Years"
-                                sx={{ width: 300, marginTop: '69px' }}
-                                variant="standard"
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                placeholder="Years"
                                 type="number"
+                                sx={{ width: 300 }}
+                                variant="standard"
                                 onChange={(e) => setYears(e.target.value)}
                                 color="water_green"
+                                defaultValue="Years"
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             />
                             <TextField
                                 label="Mileage"
-                                sx={{ width: 300, marginTop: '69px' }}
+                                sx={{ width: 300 }}
+                                InputLabelProps={{
+                                    shrink: true,
+                                }}
+                                placeholder="Mileage"
                                 variant="standard"
                                 type="number"
                                 onChange={(e) => setMileage(e.target.value)}
                                 color="water_green"
+                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
                             />
                         </Box>
                     </Box>
