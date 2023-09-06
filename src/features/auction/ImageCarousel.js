@@ -26,7 +26,8 @@ export function ImageCarousel({ images }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '50%',
+                    height: '260px',
+                    width: '23vw',
                     padding: '20px',
                     margin: 'auto',
                 }}
