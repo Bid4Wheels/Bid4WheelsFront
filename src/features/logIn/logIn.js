@@ -121,7 +121,7 @@ export function LogIn() {
                         marginBottom="12px"
                     >
                         <Link
-                            href="#"
+                            to={'/validateIdentity'}
                             variant="body2"
                             className="hover-underline"
                             style={{
