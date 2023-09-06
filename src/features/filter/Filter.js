@@ -12,7 +12,13 @@ import {
     Typography,
 } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
-import { BRANDS, COLORS, FUEL_TYPES, CAR_DOORS, GEAR_SHIFT_TYPES } from '../../utils/constants';
+import {
+    BRANDS,
+    COLORS,
+    FUEL_TYPES,
+    CAR_DOORS,
+    GEAR_SHIFT_TYPES,
+} from '../../utils/mocks/constants';
 
 export function Filter() {
     const [selectedCarDoors, setSelectedCarDoors] = useState([]);
