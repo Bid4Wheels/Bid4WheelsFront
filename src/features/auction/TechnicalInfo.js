@@ -75,6 +75,7 @@ export function TechnicalInfo({ info, user }) {
                     mt: '15px',
                     p: '20px',
                     borderRadius: '5px',
+                    width: '100%',
                 }}
             >
                 <Typography sx={{ fontWeight: 650, fontSize: '20px' }}>

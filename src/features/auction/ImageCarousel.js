@@ -3,17 +3,16 @@ import { Box, IconButton } from '@mui/material';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import colors from '../../utils/desgin/Colors';
-import SwipeableViews from 'react-swipeable-views-react-18-fix';
 
 export function ImageCarousel({ images }) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     const handlePrevClick = () => {
-        setCurrentIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+        setCurrentIndex((prevIndex) => Math.max(prevIndex - 2, 0));
     };
 
     const handleNextClick = () => {
-        setCurrentIndex((prevIndex) => Math.min(prevIndex + 1, images.length / 2 - 1));
+        setCurrentIndex((prevIndex) => Math.min(prevIndex + 2, images.length - 2));
     };
 
     if (!images || images.length === 0) {
@@ -28,6 +27,8 @@ export function ImageCarousel({ images }) {
                     alignItems: 'center',
                     justifyContent: 'center',
                     width: '50%',
+                    padding: '20px',
+                    margin: 'auto',
                 }}
             >
                 <img
@@ -44,6 +45,7 @@ export function ImageCarousel({ images }) {
             </Box>
         );
     }
+
     return (
         <Box
             sx={{
@@ -65,36 +67,35 @@ export function ImageCarousel({ images }) {
             >
                 <NavigateBeforeIcon />
             </IconButton>
-            <SwipeableViews
-                index={currentIndex}
-                onChangeIndex={setCurrentIndex}
-                slideCount={images.length / 2}
-                slideStyle={{ width: '50%' }}
-            >
-                {images.map((image, index) => (
+
+            <div style={{ display: 'flex' }}>
+                {images.slice(currentIndex, currentIndex + 2).map((image, index) => (
                     <div
                         key={index}
                         style={{
                             padding: '10px',
+                            width: '50%',
                         }}
                     >
                         <img
                             src={image}
-                            alt={`Image ${index}`}
+                            alt={`Image ${currentIndex + index}`}
                             style={{
                                 width: '100%',
                                 height: '100%',
                                 maxHeight: '100%',
+                                maxWidth: '100%',
                                 borderRadius: '5px',
                                 objectFit: 'cover',
                             }}
                         />
                     </div>
                 ))}
-            </SwipeableViews>
+            </div>
+
             <IconButton
                 onClick={handleNextClick}
-                disabled={currentIndex >= images.length / 2 - 1}
+                disabled={currentIndex >= images.length - 2}
                 sx={{
                     backgroundColor: colors.water_green,
                     borderRadius: '50%',

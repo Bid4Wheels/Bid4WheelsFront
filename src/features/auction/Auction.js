@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Chip, Box, Toolbar, Avatar, Paper } from '@mui/material';
+import { Grid, Typography, Chip, Box, Toolbar, Button, Paper } from '@mui/material';
 import { useParams } from 'react-router';
 import {
     differenceInHours,
@@ -10,11 +10,11 @@ import {
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
-import car1 from './car1.jpeg';
-import car2 from './car2.jpeg';
-import car3 from './car3.jpeg';
-import car4 from './car4.jpeg';
-import car5 from './car5.jpg';
+import car1 from '../commons/temp/car1.jpeg';
+import car2 from '../commons/temp/car2.jpeg';
+import car3 from '../commons/temp/car3.jpeg';
+import car4 from '../commons/temp/car4.jpeg';
+import car5 from '../commons/temp/car5.jpg';
 
 export function Auction() {
     const id = useParams().auctionId;
@@ -135,7 +135,6 @@ export function Auction() {
                 <Grid
                     container
                     sx={{
-                        marginTop: '10px',
                         display: 'flex',
                         alignItems: 'center',
                         gap: '10px',
@@ -144,29 +143,42 @@ export function Auction() {
                     <Toolbar
                         sx={{ borderBottom: `1px solid ${colors.water_green} `, width: '100%' }}
                     >
-                        <Typography
-                            variant="h7"
+                        <Button
+                            variant="text"
                             sx={{
                                 color: 'black',
                                 cursor: 'pointer',
+                                fontSize: '16px',
+                                padding: '0',
+                                margin: '0',
                                 fontWeight: window === 'info' ? 650 : 400,
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: 'transparent',
+                                },
                             }}
                             onClick={() => setWindow('info')}
                         >
                             Auction Info
-                        </Typography>
-                        <Typography
+                        </Button>
+                        <Button
                             variant="h7"
                             sx={{
                                 color: 'black',
                                 cursor: 'pointer',
                                 ml: '1rem',
+                                padding: '0',
+                                fontSize: '16px',
                                 fontWeight: window === 'questions' ? 650 : 400,
+                                textTransform: 'none',
+                                '&:hover': {
+                                    backgroundColor: 'transparent',
+                                },
                             }}
                             onClick={() => setWindow('questions')}
                         >
                             Questions & Comments
-                        </Typography>
+                        </Button>
                     </Toolbar>
                     <Grid container>
                         {window === 'info' ? (
