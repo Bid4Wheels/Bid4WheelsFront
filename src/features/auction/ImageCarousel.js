@@ -69,13 +69,15 @@ export function ImageCarousel({ images }) {
                 <NavigateBeforeIcon />
             </IconButton>
 
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                 {images.slice(currentIndex, currentIndex + 2).map((image, index) => (
                     <div
                         key={index}
                         style={{
                             padding: '10px',
-                            width: '50%',
+                            height: '260px',
+                            width: '23vw',
+                            flexBasis: 'calc(50% - 20px)',
                         }}
                     >
                         <img
