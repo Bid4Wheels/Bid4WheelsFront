@@ -15,6 +15,7 @@ import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { validatePassword } from '../../utils/desgin/validationFunctions';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
@@ -22,10 +23,6 @@ function ChangePassword() {
     const [newPassword, setNewPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [toolTipOpen, setToolTipOpen] = useState(false);
-
-    const validatePassword = (password) => {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
-    };
 
     const isSubmitButtonDisabled = () => {
         return !validatePassword(newPassword) || newPassword !== verifyPassword;
