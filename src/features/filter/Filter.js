@@ -194,7 +194,6 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
         <Grid
             container
             sx={{
-                display: 'flex',
                 flexDirection: 'row',
                 justifyItems: 'center',
                 alignItems: 'baseline',
