@@ -69,7 +69,6 @@ export function Auction() {
         <Grid
             container
             sx={{
-                display: 'flex',
                 gap: 2,
                 padding: '30px',
                 paddingTop: '10px',
@@ -113,7 +112,7 @@ export function Auction() {
                 </Box>
                 <Grid
                     container
-                    sx={{ marginTop: 1, display: 'flex', alignItems: 'center', padding: '10px' }}
+                    sx={{ marginTop: 1, alignItems: 'center', padding: '10px' }}
                     spacing={1}
                 >
                     <Typography variant="h5">Tags:</Typography>

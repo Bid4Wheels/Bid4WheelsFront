@@ -7,7 +7,6 @@ export function TechnicalInfo({ info, user }) {
             <Grid
                 container
                 sx={{
-                    display: 'flex',
                     justifyContent: 'space-evenly',
                     alignItems: 'center',
                 }}
@@ -69,7 +68,6 @@ export function TechnicalInfo({ info, user }) {
             <Grid
                 item
                 sx={{
-                    display: 'flex',
                     backgroundColor: '#e0e0e0',
                     flexDirection: 'column',
                     mt: '15px',
