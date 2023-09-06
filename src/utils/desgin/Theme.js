@@ -15,9 +15,12 @@ const theme = createTheme({
         ].join(','),
         XxLarge: { fontSize: '50px' },
         XLarge: { fontSize: '40px' },
+        Large: { fontSize: '32px' },
         Medium: { fontSize: '24px' },
+        SemiSmall: { fontSize: '20px' },
         Small: { fontSize: '16px' },
         Xsmall: { fontSize: '14px' },
+        ButtonTypography: { fontSize: '15px' },
     },
 });
 export default theme;
