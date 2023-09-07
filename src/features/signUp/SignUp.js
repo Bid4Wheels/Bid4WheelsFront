@@ -18,6 +18,11 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSignUpMutation } from '../../store/user/UserApi';
 import colors from '../../utils/desgin/Colors';
+import {
+    validatePassword,
+    validateEmail,
+    validatePhoneNumber,
+} from '../../utils/validationFunctions';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
@@ -68,18 +73,6 @@ export function SignUp() {
             !validatePassword(password) ||
             password !== verifyPassword
         );
-    };
-
-    const validateEmail = (email) => {
-        return /\S+@\S+\.\S+/.test(email);
-    };
-
-    const validatePhoneNumber = (phoneNumber) => {
-        return /^[0-9+]{14,}$/.test(phoneNumber);
-    };
-
-    const validatePassword = (password) => {
-        return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
     };
 
     if (isLoading) {
