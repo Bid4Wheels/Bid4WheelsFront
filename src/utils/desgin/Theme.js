@@ -1,5 +1,5 @@
-import { createTheme } from '@mui/material/styles';
 import colors from './Colors';
+import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
     typography: {
@@ -33,4 +33,5 @@ const theme = createTheme({
         },
     },
 });
+
 export default theme;
