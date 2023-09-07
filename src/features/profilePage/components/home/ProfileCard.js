@@ -15,8 +15,9 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
     return (
         <Box
             sx={{
-                width: 389,
-                height: 839,
+                paddingLeft: '50px',
+                paddingRight: '50px',
+                height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 12,
