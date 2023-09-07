@@ -1,10 +1,9 @@
-import { createApi } from '@reduxjs/toolkit/dist/query';
-
-const tempUrl = 'api.bid4wheels.com';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseUrl } from '../../features/commons/Constants';
 
 export const tagsApiSlice = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: `https://${tempUrl}/tags`,
+        baseUrl: `${baseUrl}/tags`,
     }),
     endpoints: (builder) => ({
         getAllTags: builder.query({
@@ -12,3 +11,5 @@ export const tagsApiSlice = createApi({
         }),
     }),
 });
+
+export const { useGetAllTagsQuery } = tagsApiSlice;

@@ -1,10 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query';
-
-const tempUrl = 'api.bid4wheels.com';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseUrl } from '../../features/commons/Constants';
 
 export const cardApiSlice = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: `https://${tempUrl}/auction`,
+        baseUrl: `${baseUrl}/auction`,
     }),
     endpoints: (builder) => ({
         getAuctionList: builder.query({
@@ -34,4 +33,4 @@ export const cardApiSlice = createApi({
     }),
 });
 
-export const { useGetAuctionListQuery } = cardApiSlice;
+export const { useGetAuctionListQuery, useGetFilteredAuctionsQuery } = cardApiSlice;
