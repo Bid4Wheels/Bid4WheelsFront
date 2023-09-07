@@ -11,15 +11,16 @@ function App() {
         <div>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<PrivateRoute />} />
                     <Route path="/signup" Component={SignUp} />
                     <Route path="/login" Component={LogIn} />
-                    <Route
-                        path="/user/:userId"
-                        element={<PrivateRoute Component={ProfilePage} />}
-                    />
-                    <Route path="/user" element={<PrivateRoute Component={ProfilePage} />} />
                 </Routes>
+                <PrivateRoute>
+                    <Routes>
+                        <Route path="/" />
+                        <Route path="/user/:userId" Component={ProfilePage} />
+                        <Route path="/user" Component={ProfilePage} />
+                    </Routes>
+                </PrivateRoute>
             </BrowserRouter>
         </div>
     );

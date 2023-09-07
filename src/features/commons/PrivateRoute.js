@@ -1,15 +1,15 @@
 import React from 'react';
-import { AuthenticatedUser } from './AuthenticatedUser';
 import Header from './Header';
 import { Navigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-export const PrivateRoute = ({ Component }) => {
-    const loggedIn = AuthenticatedUser();
-    if (!Component) return loggedIn ? <Header /> : <Navigate to="/login" replace />;
+export const PrivateRoute = ({ children }) => {
+    const loggedIn = !!useSelector((state) => state.user.token);
+    if (!children) return loggedIn ? <Header /> : <Navigate to="/login" replace />;
     return loggedIn ? (
         <>
             <Header />
-            <Component />
+            {children}
         </>
     ) : (
         <Navigate to="/login" replace />

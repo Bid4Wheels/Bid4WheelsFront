@@ -24,7 +24,7 @@ export const userApi = createApi({
                 method: 'GET',
                 headers: {
                     Authorization:
-                        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW51bWFzam9hbkBnbWFpbC5jb20iLCJpYXQiOjE2OTMyNTE5NjcsImV4cCI6MTY5Mzg1Njc2N30.4B0KPdII3_uj7hlA6IeU8mzSIo458fCuiS1j8oJR49c',
+                        'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYWlsMUBtYWlsLmNvbSIsImlhdCI6MTY5NDA1MDUzNiwiZXhwIjoxNjk0NjU1MzM2fQ.5hnteOIxHbPzbbVexY_BWXdD5a13oNBSmJTBX9BALGI',
                 },
             }),
         }),
