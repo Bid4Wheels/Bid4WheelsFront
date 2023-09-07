@@ -4,7 +4,7 @@ import { Button, Box } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
-import { useGetUserByIdQuery } from '../../../../store/user/UserApi';
+import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
 
 export const ProfilePage = () => {
     const { userId } = useParams();
@@ -24,7 +24,7 @@ export const ProfilePage = () => {
     useEffect(() => {
         if (!isLoading && !isError && userData) {
             setUserProfileData({
-                username: fullNameBuilder(userData.name, userData.lastname),
+                username: fullNameBuilder(userData.name, userData.lastName),
                 mail: userData.email,
                 phone: userData.phoneNumber,
             });
@@ -32,7 +32,7 @@ export const ProfilePage = () => {
     }, [userData, isLoading, isError]);
 
     return (
-        <Box sx={{ padding: '5%' }}>
+        <Box sx={{ padding: '1%', height: '80vh' }}>
             <Box
                 className="HomeTop"
                 sx={{
@@ -79,7 +79,7 @@ export const ProfilePage = () => {
                     </Button>
                 </Box>
             </Box>
-            <Box className="DataContainer" sx={{ display: 'flex' }}>
+            <Box className="DataContainer" sx={{ display: 'flex', margin: '2rem', height: '100%' }}>
                 <ProfileCard
                     canEdit={canEdit}
                     Username={userProfileData.username}

@@ -37,7 +37,11 @@ const Header = () => {
         navigate('/auction/new');
     };
 
-    if (location.pathname === '/login' || location.pathname === '/signup') {
+    if (
+        location.pathname === '/login' ||
+        location.pathname === '/signup' ||
+        location.pathname === '/validateIdentity'
+    ) {
         return null;
     }
 
