@@ -1,24 +1,27 @@
 import React from 'react';
 import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PersonIcon from '@mui/icons-material/Person';
 import bid4wheels_logo from '../commons/bid4wheels_logo.svg';
 import colors from '../../utils/desgin/Colors';
+import { removeUser } from '../../store/user/UserSlice';
 
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const userId = '1';
-    //const user = useSelector((state) => state.user);
-    //const userId = user.id;
+    const user = useSelector((state) => state.user);
+    const userId = user.userId;
     //const token = user.token;
 
     const handleLogoClick = () => {
         navigate('/');
     };
 
-    const hanldeLogoutClick = () => {
+    const dispatch = useDispatch();
+
+    const handleLogoutClick = () => {
+        dispatch(removeUser());
         navigate('/login');
     };
 
@@ -112,7 +115,7 @@ const Header = () => {
                             textTransform: 'none',
                             padding: '5px',
                         }}
-                        onClick={hanldeLogoutClick}
+                        onClick={handleLogoutClick}
                     >
                         <Typography sx={{ ml: '3px', mr: '3px', fontWeight: 500 }}>
                             Logout

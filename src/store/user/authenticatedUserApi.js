@@ -1,17 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { createBaseQuery } from '../baseQuery';
 
 export const authenticatedUserApi = createApi({
     reducerPath: 'authenticatedUserApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'https://api.bid4wheels.com/user',
-        prepareHeaders: (headers) => {
-            headers.set(
-                'authorization',
-                `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJtYW51bWFzam9hbkBnbWFpbC5jb20iLCJpYXQiOjE2OTMyNTE5NjcsImV4cCI6MTY5Mzg1Njc2N30.4B0KPdII3_uj7hlA6IeU8mzSIo458fCuiS1j8oJR49c`,
-            );
-            return headers;
-        },
-    }),
+    baseQuery: createBaseQuery('https://api.bid4wheels.com/user'),
     endpoints: (builder) => ({
         updateUser: builder.mutation({
             query(payload) {
@@ -23,7 +15,13 @@ export const authenticatedUserApi = createApi({
                 };
             },
         }),
+        getUserById: builder.query({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'GET',
+            }),
+        }),
     }),
 });
 
-export const { useUpdateUserMutation } = authenticatedUserApi;
+export const { useUpdateUserMutation, useGetUserByIdQuery } = authenticatedUserApi;
