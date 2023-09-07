@@ -7,6 +7,7 @@ import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
 
 export const ProfilePage = () => {
+    //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
     const { userId } = useParams();
     const canEdit = !userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
