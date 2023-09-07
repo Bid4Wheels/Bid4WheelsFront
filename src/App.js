@@ -8,14 +8,15 @@ import { Auction } from './features/auction/Auction';
 import Header from './features/commons/Header';
 import ValidateIdentity from './features/logIn/validateIdentity';
 import CreateAuction from './features/newAuction/CreateAuction';
+import { Dashboard } from './features/dashboard/Dashboard';
+import { PrivateRoute } from './features/commons/PrivateRoute';
+import ChangePassword from './features/logIn/changePassword';
 
 function App() {
     return (
         <div>
             <BrowserRouter>
-                <Header />
                 <Routes>
-                    <Route path="/" />
                     <Route path="/signup" Component={SignUp} />
                     <Route path="/login" Component={LogIn} />
                     <Route path="/user/:userId" Component={ProfilePage} />
@@ -23,7 +24,16 @@ function App() {
                     <Route path="/auction/:auctionId" Component={Auction} />
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/newAuction" Component={CreateAuction} />
+                    <Route path="/changePassword" Component={ChangePassword} />
                 </Routes>
+                <PrivateRoute>
+                    <Routes>
+                        <Route path="/" Component={Dashboard} />
+                        <Route path="/auction/:auctionId" Component={Auction} />
+                        <Route path="/user/:userId" Component={ProfilePage} />
+                        <Route path="/user" Component={ProfilePage} />
+                    </Routes>
+                </PrivateRoute>
             </BrowserRouter>
         </div>
     );

@@ -13,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
+import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -80,7 +81,7 @@ function formToComplete({ userInfo, setUserInfo }) {
     const handleConfirmButton = async (event) => {
         event.preventDefault();
         if (
-            validatePhone(userInfo.phone) &&
+            validatePhoneNumber(userInfo.phone) &&
             validateName(userInfo.name) &&
             validateLastName(userInfo.lastName)
         ) {
@@ -123,11 +124,6 @@ function formToComplete({ userInfo, setUserInfo }) {
             ...prevUserInfo,
             phone: event.target.value,
         }));
-    };
-
-    const validatePhone = (phone) => {
-        const phonePattern = /^[0-9]{14,}$/;
-        return phonePattern.test(phone);
     };
 
     const validateName = (name) => {
