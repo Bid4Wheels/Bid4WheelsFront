@@ -17,11 +17,12 @@ import image from '../commons/new_auction.png';
 
 import Autocomplete from '@mui/material/Autocomplete';
 import { useNavigate } from 'react-router-dom';
+import { BRANDS, COLORS, FUEL_TYPES } from '../../utils/constants';
 
 // Sample data sources
-const brandOptions = ['Brand 1', 'Brand 2', 'Brand 3'];
-const colorOptions = ['Red', 'Blue', 'Green'];
-const fuelTypeOptions = ['Gasoline', 'Diesel', 'Electric'];
+const brandOptions = BRANDS;
+const colorOptions = COLORS;
+const fuelTypeOptions = FUEL_TYPES;
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('2');
@@ -40,7 +41,7 @@ const CreateAuction = () => {
     const navigate = useNavigate();
 
     const handleCancelClick = () => {
-        navigate('/user');
+        navigate('/');
     };
 
     const handleDoorsChange = (event) => {
