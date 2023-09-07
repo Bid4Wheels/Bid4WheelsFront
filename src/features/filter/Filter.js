@@ -200,9 +200,9 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
     };
 
     return (
-        <Grid
-            container
+        <Box
             sx={{
+                display: 'flex',
                 flexDirection: 'row',
                 justifyItems: 'center',
                 alignItems: 'baseline',
@@ -238,7 +238,7 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
                     />
                 </Box>
             </Grid>
-        </Grid>
+        </Box>
     );
 }
 
