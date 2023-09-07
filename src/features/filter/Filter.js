@@ -63,13 +63,12 @@ export function Filter() {
                 marginTop: '10px',
             }}
         >
-            <Grid item sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 {customAutocomplete(BRANDS, 'Brand', setSelectedBrand)}
                 {customAutocomplete(COLORS, 'Color', setSelectedColor)}
                 {customAutocomplete(FUEL_TYPES, 'Fuel Type', setSelectedFuelType)}
-            </Grid>
-            <Grid
-                item
+            </Box>
+            <Box
                 sx={{
                     flex: 1,
                     display: 'flex',
@@ -103,7 +102,12 @@ export function Filter() {
                     label="Model"
                     variant="standard"
                     color="water_green"
-                    sx={{ width: '95%', maxWidth: '400px', height: '56px', margin: 'auto' }}
+                    sx={{
+                        width: '90%',
+                        maxWidth: '400px',
+                        height: '56px',
+                        margin: 'auto',
+                    }}
                     onChange={(event) => setSelectedModel(event.target.value)}
                 />
                 <Box justifyContent="center">
@@ -119,9 +123,8 @@ export function Filter() {
                         Apply
                     </Button>
                 </Box>
-            </Grid>
-            <Grid
-                item
+            </Box>
+            <Box
                 sx={{
                     flex: 1,
                     display: 'flex',
@@ -145,7 +148,7 @@ export function Filter() {
                     selectedGearShiftTypes,
                     setSelectedGearShiftTypes,
                 )}
-            </Grid>
+            </Box>
         </Grid>
     );
 }
@@ -208,7 +211,7 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
             }}
         >
             <Grid item xs={4}>
-                <Typography>{fieldName}</Typography>
+                <Typography sx={{ textAlign: 'center' }}>{fieldName}</Typography>
             </Grid>
             <Grid item xs={8}>
                 <Box display="flex" alignItems="center">
