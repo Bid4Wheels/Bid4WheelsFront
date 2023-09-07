@@ -13,7 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
-import { validatePhoneNumber } from '../../../../utils/desgin/validationFunctions';
+import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {

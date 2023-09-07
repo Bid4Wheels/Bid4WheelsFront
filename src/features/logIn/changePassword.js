@@ -15,7 +15,7 @@ import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { validatePassword } from '../../utils/desgin/validationFunctions';
+import { validatePassword } from '../../utils/validationFunctions';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);

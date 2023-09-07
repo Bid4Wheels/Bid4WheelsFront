@@ -22,7 +22,7 @@ import {
     validatePassword,
     validateEmail,
     validatePhoneNumber,
-} from '../../utils/desgin/validationFunctions';
+} from '../../utils/validationFunctions';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
