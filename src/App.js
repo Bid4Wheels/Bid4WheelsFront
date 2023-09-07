@@ -4,6 +4,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { SignUp } from './features/signUp/SignUp';
 import { LogIn } from './features/logIn/logIn';
 import { ProfilePage } from './features/profilePage/components/home/ProfilePage';
+import Header from './features/commons/Header';
+import { Dashboard } from './features/dashboard/Dashboard';
 import { PrivateRoute } from './features/commons/PrivateRoute';
 import { Auction } from './features/auction/Auction';
 import ValidateIdentity from './features/logIn/validateIdentity';
@@ -21,7 +23,7 @@ function App() {
                 </Routes>
                 <PrivateRoute>
                     <Routes>
-                        <Route path="/" />
+                        <Route path="/" Component={Dashboard} />
                         <Route path="/auction/:auctionId" Component={Auction} />
                         <Route path="/user/:userId" Component={ProfilePage} />
                         <Route path="/user" Component={ProfilePage} />
