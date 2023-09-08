@@ -5,6 +5,7 @@ import {
     Button,
     Checkbox,
     Chip,
+    CircularProgress,
     FormControlLabel,
     FormGroup,
     Grid,
@@ -12,6 +13,7 @@ import {
     Typography,
 } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
+import { useGetAllTagsQuery } from '../../store/auction/tagsApi';
 import {
     BRANDS,
     COLORS,
@@ -19,8 +21,9 @@ import {
     CAR_DOORS,
     GEAR_SHIFT_TYPES,
 } from '../../utils/mocks/constants';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-export function Filter() {
+export function Filter({ setFilteredAuctions }) {
     const [selectedCarDoors, setSelectedCarDoors] = useState([]);
     const [selectedGearShiftTypes, setSelectedGearShiftTypes] = useState([]);
     const [selectedBrand, setSelectedBrand] = useState([]);
@@ -49,6 +52,8 @@ export function Filter() {
         console.log('Selected Mileage Min:', selectedMileageMin);
         console.log('Selected Mileage Max:', selectedMileageMax);
         console.log('Selected Tags:', selectedTags);
+
+        setFilteredAuctions([]);
     };
 
     return (
@@ -243,6 +248,8 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
 }
 
 function customTagsAutocomplete(selectedTags, setSelectedTags) {
+    const { data, isLoading, isError } = useGetAllTagsQuery();
+
     return (
         <Autocomplete
             multiple
@@ -261,7 +268,8 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                 },
             }}
             id="tags-standard"
-            options={auxList.map((option) => option)}
+            disabled={isLoading || isError}
+            options={data?.map((option) => option)}
             value={selectedTags}
             onChange={(event, value) => setSelectedTags(value)}
             renderTags={(value, getTagProps) =>
@@ -275,7 +283,27 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                 ))
             }
             renderInput={(params) => (
-                <TextField {...params} variant="standard" label="Tags" placeholder="Tag" />
+                <TextField
+                    {...params}
+                    variant="standard"
+                    label="Tags"
+                    placeholder="Tag"
+                    InputProps={{
+                        endAdornment: isLoading ? (
+                            <CircularProgress
+                                sx={{
+                                    color: 'inherit',
+                                    position: 'absolute',
+                                    top: '5%',
+                                    right: '5%',
+                                }}
+                                size={22}
+                            />
+                        ) : isError ? (
+                            <ErrorOutlineIcon color="inherit" />
+                        ) : null,
+                    }}
+                />
             )}
         />
     );
@@ -331,5 +359,3 @@ function customCheckBoxMapping(title, opts, selectedValues, setSelectedValues) {
         </Grid>
     );
 }
-
-const auxList = ['test1', 'test2', 'test3'];
