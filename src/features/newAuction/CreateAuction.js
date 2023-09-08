@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { useNavigate } from 'react-router-dom';
 import TechnicalInformation from './TechnicalInformation';
+import AuctionInformation from './AuctionInformation';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('2');
@@ -17,6 +18,7 @@ const CreateAuction = () => {
     const [startingPrice, setStartingPrice] = useState('');
     const [years, setYears] = useState('');
     const [mileage, setMileage] = useState('');
+    const [showAuctionInformation, setShowAuctionInformation] = useState(false);
 
     const navigate = useNavigate();
 
@@ -94,7 +96,7 @@ const CreateAuction = () => {
                         width="36px"
                         height="36px"
                         borderRadius="50%"
-                        backgroundColor={colors.water_green}
+                        backgroundColor={showAuctionInformation ? colors.grey : colors.water_green}
                         color="white"
                         fontSize="24px"
                         marginRight="10px"
@@ -110,7 +112,7 @@ const CreateAuction = () => {
                         width="36px"
                         height="36px"
                         borderRadius="50%"
-                        backgroundColor={colors.grey}
+                        backgroundColor={showAuctionInformation ? colors.water_green : colors.grey}
                         color="white"
                         fontSize="24px"
                         marginRight="10px"
@@ -138,26 +140,31 @@ const CreateAuction = () => {
                     </Button>
                 </Box>
             </Box>
-            <TechnicalInformation
-                handleDoorsChange={handleDoorsChange}
-                handleGearChange={handleGearChange}
-                addTag={addTag}
-                removeTag={removeTag}
-                setBrandValue={setBrandValue}
-                setColorValue={setColorValue}
-                setFuelTypeValue={setFuelTypeValue}
-                setInputValue={setInputValue}
-                setMileage={setMileage}
-                setModelValue={setModelValue}
-                setStartingPrice={setStartingPrice}
-                setYears={setYears}
-                tags={tags}
-                inputValue={inputValue}
-                isNextButtonDisabled={isNextButtonDisabled}
-                brandValue={brandValue}
-                colorValue={colorValue}
-                fuelTypeValue={fuelTypeValue}
-            ></TechnicalInformation>
+            {showAuctionInformation ? (
+                <AuctionInformation></AuctionInformation>
+            ) : (
+                <TechnicalInformation
+                    handleDoorsChange={handleDoorsChange}
+                    handleGearChange={handleGearChange}
+                    addTag={addTag}
+                    removeTag={removeTag}
+                    setBrandValue={setBrandValue}
+                    setColorValue={setColorValue}
+                    setFuelTypeValue={setFuelTypeValue}
+                    setInputValue={setInputValue}
+                    setMileage={setMileage}
+                    setModelValue={setModelValue}
+                    setStartingPrice={setStartingPrice}
+                    setYears={setYears}
+                    tags={tags}
+                    inputValue={inputValue}
+                    isNextButtonDisabled={isNextButtonDisabled}
+                    brandValue={brandValue}
+                    colorValue={colorValue}
+                    fuelTypeValue={fuelTypeValue}
+                    setShowAuctionInformation={setShowAuctionInformation}
+                ></TechnicalInformation>
+            )}
         </Box>
     );
 };

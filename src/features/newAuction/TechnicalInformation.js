@@ -39,6 +39,7 @@ const TechnicalInformation = ({
     brandValue,
     colorValue,
     fuelTypeValue,
+    setShowAuctionInformation,
 }) => {
     return (
         <Box>
@@ -73,17 +74,18 @@ const TechnicalInformation = ({
                                 id="brand-autocomplete"
                                 options={brandOptions}
                                 sx={{
-                                    width: 275,
                                     '&.Mui-focused .MuiInputLabel-outlined': {
                                         color: colors.water_green,
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: colors.water_green,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                         borderColor: colors.water_green,
                                     },
+                                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline':
+                                        {
+                                            borderColor: colors.water_green,
+                                        },
                                 }}
+                                width="275px"
                                 renderInput={(params) => <TextField {...params} label="Brand" />}
                                 value={brandValue}
                                 onChange={(event, newValue) => {
@@ -101,9 +103,6 @@ const TechnicalInformation = ({
                                     marginTop: '60px',
                                     '&.Mui-focused .MuiInputLabel-outlined': {
                                         color: colors.water_green,
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: colors.water_green,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                         borderColor: colors.water_green,
@@ -126,9 +125,6 @@ const TechnicalInformation = ({
                                     marginTop: '60px',
                                     '&.Mui-focused .MuiInputLabel-outlined': {
                                         color: colors.water_green,
-                                    },
-                                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                                        borderColor: colors.water_green,
                                     },
                                     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
                                         borderColor: colors.water_green,
@@ -291,24 +287,30 @@ const TechnicalInformation = ({
                                 }}
                                 placeholder="Starting price"
                                 variant="standard"
-                                type="number"
-                                onChange={(e) => setStartingPrice(e.target.value)}
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                }}
+                                onChange={(e) => {
+                                    setStartingPrice(e.target.value);
+                                }}
                                 color="water_green"
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                type="text"
                             />
+
                             <TextField
                                 label="Years"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                                 placeholder="Years"
-                                type="number"
+                                type="text"
                                 sx={{ width: 300 }}
                                 variant="standard"
                                 onChange={(e) => setYears(e.target.value)}
                                 color="water_green"
-                                defaultValue="Years"
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                }}
                             />
                             <TextField
                                 label="Mileage"
@@ -318,10 +320,12 @@ const TechnicalInformation = ({
                                 }}
                                 placeholder="Mileage"
                                 variant="standard"
-                                type="number"
+                                type="text"
                                 onChange={(e) => setMileage(e.target.value)}
                                 color="water_green"
-                                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+                                onInput={(e) => {
+                                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                                }}
                             />
                         </Box>
                     </Box>
@@ -394,6 +398,7 @@ const TechnicalInformation = ({
                         disabled={isNextButtonDisabled}
                         sx={{ paddingX: '50px', paddingY: '20px', color: 'white' }}
                         color="water_green"
+                        onClick={(e) => setShowAuctionInformation(true)}
                     >
                         Next
                     </Button>
