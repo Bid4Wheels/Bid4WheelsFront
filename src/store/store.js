@@ -5,6 +5,7 @@ import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
 import { authenticatedUserApi } from './user/authenticatedUserApi';
 import storage from 'redux-persist/lib/storage';
+import { tagsApiSlice } from './auction/tagsApi';
 
 const reducers = combineReducers({
     user: userReducer,
@@ -27,5 +28,6 @@ export const store = configureStore({
             userApi.middleware,
             authApi.middleware,
             authenticatedUserApi.middleware,
+            tagsApiSlice.middleware,
         ),
 });
