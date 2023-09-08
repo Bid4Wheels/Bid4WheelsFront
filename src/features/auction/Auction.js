@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Chip, Box, Toolbar, Button, Paper } from '@mui/material';
+import React, { useState } from 'react';
+import { Grid, Typography, Chip, Box, Toolbar, Button, Paper, Skeleton } from '@mui/material';
 import { useParams } from 'react-router';
 import {
     differenceInHours,
@@ -15,6 +15,7 @@ import car2 from '../commons/temp/car2.jpeg';
 import car3 from '../commons/temp/car3.jpeg';
 import car4 from '../commons/temp/car4.jpeg';
 import car5 from '../commons/temp/car5.jpg';
+import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 
 export function Auction() {
     const id = useParams().auctionId;
@@ -33,13 +34,15 @@ export function Auction() {
         mileage: 10000,
         doors: 4,
         gearShift: 'Automatic',
-        endDate: new Date('2023-09-07T22:30:00'),
+        endDate: new Date('2023-09-14T22:30:00'),
     });
     const [user, setUser] = useState({
         name: 'John Doe',
         avatar: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
         rating: 4.5,
     });
+
+    const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(info.endDate, now);
@@ -65,6 +68,53 @@ export function Auction() {
         return <div>Invalid auction id</div>;
     }
 
+    if (error) {
+        return <div>Error: {error}</div>;
+    }
+
+    if (isLoading) {
+        return (
+            <Grid
+                container
+                sx={{
+                    gap: 2,
+                    padding: '30px',
+                    paddingTop: '10px',
+                    justifyContent: 'space-between',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                }}
+            >
+                <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
+                    <Box>
+                        <Typography variant="h1">
+                            <Skeleton />
+                        </Typography>
+                    </Box>
+
+                    <Box item>
+                        <Skeleton variant="rectangular" width="100%" height="300px" />
+                    </Box>
+                    <Box
+                        item
+                        sx={{
+                            marginTop: '10px',
+                        }}
+                    >
+                        <Skeleton variant="rectangular" width="100%" height="100px" />
+                    </Box>
+                    <Box
+                        item
+                        sx={{
+                            marginTop: '10px',
+                        }}
+                    >
+                        <Skeleton variant="rectangular" width="100%" height="300px" />
+                    </Box>
+                </Grid>
+            </Grid>
+        );
+    }
+
     return (
         <Grid
             container
@@ -79,7 +129,7 @@ export function Auction() {
             <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
-                        2018 Toyota Camry
+                        {info.title}
                     </Typography>
                 </Box>
 

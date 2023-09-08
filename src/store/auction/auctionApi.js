@@ -1,25 +1,18 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/dist/query';
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { createBaseQuery } from '../baseQuery';
+import { baseUrl } from '../../features/commons/Constants';
 
-const tempUrl = 'localhost:3000';
-
-export const cardApiSlice = createApi({
-    baseQuery: fetchBaseQuery({
-        baseUrl: `https://${tempUrl}/auction`,
-    }),
+export const auctionApi = createApi({
+    reducerPath: 'authenticatedUserApi',
+    baseQuery: createBaseQuery(`${baseUrl}/auction`),
     endpoints: (builder) => ({
-        getAuctionList: builder.query({
-            query: (page, size) => ({ url: '/', params: { page, size } }),
-            forceRefetch({ currentArg, previousArg }) {
-                return currentArg !== previousArg;
-            },
-            serializeQueryArgs: ({ endpointName }) => {
-                return endpointName;
-            },
-            merge: (currentCache, newItems) => {
-                currentCache.push(...newItems);
-            },
+        getAuctionById: builder.query({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'GET',
+            }),
         }),
     }),
 });
 
-export const { useGetAuctionListQuery } = cardApiSlice;
+export const { useGetAuctionByIdQuery } = auctionApi;
