@@ -17,10 +17,33 @@ const CreateAuction = () => {
     const [modelValue, setModelValue] = useState('');
     const [startingPrice, setStartingPrice] = useState('');
     const [years, setYears] = useState('');
+    const [title, setTitle] = useState('');
     const [mileage, setMileage] = useState('');
     const [showAuctionInformation, setShowAuctionInformation] = useState(false);
+    const [description, setDescription] = useState();
+    const [selectedDate, setSelectedDate] = useState();
+
+    const [droppedImages, setDroppedImages] = useState([]);
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const files = Array.from(e.dataTransfer.files);
+        const imageFiles = files.filter((file) => file.type.startsWith('image/'));
+
+        setDroppedImages((prevImages) => [...prevImages, ...imageFiles]);
+    };
+
+    const handleDeleteImage = (index) => {
+        const updatedImages = [...droppedImages];
+        updatedImages.splice(index, 1);
+        setDroppedImages(updatedImages);
+    };
 
     const navigate = useNavigate();
+
+    const handleDateChange = (date) => {
+        setSelectedDate(date);
+    };
 
     const handleCancelClick = () => {
         navigate('/');
@@ -66,7 +89,9 @@ const CreateAuction = () => {
         const updatedTags = tags.filter((tag) => tag !== tagToRemove);
         setTags(updatedTags);
     };
-
+    const handleImageSelect = (imageFile) => {
+        setDroppedImages((prevImages) => [...prevImages, imageFile]);
+    };
     return (
         <Box>
             <Typography
@@ -141,7 +166,19 @@ const CreateAuction = () => {
                 </Box>
             </Box>
             {showAuctionInformation ? (
-                <AuctionInformation></AuctionInformation>
+                <AuctionInformation
+                    setTitle={setTitle}
+                    title={title}
+                    description={description}
+                    setDescription={setDescription}
+                    selectedDate={selectedDate}
+                    handleDateChange={handleDateChange}
+                    handleDeleteImage={handleDeleteImage}
+                    handleDrop={handleDrop}
+                    droppedImages={droppedImages}
+                    handleImageSelect={handleImageSelect}
+                    setDroppedImages={setDroppedImages}
+                ></AuctionInformation>
             ) : (
                 <TechnicalInformation
                     handleDoorsChange={handleDoorsChange}
