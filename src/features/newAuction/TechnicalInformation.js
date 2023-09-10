@@ -40,6 +40,12 @@ const TechnicalInformation = ({
     colorValue,
     fuelTypeValue,
     setShowAuctionInformation,
+    model,
+    mileage,
+    years,
+    startingPrice,
+    doors,
+    gearType,
 }) => {
     return (
         <Box>
@@ -152,6 +158,7 @@ const TechnicalInformation = ({
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="row-radio-buttons-group"
+                                    value={doors}
                                 >
                                     <FormControlLabel
                                         value="2"
@@ -226,6 +233,7 @@ const TechnicalInformation = ({
                                     row
                                     aria-labelledby="demo-row-radio-buttons-group-label"
                                     name="row-radio-buttons-group"
+                                    value={gearType}
                                 >
                                     <FormControlLabel
                                         value="Manual"
@@ -276,6 +284,7 @@ const TechnicalInformation = ({
                                 onChange={(e) => setModelValue(e.target.value)}
                                 color="water_green"
                                 placeholder="Model"
+                                value={model}
                             />
                             <TextField
                                 label="Starting price"
@@ -295,6 +304,7 @@ const TechnicalInformation = ({
                                 }}
                                 color="water_green"
                                 type="text"
+                                value={startingPrice}
                             />
 
                             <TextField
@@ -311,6 +321,7 @@ const TechnicalInformation = ({
                                 onInput={(e) => {
                                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
                                 }}
+                                value={years}
                             />
                             <TextField
                                 label="Mileage"
@@ -326,6 +337,7 @@ const TechnicalInformation = ({
                                 onInput={(e) => {
                                     e.target.value = e.target.value.replace(/[^0-9]/g, '');
                                 }}
+                                value={mileage}
                             />
                         </Box>
                     </Box>

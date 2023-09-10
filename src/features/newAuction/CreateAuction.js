@@ -4,9 +4,10 @@ import colors from '../../utils/desgin/Colors';
 import { useNavigate } from 'react-router-dom';
 import TechnicalInformation from './TechnicalInformation';
 import AuctionInformation from './AuctionInformation';
+import AuctionSuccess from './AuctionSuccess';
 
 const CreateAuction = () => {
-    const [selectedDoors, setSelectedDoors] = useState('2');
+    const [selectedDoors, setSelectedDoors] = useState('');
     const [selectedGear, setSelectedGear] = useState('');
     const [tags, setTags] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -14,14 +15,16 @@ const CreateAuction = () => {
     const [colorValue, setColorValue] = useState('');
     const [fuelTypeValue, setFuelTypeValue] = useState('');
     const [isNextButtonDisabled, setIsNextButtonDisabled] = useState(true);
+    const [isCreateButtonDisabled, setIsCreateButtonDisabled] = useState(true);
     const [modelValue, setModelValue] = useState('');
     const [startingPrice, setStartingPrice] = useState('');
     const [years, setYears] = useState('');
-    const [title, setTitle] = useState('');
+    const [title, setTitle] = useState('Title');
     const [mileage, setMileage] = useState('');
     const [showAuctionInformation, setShowAuctionInformation] = useState(false);
     const [description, setDescription] = useState();
     const [selectedDate, setSelectedDate] = useState();
+    const [auctionCreated, setAuctionCreated] = useState(false);
 
     const [droppedImages, setDroppedImages] = useState([]);
 
@@ -55,6 +58,10 @@ const CreateAuction = () => {
     const handleGearChange = (event) => {
         setSelectedGear(event.target.value);
     };
+
+    const handleAuctionCreate = () => {
+        setAuctionCreated(true);
+    };
     useEffect(() => {
         setIsNextButtonDisabled(
             !brandValue ||
@@ -79,10 +86,20 @@ const CreateAuction = () => {
         mileage,
     ]);
 
+    useEffect(() => {
+        setIsCreateButtonDisabled(!(title && description && selectedDate));
+    }, [title, description, selectedDate]);
+
     const addTag = () => {
-        if (inputValue.trim() === '') return;
-        setTags([...tags, inputValue]);
-        setInputValue('');
+        if (inputValue.trim() === '') {
+            return;
+        }
+
+        if (!tags.includes(inputValue)) {
+            const newTags = [...tags, inputValue];
+            setTags(newTags);
+            setInputValue('');
+        }
     };
 
     const removeTag = (tagToRemove) => {
@@ -92,6 +109,9 @@ const CreateAuction = () => {
     const handleImageSelect = (imageFile) => {
         setDroppedImages((prevImages) => [...prevImages, imageFile]);
     };
+    if (auctionCreated) {
+        return <AuctionSuccess></AuctionSuccess>;
+    }
     return (
         <Box>
             <Typography
@@ -178,6 +198,9 @@ const CreateAuction = () => {
                     droppedImages={droppedImages}
                     handleImageSelect={handleImageSelect}
                     setDroppedImages={setDroppedImages}
+                    setShowAuctionInformation={setShowAuctionInformation}
+                    isCreateButtonDisabled={isCreateButtonDisabled}
+                    handleAuctionCreated={handleAuctionCreate}
                 ></AuctionInformation>
             ) : (
                 <TechnicalInformation
@@ -200,6 +223,12 @@ const CreateAuction = () => {
                     colorValue={colorValue}
                     fuelTypeValue={fuelTypeValue}
                     setShowAuctionInformation={setShowAuctionInformation}
+                    mileage={mileage}
+                    years={years}
+                    model={modelValue}
+                    startingPrice={startingPrice}
+                    doors={selectedDoors}
+                    gearType={selectedGear}
                 ></TechnicalInformation>
             )}
         </Box>

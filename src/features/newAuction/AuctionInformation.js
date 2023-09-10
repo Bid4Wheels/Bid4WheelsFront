@@ -1,11 +1,13 @@
-import { Box, TextField, IconButton, Button } from '@mui/material';
+import { Box, TextField, IconButton, Button, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import CloseIcon from '@mui/icons-material/Close';
 import ImageIcon from '@mui/icons-material/Image';
 import colors from '../../utils/desgin/Colors';
+import { useNavigate } from 'react-router-dom';
+import { addHours } from 'date-fns';
 
 const AuctionInformation = ({
     setTitle,
@@ -19,17 +21,21 @@ const AuctionInformation = ({
     droppedImages,
     handleImageSelect,
     setDroppedImages,
+    setShowAuctionInformation,
+    isCreateButtonDisabled,
+    handleAuctionCreated,
 }) => {
     const handleDragOver = (e) => {
         e.preventDefault();
     };
 
     const handleSelectClick = () => {
-        // Trigger the file input click event when the "Click" text is clicked
         if (fileInputRef.current) {
             fileInputRef.current.click();
         }
     };
+    const currentDate = new Date();
+    const minimumDate = addHours(currentDate, 24);
 
     const handleFileInputChange = (e) => {
         const files = e.target.files;
@@ -68,6 +74,7 @@ const AuctionInformation = ({
                         }}
                         color="water_green"
                         type="text"
+                        value={title}
                     />
                     <TextField
                         label="Description"
@@ -84,13 +91,16 @@ const AuctionInformation = ({
                         color="water_green"
                         type="text"
                         multiline
+                        value={description}
                     />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DatePicker
+                        <DateTimePicker
                             label="Date & Time"
                             sx={{ marginTop: '95px' }}
                             onChange={handleDateChange}
                             slotProps={{ textField: { variant: 'standard' } }}
+                            value={selectedDate}
+                            minDate={minimumDate}
                         />
                     </LocalizationProvider>
                 </Box>
@@ -115,7 +125,7 @@ const AuctionInformation = ({
                         <Box>
                             <ImageIcon
                                 fontSize="large"
-                                sx={{ marginBottom: '16px' }}
+                                sx={{ marginBottom: '16px', transform: 'scale(3)' }}
                                 size="Large"
                             />
                             <p>
@@ -138,6 +148,7 @@ const AuctionInformation = ({
                                 type="file"
                                 ref={fileInputRef}
                                 accept="image/*"
+                                multiple
                                 style={{ display: 'none' }}
                                 onChange={handleFileInputChange}
                             />
@@ -194,6 +205,7 @@ const AuctionInformation = ({
                     variant="contained"
                     sx={{ paddingX: '50px', paddingY: '20px', color: 'white' }}
                     color="grey"
+                    onClick={(e) => setShowAuctionInformation(false)}
                 >
                     Back
                 </Button>
@@ -201,8 +213,10 @@ const AuctionInformation = ({
                     variant="contained"
                     sx={{ paddingX: '50px', paddingY: '20px', color: 'white' }}
                     color="water_green"
+                    disabled={isCreateButtonDisabled}
+                    onClick={handleAuctionCreated}
                 >
-                    Next
+                    Create
                 </Button>
             </Box>
         </Box>
