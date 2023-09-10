@@ -156,20 +156,23 @@ const AuctionInformation = ({
                     ) : (
                         <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                             {droppedImages.map((file, index) => (
-                                <div key={index} style={{ margin: '10px', textAlign: 'center' }}>
+                                <div
+                                    key={index}
+                                    style={{
+                                        margin: '10px',
+                                        textAlign: 'center',
+                                        position: 'relative',
+                                    }}
+                                >
                                     <IconButton
                                         color="grey"
                                         onClick={() => handleDeleteImage(index)}
                                         sx={{
-                                            top: 10,
-                                            left: 120,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            justifyContent: 'center',
+                                            right: '0px',
                                             width: 21.857,
                                             height: 26.357,
-                                            flexShrink: 0,
                                             zIndex: 1,
+                                            position: 'absolute',
                                             backgroundColor: colors.grey,
                                         }}
                                     >
