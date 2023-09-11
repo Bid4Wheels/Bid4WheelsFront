@@ -121,7 +121,7 @@ export function LogIn() {
                         marginBottom="12px"
                     >
                         <Link
-                            to={'/validateIdentity'}
+                            to={'/changePass'}
                             variant="body2"
                             className="hover-underline"
                             style={{
