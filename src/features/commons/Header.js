@@ -37,15 +37,6 @@ const Header = () => {
         navigate('/auction/new');
     };
 
-    if (
-        location.pathname === '/login' ||
-        location.pathname === '/signup' ||
-        location.pathname === '/validateIdentity' ||
-        location.pathname === '/changePassword'
-    ) {
-        return null;
-    }
-
     return (
         <AppBar position="static" sx={{ backgroundColor: 'white', minWidth: '700px' }}>
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
