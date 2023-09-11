@@ -16,6 +16,9 @@ import colors from '../../utils/desgin/Colors';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { validatePassword } from '../../utils/validationFunctions';
+import { useChangePasswordMutation } from '../../store/user/UserApi';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/UserSlice';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
@@ -34,6 +37,32 @@ function ChangePassword() {
 
     const handleToolTipClose = () => {
         setToolTipOpen(false);
+    };
+
+    const [changePassword] = useChangePasswordMutation();
+
+    const userData = useSelector(userSelector);
+
+    function getEmail() {
+        if (userData.userEmail !== null) {
+            return userData.userEmail;
+        }
+    }
+
+    console.log(userData);
+
+    const handleSubmit = async () => {
+        const userEmail = getEmail();
+        const payload = {
+            email: userEmail, //missing email if coming form email input page
+            password: newPassword,
+        };
+        try {
+            await changePassword(payload).unwrap();
+            console.log('Password changed successfully');
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (
@@ -153,6 +182,7 @@ function ChangePassword() {
                             fontSize: theme.typography.ButtonTypography.fontSize,
                         }}
                         disabled={isSubmitButtonDisabled()}
+                        onClick={handleSubmit}
                     >
                         SUBMIT
                     </Button>
