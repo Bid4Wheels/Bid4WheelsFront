@@ -19,6 +19,8 @@ function App() {
                 <Routes>
                     <Route path="/signup" Component={SignUp} />
                     <Route path="/login" Component={LogIn} />
+                    <Route path="/validateIdentity" Component={ValidateIdentity} />
+                    <Route path="/changePassword" Component={ChangePassword} />
                     <Route
                         path="/auction/:auctionId"
                         element={
@@ -27,7 +29,6 @@ function App() {
                             </PrivateRoute>
                         }
                     />
-                    <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route
                         path="/newAuction"
                         element={
@@ -36,7 +37,6 @@ function App() {
                             </PrivateRoute>
                         }
                     />
-                    <Route path="/changePassword" Component={ChangePassword} />
                     <Route
                         path="/"
                         element={
