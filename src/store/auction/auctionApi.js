@@ -3,14 +3,11 @@ import { createBaseQuery } from '../baseQuery';
 import { baseUrl } from '../../features/commons/Constants';
 
 export const auctionApi = createApi({
-    reducerPath: 'authenticatedUserApi',
+    reducerPath: 'auctionApi',
     baseQuery: createBaseQuery(`${baseUrl}/auction`),
     endpoints: (builder) => ({
         getAuctionById: builder.query({
-            query: (id) => ({
-                url: `/${id}`,
-                method: 'GET',
-            }),
+            query: (id) => `/${id}`,
         }),
         getAuctionList: builder.query({
             query: (page, size) => ({ url: '/', params: { page, size } }),

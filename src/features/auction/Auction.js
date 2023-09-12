@@ -7,60 +7,61 @@ import {
     differenceInMinutes,
     differenceInSeconds,
 } from 'date-fns';
-import { TechnicalInfo } from './TechnicalInfo';
-import { ImageCarousel } from './ImageCarousel';
-import colors from '../../utils/desgin/Colors';
 import car1 from '../commons/temp/car1.jpeg';
 import car2 from '../commons/temp/car2.jpeg';
 import car3 from '../commons/temp/car3.jpeg';
 import car4 from '../commons/temp/car4.jpeg';
 import car5 from '../commons/temp/car5.jpg';
+import { TechnicalInfo } from './TechnicalInfo';
+import { ImageCarousel } from './ImageCarousel';
+import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 
 export function Auction() {
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
-    const [info, setInfo] = useState({
-        title: '2018 Toyota Camry',
-        tags: ['Sedan', 'Low mileage', 'Great condition', 'One owner'],
-        images: [car1, car2, car3, car4, car5],
-        description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis',
-        brand: 'Toyota',
-        color: 'Black',
-        fuelType: 'Gasoline',
-        basePrice: 10000,
-        year: 2018,
-        mileage: 10000,
-        doors: 4,
-        gearShift: 'Automatic',
-        endDate: new Date('2023-09-14T22:30:00'),
-    });
-    const [user, setUser] = useState({
-        name: 'John Doe',
-        avatar: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-        rating: 4.5,
-    });
-
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
-
+    const images = [car1, car2, car3, car4, car5];
+    const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
+    console.log(data);
     const now = new Date();
-    const timeDifferenceInHours = differenceInHours(info.endDate, now);
-    const timeDifferenceInMinutes = differenceInMinutes(info.endDate, now);
-    const timeDifferenceInSeconds = differenceInSeconds(info.endDate, now);
-    const timeDifferenceInDays = differenceInDays(info.endDate, now);
+    const timeDifferenceInHours = differenceInHours(new Date('2023-09-14T22:30:00'), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date('2023-09-14T22:30:00'), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date('2023-09-14T22:30:00'), now);
+    const timeDifferenceInDays = differenceInDays(new Date('2023-09-14T22:30:00'), now);
 
-    let color = colors.green;
+    let colour = colors.green;
+
+    const {
+        title,
+        description,
+        deadline,
+        basePrice,
+        brand,
+        model,
+        status,
+        milage,
+        gasType,
+        modelYear,
+        color,
+        doorsAmount,
+        gearShiftType,
+        auctionOwnerDTO,
+        auctionHighestBidDTO,
+    } = data;
+
+    const { id: ownerId, name, lastName, profilePicture } = auctionOwnerDTO;
+    console.log(ownerId);
 
     if (timeDifferenceInDays < 0) {
         // Subasta ya terminada (Gris)
-        color = colors.grey;
+        colour = colors.grey;
     } else if (timeDifferenceInDays < 1) {
         // Menos de un día (Amarillo)
-        color = colors.yellow;
+        colour = colors.yellow;
         if (timeDifferenceInHours < 1) {
             // Menos de una hora (Rojo)
-            color = colors.red;
+            colour = colors.red;
         }
     }
 
@@ -129,7 +130,7 @@ export function Auction() {
             <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
-                        {info.title}
+                        {title}
                     </Typography>
                 </Box>
 
@@ -139,11 +140,11 @@ export function Auction() {
                         marginTop: '10px',
                     }}
                 >
-                    <ImageCarousel images={info.images} />
+                    <ImageCarousel images={images} />
                 </Box>
                 <Box
                     sx={{
-                        backgroundColor: color,
+                        backgroundColor: colour,
                         borderRadius: '5px',
                         padding: '6px 15px',
                         width: '95%',
@@ -166,7 +167,7 @@ export function Auction() {
                     spacing={1}
                 >
                     <Typography variant="h5">Tags:</Typography>
-                    {info.tags.map((tag) => (
+                    {tags.map((tag) => (
                         <Grid item key={tag}>
                             <Chip
                                 label={tag}
@@ -179,8 +180,8 @@ export function Auction() {
                             />
                         </Grid>
                     ))}
-                    <Typography sx={{ marginTop: '15px' }}>{info.description}</Typography>
                 </Grid>
+                <Typography sx={{ margin: '15px' }}>{description}</Typography>
                 <Grid
                     container
                     sx={{
@@ -231,7 +232,7 @@ export function Auction() {
                     </Toolbar>
                     <Grid container>
                         {window === 'info' ? (
-                            <TechnicalInfo info={info} user={user} />
+                            <TechnicalInfo info={data} user={auctionOwnerDTO} />
                         ) : (
                             <Typography>Questions & Comments</Typography>
                         )}
