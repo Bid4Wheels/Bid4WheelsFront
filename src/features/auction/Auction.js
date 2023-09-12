@@ -93,8 +93,6 @@ export function Auction() {
 
     const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
 
-    const { id: ownerId, name, lastName, profilePicture } = auctionOwnerDTO;
-
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
     const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
