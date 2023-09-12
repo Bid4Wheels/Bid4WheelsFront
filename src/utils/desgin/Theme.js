@@ -31,6 +31,12 @@ const theme = createTheme({
             dark: colors.water_green,
             contrastText: '#FFFFFF',
         },
+        grey: {
+            main: colors.black_grey,
+            light: colors.black_grey,
+            dark: colors.black_grey,
+            contrastText: '#FFFFFF',
+        },
     },
 });
 
