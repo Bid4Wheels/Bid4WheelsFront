@@ -1,5 +1,16 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Chip, Box, Toolbar, Button, Paper, Skeleton } from '@mui/material';
+import {
+    Grid,
+    Typography,
+    Chip,
+    Box,
+    Toolbar,
+    Button,
+    Paper,
+    Skeleton,
+    Alert,
+    AlertTitle,
+} from '@mui/material';
 import { useParams } from 'react-router';
 import {
     differenceInHours,
@@ -20,58 +31,11 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 export function Auction() {
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
+
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
+
     const images = [car1, car2, car3, car4, car5];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
-    console.log(data);
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(new Date('2023-09-14T22:30:00'), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date('2023-09-14T22:30:00'), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date('2023-09-14T22:30:00'), now);
-    const timeDifferenceInDays = differenceInDays(new Date('2023-09-14T22:30:00'), now);
-
-    let colour = colors.green;
-
-    const {
-        title,
-        description,
-        deadline,
-        basePrice,
-        brand,
-        model,
-        status,
-        milage,
-        gasType,
-        modelYear,
-        color,
-        doorsAmount,
-        gearShiftType,
-        auctionOwnerDTO,
-        auctionHighestBidDTO,
-    } = data;
-
-    const { id: ownerId, name, lastName, profilePicture } = auctionOwnerDTO;
-    console.log(ownerId);
-
-    if (timeDifferenceInDays < 0) {
-        // Subasta ya terminada (Gris)
-        colour = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        // Menos de un día (Amarillo)
-        colour = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            // Menos de una hora (Rojo)
-            colour = colors.red;
-        }
-    }
-
-    if (!id) {
-        return <div>Invalid auction id</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     if (isLoading) {
         return (
@@ -116,6 +80,37 @@ export function Auction() {
         );
     }
 
+    if (error) {
+        return (
+            <div>
+                <Alert severity="error" sx={{ margin: '2rem' }}>
+                    <AlertTitle>Error</AlertTitle>
+                    <strong>{error.data}</strong>
+                </Alert>
+            </div>
+        );
+    }
+
+    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
+
+    const { id: ownerId, name, lastName, profilePicture } = auctionOwnerDTO;
+
+    const now = new Date();
+    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
+    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
+
+    let timerColor = colors.green;
+    if (timeDifferenceInDays < 0) {
+        timerColor = colors.grey;
+    } else if (timeDifferenceInDays < 1) {
+        timerColor = colors.yellow;
+        if (timeDifferenceInHours < 1) {
+            timerColor = colors.red;
+        }
+    }
+
     return (
         <Grid
             container
@@ -130,7 +125,7 @@ export function Auction() {
             <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
-                        {title}
+                        {title.toUpperCase()}
                     </Typography>
                 </Box>
 
@@ -144,7 +139,7 @@ export function Auction() {
                 </Box>
                 <Box
                     sx={{
-                        backgroundColor: colour,
+                        backgroundColor: timerColor,
                         borderRadius: '5px',
                         padding: '6px 15px',
                         width: '95%',
