@@ -49,8 +49,6 @@ function ChangePassword() {
         }
     }
 
-    console.log(userData);
-
     const handleSubmit = async () => {
         const userEmail = getEmail();
         const payload = {
