@@ -83,7 +83,6 @@ const AuctionInformation = ({
                         }}
                         inputProps={{ maxLength: 500 }}
                         sx={{ width: '469px', marginTop: '45px' }}
-                        defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
                         variant="standard"
                         onChange={(e) => {
                             setDescription(e.target.value);
@@ -100,7 +99,7 @@ const AuctionInformation = ({
                             onChange={handleDateChange}
                             slotProps={{ textField: { variant: 'standard' } }}
                             value={selectedDate}
-                            minDate={minimumDate}
+                            minDateTime={minimumDate}
                         />
                     </LocalizationProvider>
                 </Box>
@@ -168,6 +167,7 @@ const AuctionInformation = ({
                                         color="grey"
                                         onClick={() => handleDeleteImage(index)}
                                         sx={{
+                                            padding: '8px',
                                             right: '0px',
                                             width: 21.857,
                                             height: 26.357,
@@ -200,7 +200,7 @@ const AuctionInformation = ({
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginBottom: '96px',
-                    marginTop: '144px',
+                    marginTop: '114px',
                     gap: '30px',
                 }}
             >
