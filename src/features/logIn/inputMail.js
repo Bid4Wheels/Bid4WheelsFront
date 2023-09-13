@@ -4,8 +4,11 @@ import B4W_logo from '../commons/B4W_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { addEmail } from '../../store/user/UserSlice';
 export function inputMail() {
     const nav = useNavigate();
+    const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -80,7 +83,10 @@ export function inputMail() {
                             fontSize: theme.typography.ButtonTypography.fontSize,
                         }}
                         disabled={isButtonDisabled}
-                        onClick={() => nav('/validateIdentity')}
+                        onClick={() => {
+                            dispatch(addEmail({ email }));
+                            nav('/validateIdentity');
+                        }}
                     >
                         CONTINUE
                     </Button>
