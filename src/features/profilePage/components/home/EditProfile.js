@@ -7,6 +7,8 @@ import {
     Stack,
     TextField,
     Typography,
+    Grid,
+    CircularProgress,
 } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -18,7 +20,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
-import { on } from 'events';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -140,7 +141,7 @@ function formToComplete({ userInfo, setUserInfo }) {
         return lastName !== '';
     };
 
-    const [sendValidationCode] = useSendValidationCodeMutation();
+    const [sendValidationCode, { isLoading }] = useSendValidationCodeMutation();
 
     const userData = useSelector(userSelector);
 
@@ -168,6 +169,14 @@ function formToComplete({ userInfo, setUserInfo }) {
             console.error(err);
         }
     };
+
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center">
+                <CircularProgress />
+            </Grid>
+        );
+    }
 
     return (
         <Box>
