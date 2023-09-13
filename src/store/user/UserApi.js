@@ -25,7 +25,14 @@ export const userApi = createApi({
                 body: payload,
             }),
         }),
+        getValidationCode: builder.query({
+            query: (payload) => ({
+                url: '/password',
+                method: 'GET',
+                body: payload,
+            }),
+        }),
     }),
 });
 
-export const { useSignUpMutation, useChangePasswordMutation } = userApi;
+export const { useSignUpMutation, useChangePasswordMutation, useGetValidationCodeQuery } = userApi;

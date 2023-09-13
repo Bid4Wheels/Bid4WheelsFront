@@ -3,8 +3,53 @@ import B4W_logo from '../commons/B4W_logo.svg';
 import React from 'react';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/UserSlice';
+import { useGetValidationCodeQuery } from '../../store/user/UserApi';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 function ValidateIdentity() {
+    const [validationCode, setValidationCode] = useState('');
+    const navigate = useNavigate();
+    const userData = useSelector(userSelector);
+
+    const [getValidationCode] = useGetValidationCodeQuery();
+
+    function getEmail() {
+        if (userData.userEmail !== null) {
+            return userData.userEmail;
+        }
+    }
+
+    const handleCodeChange = (event) => {
+        setValidationCode(event.target.value);
+    };
+
+    const handleContinueClick = async () => {
+        const userEmail = getEmail();
+        const payload = {
+            email: userEmail,
+            code: validationCode,
+        };
+        try {
+            const response = await getValidationCode(payload).unwrap();
+            if (response === 200) {
+                navigate('/changePassword');
+            }
+            if (response === 400) {
+                console.log('Invalid code'); //change to alert
+                setValidationCode('');
+            }
+            if (response === 404) {
+                console.log('Email not found'); //change to alert
+                navigate('/login');
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
@@ -39,6 +84,8 @@ function ValidateIdentity() {
                             disableUnderline
                             fullWidth
                             autoFocus
+                            value={validationCode}
+                            onChange={handleCodeChange}
                             inputProps={{ maxLength: 6 }}
                             sx={{
                                 border: '2px solid',
@@ -64,6 +111,7 @@ function ValidateIdentity() {
                             fontFamily: theme.typography.fontFamily,
                             fontSize: theme.typography.ButtonTypography.fontSize,
                         }}
+                        onClick={handleContinueClick}
                     >
                         CONTINUE
                     </Button>
