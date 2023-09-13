@@ -14,7 +14,7 @@ function ValidateIdentity() {
     const navigate = useNavigate();
     const userData = useSelector(userSelector);
 
-    const [getValidationCode] = useGetValidationCodeQuery();
+    const [validateCode] = useGetValidationCodeQuery();
 
     function getEmail() {
         if (userData.userEmail !== null) {
@@ -33,7 +33,7 @@ function ValidateIdentity() {
             code: validationCode,
         };
         try {
-            const response = await getValidationCode(payload).unwrap();
+            const response = await validateCode(payload).unwrap();
             if (response === 200) {
                 navigate('/changePassword');
             }
