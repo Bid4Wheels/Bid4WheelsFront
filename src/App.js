@@ -5,12 +5,12 @@ import { SignUp } from './features/signUp/SignUp';
 import { LogIn } from './features/logIn/logIn';
 import { ProfilePage } from './features/profilePage/components/home/ProfilePage';
 import { Auction } from './features/auction/Auction';
-import Header from './features/commons/Header';
 import ValidateIdentity from './features/logIn/validateIdentity';
 import CreateAuction from './features/newAuction/CreateAuction';
 import { Dashboard } from './features/dashboard/Dashboard';
 import { PrivateRoute } from './features/commons/PrivateRoute';
 import ChangePassword from './features/logIn/changePassword';
+import { RoutesWithHeader } from './features/commons/RoutesWithHeader';
 
 function App() {
     return (
@@ -21,55 +21,59 @@ function App() {
                     <Route path="/login" Component={LogIn} />
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/changePassword" Component={ChangePassword} />
-                    <Route
-                        path="/auction/:auctionId"
-                        element={
-                            <PrivateRoute>
-                                <Auction></Auction>
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/newAuction"
-                        element={
-                            <PrivateRoute>
-                                <CreateAuction></CreateAuction>
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/"
-                        element={
-                            <PrivateRoute>
-                                <Dashboard />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/auction/:auctionId"
-                        element={
-                            <PrivateRoute>
-                                <Auction></Auction>
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/user/:userId"
-                        element={
-                            <PrivateRoute>
-                                <ProfilePage />
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
-                        path="/user"
-                        Component={
-                            <PrivateRoute>
-                                <ProfilePage />
-                            </PrivateRoute>
-                        }
-                    />
                 </Routes>
+                <RoutesWithHeader>
+                    <Routes>
+                        <Route
+                            path="/auction/:auctionId"
+                            element={
+                                <PrivateRoute>
+                                    <Auction></Auction>
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/newAuction"
+                            element={
+                                <PrivateRoute>
+                                    <CreateAuction></CreateAuction>
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/"
+                            element={
+                                <PrivateRoute>
+                                    <Dashboard />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/auction/:auctionId"
+                            element={
+                                <PrivateRoute>
+                                    <Auction></Auction>
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/user/:userId"
+                            element={
+                                <PrivateRoute>
+                                    <ProfilePage />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            path="/user"
+                            element={
+                                <PrivateRoute>
+                                    <ProfilePage />
+                                </PrivateRoute>
+                            }
+                        />
+                    </Routes>
+                </RoutesWithHeader>
             </BrowserRouter>
         </div>
     );
