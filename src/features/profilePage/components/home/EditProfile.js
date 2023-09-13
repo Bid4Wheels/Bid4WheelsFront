@@ -14,6 +14,7 @@ import colors from '../../../../utils/desgin/Colors';
 import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
+import { useNavigate } from 'react-router-dom';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -77,6 +78,7 @@ export function EditProfileModal({ open, onClose }) {
 function formToComplete({ userInfo, setUserInfo }) {
     const [updateUser] = useUpdateUserMutation();
     const userId = useParams().userId;
+    const navigate = useNavigate();
     console.log(userId);
     const handleConfirmButton = async (event) => {
         event.preventDefault();
@@ -198,6 +200,7 @@ function formToComplete({ userInfo, setUserInfo }) {
                             color: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
                         }}
+                        onClick={() => navigate('/changePassword')}
                     >
                         CHANGE PASSWORD
                     </Button>
