@@ -1,10 +1,14 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from '../../features/commons/Constants';
 import { createBaseQuery } from '../baseQuery';
+import { baseUrl } from '../../features/commons/Constants';
 
-export const cardApiSlice = createApi({
+export const auctionApi = createApi({
+    reducerPath: 'auctionApi',
     baseQuery: createBaseQuery(`${baseUrl}/auction`),
     endpoints: (builder) => ({
+        getAuctionById: builder.query({
+            query: (id) => `/${id}`,
+        }),
         getAuctionList: builder.query({
             query: (page, size) => ({ url: '/', params: { page, size } }),
             forceRefetch({ currentArg, previousArg }) {
@@ -36,4 +40,5 @@ export const cardApiSlice = createApi({
     }),
 });
 
-export const { useGetAuctionListQuery, useGetFilteredAuctionsMutation } = cardApiSlice;
+export const { useGetAuctionByIdQuery, useGetFilteredAuctionsMutation, useGetAuctionListQuery } =
+    auctionApi;

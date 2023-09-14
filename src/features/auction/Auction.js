@@ -1,5 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Chip, Box, Toolbar, Button, Paper } from '@mui/material';
+import React, { useState } from 'react';
+import {
+    Grid,
+    Typography,
+    Chip,
+    Box,
+    Toolbar,
+    Button,
+    Paper,
+    Skeleton,
+    Alert,
+    AlertTitle,
+} from '@mui/material';
 import { useParams } from 'react-router';
 import {
     differenceInHours,
@@ -7,62 +18,95 @@ import {
     differenceInMinutes,
     differenceInSeconds,
 } from 'date-fns';
-import { TechnicalInfo } from './TechnicalInfo';
-import { ImageCarousel } from './ImageCarousel';
-import colors from '../../utils/desgin/Colors';
 import car1 from '../commons/temp/car1.jpeg';
 import car2 from '../commons/temp/car2.jpeg';
 import car3 from '../commons/temp/car3.jpeg';
 import car4 from '../commons/temp/car4.jpeg';
 import car5 from '../commons/temp/car5.jpg';
+import { TechnicalInfo } from './TechnicalInfo';
+import { ImageCarousel } from './ImageCarousel';
+import colors from '../../utils/desgin/Colors';
+import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 
 export function Auction() {
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
-    const [info, setInfo] = useState({
-        title: '2018 Toyota Camry',
-        tags: ['Sedan', 'Low mileage', 'Great condition', 'One owner'],
-        images: [car1, car2, car3, car4, car5],
-        description:
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec euismod, nisl eget aliquam ultricies, nunc nisl aliquet nunc, vitae aliquam nis',
-        brand: 'Toyota',
-        color: 'Black',
-        fuelType: 'Gasoline',
-        basePrice: 10000,
-        year: 2018,
-        mileage: 10000,
-        doors: 4,
-        gearShift: 'Automatic',
-        endDate: new Date('2023-09-07T22:30:00'),
-    });
-    const [user, setUser] = useState({
-        name: 'John Doe',
-        avatar: 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
-        rating: 4.5,
-    });
 
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(info.endDate, now);
-    const timeDifferenceInMinutes = differenceInMinutes(info.endDate, now);
-    const timeDifferenceInSeconds = differenceInSeconds(info.endDate, now);
-    const timeDifferenceInDays = differenceInDays(info.endDate, now);
+    const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
-    let color = colors.green;
+    const images = [car1, car2, car3, car4, car5];
+    const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
-    if (timeDifferenceInDays < 0) {
-        // Subasta ya terminada (Gris)
-        color = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        // Menos de un día (Amarillo)
-        color = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            // Menos de una hora (Rojo)
-            color = colors.red;
-        }
+    if (isLoading) {
+        return (
+            <Grid
+                container
+                sx={{
+                    gap: 2,
+                    padding: '30px',
+                    paddingTop: '10px',
+                    justifyContent: 'space-between',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                }}
+            >
+                <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
+                    <Box>
+                        <Typography variant="h1">
+                            <Skeleton />
+                        </Typography>
+                    </Box>
+
+                    <Box item>
+                        <Skeleton variant="rectangular" width="100%" height="300px" />
+                    </Box>
+                    <Box
+                        item
+                        sx={{
+                            marginTop: '10px',
+                        }}
+                    >
+                        <Skeleton variant="rectangular" width="100%" height="100px" />
+                    </Box>
+                    <Box
+                        item
+                        sx={{
+                            marginTop: '10px',
+                        }}
+                    >
+                        <Skeleton variant="rectangular" width="100%" height="300px" />
+                    </Box>
+                </Grid>
+            </Grid>
+        );
     }
 
-    if (!id) {
-        return <div>Invalid auction id</div>;
+    if (error) {
+        return (
+            <div>
+                <Alert severity="error" sx={{ margin: '2rem' }}>
+                    <AlertTitle>Error</AlertTitle>
+                    <strong>{error.data}</strong>
+                </Alert>
+            </div>
+        );
+    }
+
+    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
+
+    const now = new Date();
+    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
+    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
+
+    let timerColor = colors.green;
+    if (timeDifferenceInDays < 0) {
+        timerColor = colors.grey;
+    } else if (timeDifferenceInDays < 1) {
+        timerColor = colors.yellow;
+        if (timeDifferenceInHours < 1) {
+            timerColor = colors.red;
+        }
     }
 
     return (
@@ -79,7 +123,7 @@ export function Auction() {
             <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
-                        2018 Toyota Camry
+                        {title.toUpperCase()}
                     </Typography>
                 </Box>
 
@@ -89,11 +133,11 @@ export function Auction() {
                         marginTop: '10px',
                     }}
                 >
-                    <ImageCarousel images={info.images} />
+                    <ImageCarousel images={images} />
                 </Box>
                 <Box
                     sx={{
-                        backgroundColor: color,
+                        backgroundColor: timerColor,
                         borderRadius: '5px',
                         padding: '6px 15px',
                         width: '95%',
@@ -116,7 +160,7 @@ export function Auction() {
                     spacing={1}
                 >
                     <Typography variant="h5">Tags:</Typography>
-                    {info.tags.map((tag) => (
+                    {tags.map((tag) => (
                         <Grid item key={tag}>
                             <Chip
                                 label={tag}
@@ -129,8 +173,8 @@ export function Auction() {
                             />
                         </Grid>
                     ))}
-                    <Typography sx={{ marginTop: '15px' }}>{info.description}</Typography>
                 </Grid>
+                <Typography sx={{ margin: '15px' }}>{description}</Typography>
                 <Grid
                     container
                     sx={{
@@ -181,7 +225,7 @@ export function Auction() {
                     </Toolbar>
                     <Grid container>
                         {window === 'info' ? (
-                            <TechnicalInfo info={info} user={user} />
+                            <TechnicalInfo info={data} user={auctionOwnerDTO} />
                         ) : (
                             <Typography>Questions & Comments</Typography>
                         )}

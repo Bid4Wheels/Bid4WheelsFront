@@ -4,17 +4,18 @@ import userReducer from './user/UserSlice';
 import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
 import { authenticatedUserApi } from './user/authenticatedUserApi';
+import { auctionApi } from './auction/auctionApi';
 import storage from 'redux-persist/lib/storage';
 import { tagsApiSlice } from './auction/tagsApi';
-import { cardApiSlice } from './auction/auctionApi';
 
 const reducers = combineReducers({
     user: userReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
+    [auctionApi.reducerPath]: auctionApi.reducer,
     [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
-    [cardApiSlice.reducerPath]: cardApiSlice.reducer,
     [tagsApiSlice.reducerPath]: tagsApiSlice.reducer,
+    [auctionApi.reducerPath]: auctionApi.reducer,
 });
 
 const persistConfig = {
@@ -32,6 +33,6 @@ export const store = configureStore({
             authApi.middleware,
             authenticatedUserApi.middleware,
             tagsApiSlice.middleware,
-            cardApiSlice.middleware,
+            auctionApi.middleware,
         ),
 });

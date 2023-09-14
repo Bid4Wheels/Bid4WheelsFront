@@ -5,6 +5,7 @@ const colors = {
     yellow: '#FFCD4B',
     water_green: '#00d591',
     on_stand_water_green: '#009f76',
+    black_grey: '#A9A9A9',
 };
 
 export default colors;
