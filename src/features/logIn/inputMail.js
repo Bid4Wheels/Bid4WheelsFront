@@ -6,6 +6,7 @@ import colors from '../../utils/desgin/Colors';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { addEmail } from '../../store/user/UserSlice';
+import { validateEmail } from '../../utils/validationFunctions';
 export function inputMail() {
     const nav = useNavigate();
     const dispatch = useDispatch();
@@ -16,7 +17,7 @@ export function inputMail() {
         const emailValue = e.target.value;
         setEmail(emailValue);
 
-        if (!emailValue || !/^\S+@\S+\.\S+$/.test(emailValue)) {
+        if (!emailValue || !validateEmail(emailValue)) {
             setEmailError('Invalid email format.');
             setIsButtonDisabled(true);
         } else {
