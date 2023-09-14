@@ -10,9 +10,11 @@ import CreateAuction from './features/newAuction/CreateAuction';
 import { Dashboard } from './features/dashboard/Dashboard';
 import { PrivateRoute } from './features/commons/PrivateRoute';
 import ChangePassword from './features/logIn/changePassword';
-import { RoutesWithHeader } from './features/commons/RoutesWithHeader';
+import { RouteWithHeader } from './features/commons/RouteWithHeader';
 import { inputMail } from './features/logIn/inputMail';
 
+//if you need to make a route private insert PrivateRoute in the element of the route,
+// if you need to have the header, use RouteWithHeader in the element of the route, in case of needing both use first PrivateRoute
 function App() {
     return (
         <div>
@@ -27,9 +29,9 @@ function App() {
                         path="/auction/:auctionId"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <Auction></Auction>
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />
@@ -37,9 +39,9 @@ function App() {
                         path="/newAuction"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <CreateAuction></CreateAuction>
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />
@@ -47,9 +49,9 @@ function App() {
                         path="/"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <Dashboard />
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />
@@ -57,9 +59,9 @@ function App() {
                         path="/auction/:auctionId"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <Auction></Auction>
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />
@@ -67,9 +69,9 @@ function App() {
                         path="/user/:userId"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <ProfilePage />
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />
@@ -77,9 +79,9 @@ function App() {
                         path="/user"
                         element={
                             <PrivateRoute>
-                                <RoutesWithHeader>
+                                <RouteWithHeader>
                                     <ProfilePage />
-                                </RoutesWithHeader>
+                                </RouteWithHeader>
                             </PrivateRoute>
                         }
                     />

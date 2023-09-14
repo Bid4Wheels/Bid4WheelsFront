@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 
-export const RoutesWithHeader = ({ children }) => {
+export const RouteWithHeader = ({ children }) => {
     return (
         <>
             <Header />
