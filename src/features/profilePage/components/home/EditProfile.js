@@ -16,7 +16,7 @@ import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
 
-export function EditProfileModal({ open, onClose }) {
+export function EditProfileModal({ open, onClose, imgUrl }) {
     const modalStyle = {
         position: 'absolute',
         top: '40%',
@@ -66,7 +66,7 @@ export function EditProfileModal({ open, onClose }) {
                         </IconButton>
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
-                        {uploadImage()}
+                        {uploadImage({ imgUrl })}
                         {formToComplete({ userInfo, setUserInfo })}
                     </Box>
                 </Box>
@@ -210,10 +210,13 @@ function formToComplete({ userInfo, setUserInfo }) {
     );
 }
 
-function uploadImage() {
+function uploadImage({ imgUrl }) {
     return (
         <Box marginRight={5} marginLeft={6}>
-            <Avatar sx={{ width: 150, height: 150, marginBottom: 2 }}></Avatar>
+            <Avatar
+                src={imgUrl === 'default' ? null : imgUrl}
+                sx={{ width: 150, height: 150, marginBottom: 2 }}
+            ></Avatar>
             <Button
                 variant="contained"
                 component="label"

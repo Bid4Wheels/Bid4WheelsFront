@@ -121,7 +121,11 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone, imgUrl }) => {
                         <div className="EditText">Edit</div>
                         <EditIcon style={{ color: 'white' }} />
                     </Button>
-                    <EditProfileModal open={openEditModal} onClose={handleCloseEditModal} />
+                    <EditProfileModal
+                        open={openEditModal}
+                        onClose={handleCloseEditModal}
+                        imgUrl={imgUrl}
+                    />
                 </Button>
             )}
         </Box>
