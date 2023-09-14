@@ -10,6 +10,7 @@ import CreateAuction from './features/newAuction/CreateAuction';
 import { Dashboard } from './features/dashboard/Dashboard';
 import { PrivateRoute } from './features/commons/PrivateRoute';
 import ChangePassword from './features/logIn/changePassword';
+import { inputMail } from './features/logIn/inputMail';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                             </PrivateRoute>
                         }
                     />
+                    <Route path="/changePass" Component={inputMail} />
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route
                         path="/newAuction"
