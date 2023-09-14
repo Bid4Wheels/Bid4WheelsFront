@@ -1,10 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseUrl } from '../../features/commons/Constants';
+import { createBaseQuery } from '../baseQuery';
 
 export const tagsApiSlice = createApi({
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}/tags`,
-    }),
+    baseQuery: createBaseQuery(`${baseUrl}/tag`),
     endpoints: (builder) => ({
         getAllTags: builder.query({
             query: () => ({ url: '/all', method: 'GET' }),

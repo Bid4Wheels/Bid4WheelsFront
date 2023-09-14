@@ -1,10 +1,9 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { baseUrl } from '../../features/commons/Constants';
+import { createBaseQuery } from '../baseQuery';
 
 export const cardApiSlice = createApi({
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}/auction`,
-    }),
+    baseQuery: createBaseQuery(`${baseUrl}/auction`),
     endpoints: (builder) => ({
         getAuctionList: builder.query({
             query: (page, size) => ({ url: '/', params: { page, size } }),
@@ -18,8 +17,12 @@ export const cardApiSlice = createApi({
                 currentCache.push(...newItems);
             },
         }),
-        getFilteredAuctions: builder.query({
-            query: (page, size, filter) => ({ url: '/filter', params: { page, size, filter } }),
+        getFilteredAuctions: builder.mutation({
+            query: ({ filter, page, size }) => ({
+                url: `/filter?page=${page}&size=${size}`,
+                method: 'POST',
+                body: filter,
+            }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -33,4 +36,4 @@ export const cardApiSlice = createApi({
     }),
 });
 
-export const { useGetAuctionListQuery, useGetFilteredAuctionsQuery } = cardApiSlice;
+export const { useGetAuctionListQuery, useGetFilteredAuctionsMutation } = cardApiSlice;
