@@ -5,7 +5,6 @@ import { SignUp } from './features/signUp/SignUp';
 import { LogIn } from './features/logIn/logIn';
 import { ProfilePage } from './features/profilePage/components/home/ProfilePage';
 import { Auction } from './features/auction/Auction';
-import Header from './features/commons/Header';
 import ValidateIdentity from './features/logIn/validateIdentity';
 import CreateAuction from './features/newAuction/CreateAuction';
 import { Dashboard } from './features/dashboard/Dashboard';
