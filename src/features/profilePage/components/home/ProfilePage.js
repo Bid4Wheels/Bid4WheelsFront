@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Box } from '@mui/material';
+import { Button, Box, Typography } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
+import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
 
 export const ProfilePage = () => {
     //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
@@ -87,6 +88,32 @@ export const ProfilePage = () => {
                     Email={userProfileData.mail}
                     Phone={userProfileData.phone}
                 />
+                <Box
+                    className="AuctionLists"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column-reverse',
+                        paddingLeft: '5%',
+                        height: '100%',
+                        width: '60%',
+                    }}
+                >
+                    <Box
+                        className="PublishedAuctions"
+                        sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
+                    >
+                        <Typography
+                            sx={{
+                                color: 'black',
+                                fontSize: theme.typography.Medium.fontSize,
+                                paddingLeft: '2.5%',
+                            }}
+                        >
+                            Published auctions
+                        </Typography>
+                        <AuctionHorizontalCardList></AuctionHorizontalCardList>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );
