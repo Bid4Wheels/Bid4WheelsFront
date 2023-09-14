@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Grid, TextField, Typography, CircularProgress } from '@mui/material';
 import B4W_logo from '../commons/B4W_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
@@ -14,7 +14,7 @@ export function inputMail() {
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-    const [sendValidationCode] = useSendValidationCodeMutation();
+    const [sendValidationCode, { isLoading }] = useSendValidationCodeMutation();
     const userData = useSelector(userSelector);
 
     function handleEmailChange(e) {
@@ -50,6 +50,14 @@ export function inputMail() {
             console.error(err);
         }
     };
+
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
+                <CircularProgress />
+            </Grid>
+        );
+    }
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
