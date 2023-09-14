@@ -34,7 +34,7 @@ const Header = () => {
     };
 
     const handleCreateAuctionClick = () => {
-        navigate('/auction/new');
+        navigate('/newAuction');
     };
 
     return (

@@ -5,6 +5,7 @@ import {
     Button,
     Checkbox,
     Chip,
+    CircularProgress,
     FormControlLabel,
     FormGroup,
     Grid,
@@ -12,6 +13,7 @@ import {
     Typography,
 } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
+import { useGetAllTagsQuery } from '../../store/auction/tagsApi';
 import {
     BRANDS,
     COLORS,
@@ -19,14 +21,15 @@ import {
     CAR_DOORS,
     GEAR_SHIFT_TYPES,
 } from '../../utils/mocks/constants';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-export function Filter() {
-    const [selectedCarDoors, setSelectedCarDoors] = useState([]);
-    const [selectedGearShiftTypes, setSelectedGearShiftTypes] = useState([]);
-    const [selectedBrand, setSelectedBrand] = useState([]);
-    const [selectedColor, setSelectedColor] = useState([]);
-    const [selectedFuelType, setSelectedFuelType] = useState([]);
-    const [selectedModel, setSelectedModel] = useState([]);
+export function Filter({ filterFunct, page, size }) {
+    const [selectedCarDoors, setSelectedCarDoors] = useState('');
+    const [selectedGearShiftType, setSelectedGearShiftType] = useState([]);
+    const [selectedBrand, setSelectedBrand] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
+    const [selectedFuelType, setSelectedFuelType] = useState('');
+    const [selectedModel, setSelectedModel] = useState('');
     const [selectedPriceMin, setSelectedPriceMin] = useState('');
     const [selectedPriceMax, setSelectedPriceMax] = useState('');
     const [selectedYearsMin, setSelectedYearsMin] = useState('');
@@ -36,19 +39,61 @@ export function Filter() {
     const [selectedTags, setSelectedTags] = useState([]);
 
     const handleApplyFilters = () => {
-        console.log('Selected Car Doors:', selectedCarDoors);
-        console.log('Selected Gear Shift Types:', selectedGearShiftTypes);
-        console.log('Selected Brand:', selectedBrand);
-        console.log('Selected Color:', selectedColor);
-        console.log('Selected Fuel Type:', selectedFuelType);
-        console.log('Selected Model:', selectedModel);
-        console.log('Selected Price Min:', selectedPriceMin);
-        console.log('Selected Price Max:', selectedPriceMax);
-        console.log('Selected Years Min:', selectedYearsMin);
-        console.log('Selected Years Max:', selectedYearsMax);
-        console.log('Selected Mileage Min:', selectedMileageMin);
-        console.log('Selected Mileage Max:', selectedMileageMax);
-        console.log('Selected Tags:', selectedTags);
+        const filter = {};
+
+        if (selectedMileageMin !== '' && selectedMileageMin !== null) {
+            filter.milageMin = parseInt(selectedMileageMin);
+        }
+
+        if (selectedMileageMax !== '' && selectedMileageMax !== null) {
+            filter.milageMax = parseInt(selectedMileageMax);
+        }
+
+        if (selectedYearsMin !== '' && selectedYearsMin !== null) {
+            filter.modelYearMin = parseInt(selectedYearsMin);
+        }
+
+        if (selectedYearsMax !== '' && selectedYearsMax !== null) {
+            filter.modelYearMax = parseInt(selectedYearsMax);
+        }
+
+        if (selectedPriceMin !== '' && selectedPriceMin !== null) {
+            filter.priceMin = parseInt(selectedPriceMin);
+        }
+
+        if (selectedPriceMax !== '' && selectedPriceMax !== null) {
+            filter.priceMax = parseInt(selectedPriceMax);
+        }
+
+        if (selectedBrand !== '' && selectedBrand !== null) {
+            filter.brand = selectedBrand.toUpperCase();
+        }
+
+        if (selectedColor !== '' && selectedColor !== null) {
+            filter.color = selectedColor.toUpperCase();
+        }
+
+        if (selectedFuelType !== '' && selectedFuelType !== null) {
+            filter.gasType = selectedFuelType.toUpperCase();
+        }
+
+        if (selectedCarDoors !== '' && selectedCarDoors !== null) {
+            filter.doorsAmount = parseInt(selectedCarDoors);
+        }
+
+        if (selectedGearShiftType.length > 0 && selectedGearShiftType !== null) {
+            filter.gearShiftType = selectedGearShiftType[0].toUpperCase();
+        }
+
+        if (selectedModel !== '' && selectedModel !== null) {
+            filter.model = selectedModel.toUpperCase();
+        }
+
+        //if (selectedTags.length > 0 && selectedTags !== null) {
+        //    filter.tags = selectedTags;
+        //} tags aren't yet implemented for the filter
+
+        filterFunct(filter);
     };
 
     return (
@@ -61,6 +106,7 @@ export function Filter() {
                 padding: '20px',
                 gap: '20px',
                 marginTop: '10px',
+                marginBottom: '25px',
             }}
         >
             <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -145,8 +191,8 @@ export function Filter() {
                 {customCheckBoxMapping(
                     'Gear Shift Type',
                     GEAR_SHIFT_TYPES,
-                    selectedGearShiftTypes,
-                    setSelectedGearShiftTypes,
+                    selectedGearShiftType,
+                    setSelectedGearShiftType,
                 )}
             </Box>
         </Grid>
@@ -243,10 +289,14 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
 }
 
 function customTagsAutocomplete(selectedTags, setSelectedTags) {
+    const { data, isLoading, isError } = useGetAllTagsQuery();
+
+    const options = data?.map((tag) => tag.tagName) || [];
+
     return (
         <Autocomplete
             multiple
-            freeSolo
+            id="tags-standard"
             color="water_green"
             sx={{
                 width: '95%',
@@ -260,10 +310,9 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                     color: colors.water_green,
                 },
             }}
-            id="tags-standard"
-            options={auxList.map((option) => option)}
             value={selectedTags}
             onChange={(event, value) => setSelectedTags(value)}
+            options={options}
             renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
@@ -275,7 +324,28 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                 ))
             }
             renderInput={(params) => (
-                <TextField {...params} variant="standard" label="Tags" placeholder="Tag" />
+                <TextField
+                    {...params}
+                    variant="standard"
+                    label="Tags"
+                    placeholder="Tag"
+                    InputProps={{
+                        ...params.InputProps,
+                        endAdornment: isLoading ? (
+                            <CircularProgress
+                                sx={{
+                                    color: 'inherit',
+                                    position: 'absolute',
+                                    top: '5%',
+                                    right: '5%',
+                                }}
+                                size={22}
+                            />
+                        ) : isError ? (
+                            <ErrorOutlineIcon color="inherit" />
+                        ) : null,
+                    }}
+                />
             )}
         />
     );
@@ -331,5 +401,3 @@ function customCheckBoxMapping(title, opts, selectedValues, setSelectedValues) {
         </Grid>
     );
 }
-
-const auxList = ['test1', 'test2', 'test3'];
