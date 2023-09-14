@@ -67,12 +67,10 @@ export function Filter({ filterFunct, page, size }) {
 
         if (selectedBrand !== '' && selectedBrand !== null) {
             filter.brand = selectedBrand.toUpperCase();
-            console.log(filter.brand);
         }
 
         if (selectedColor !== '' && selectedColor !== null) {
             filter.color = selectedColor.toUpperCase();
-            console.log(filter.color);
         }
 
         if (selectedFuelType !== '' && selectedFuelType !== null) {
@@ -94,8 +92,6 @@ export function Filter({ filterFunct, page, size }) {
         //if (selectedTags.length > 0 && selectedTags !== null) {
         //    filter.tags = selectedTags;
         //} tags aren't yet implemented for the filter
-
-        console.log({ filter, page, size });
 
         filterFunct(filter);
     };
@@ -343,18 +339,10 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                                     top: '5%',
                                     right: '5%',
                                 }}
-                                onClick={() => {
-                                    console.log(options);
-                                }}
                                 size={22}
                             />
                         ) : isError ? (
-                            <ErrorOutlineIcon
-                                color="inherit"
-                                onClick={() => {
-                                    console.log(options);
-                                }}
-                            />
+                            <ErrorOutlineIcon color="inherit" />
                         ) : null,
                     }}
                 />
