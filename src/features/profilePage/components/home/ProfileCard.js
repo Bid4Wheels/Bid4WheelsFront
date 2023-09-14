@@ -7,7 +7,7 @@ import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { EditProfileModal } from './EditProfile';
 
-export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
+export const ProfileCard = ({ canEdit, Username, Email, Phone, imgUrl }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
@@ -28,7 +28,10 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
                 justifyContent: 'center',
             }}
         >
-            <Avatar sx={{ width: 274, height: 274, marginBottom: 2 }}></Avatar>
+            <Avatar
+                src={imgUrl === 'default' ? null : imgUrl}
+                sx={{ width: 274, height: 274, marginBottom: 2 }}
+            ></Avatar>
             <Typography
                 variant="h4"
                 sx={{

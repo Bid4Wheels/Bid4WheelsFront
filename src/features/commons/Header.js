@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PersonIcon from '@mui/icons-material/Person';
 import bid4wheels_logo from '../commons/bid4wheels_logo.svg';
 import colors from '../../utils/desgin/Colors';
@@ -10,9 +10,6 @@ import { removeUser } from '../../store/user/UserSlice';
 const Header = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const user = useSelector((state) => state.user);
-    const userId = user.userId;
-    //const token = user.token;
 
     const handleLogoClick = () => {
         navigate('/');
@@ -26,7 +23,7 @@ const Header = () => {
     };
 
     const handleAccountClick = () => {
-        navigate(`/user/${userId}`);
+        navigate(`/user`);
     };
 
     const handleAuctionsClick = () => {
