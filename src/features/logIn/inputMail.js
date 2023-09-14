@@ -4,15 +4,19 @@ import B4W_logo from '../commons/B4W_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { addEmail } from '../../store/user/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addEmail, userSelector } from '../../store/user/UserSlice';
 import { validateEmail } from '../../utils/validationFunctions';
+import { useSendValidationCodeMutation } from '../../store/user/UserApi';
 export function inputMail() {
     const nav = useNavigate();
     const dispatch = useDispatch();
     const [email, setEmail] = useState('');
     const [emailError, setEmailError] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+    const [sendValidationCode] = useSendValidationCodeMutation();
+    const userData = useSelector(userSelector);
+
     function handleEmailChange(e) {
         const emailValue = e.target.value;
         setEmail(emailValue);
@@ -25,6 +29,27 @@ export function inputMail() {
             setIsButtonDisabled(false);
         }
     }
+
+    dispatch(addEmail({ email }));
+
+    const handleContinueClick = async () => {
+        const userEmail = userData.userEmail;
+        const payload = {
+            email: userEmail,
+        };
+        try {
+            await sendValidationCode(payload)
+                .unwrap()
+                .then(
+                    () => {
+                        nav('/validateIdentity');
+                    },
+                    (err) => console.log(err),
+                );
+        } catch (err) {
+            console.error(err);
+        }
+    };
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
@@ -84,10 +109,7 @@ export function inputMail() {
                             fontSize: theme.typography.ButtonTypography.fontSize,
                         }}
                         disabled={isButtonDisabled}
-                        onClick={() => {
-                            dispatch(addEmail({ email }));
-                            nav('/validateIdentity');
-                        }}
+                        onClick={handleContinueClick}
                     >
                         CONTINUE
                     </Button>
