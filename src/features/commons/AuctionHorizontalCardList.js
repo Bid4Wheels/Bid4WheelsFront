@@ -3,6 +3,7 @@ import AuctionCard from './AuctionCard';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 
 const AuctionHorizontalCardList = ({ auctionList }) => {
+    const tags = ['Luxury', 'Sedan', 'Auction'];
     const [auctions, setAuctions] = useState([
         {
             endDate: new Date('2023-09-10T18:30:00'),
@@ -73,10 +74,10 @@ const AuctionHorizontalCardList = ({ auctionList }) => {
                     {auctions.map((auction, index) => (
                         <AuctionCard
                             key={index}
-                            endDate={auction.endDate}
-                            image={auction.image}
-                            carName={auction.carName}
-                            tags={auction.tags}
+                            endDate={auction.deadline}
+                            image={auction.firstImageUrl}
+                            carName={auction.title}
+                            tags={tags}
                         />
                     ))}
                 </div>

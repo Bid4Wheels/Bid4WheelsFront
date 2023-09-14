@@ -42,7 +42,7 @@ export const ProfilePage = () => {
     const [userAuctionsData, setUserAuctionsData] = useState([]);
     useEffect(() => {
         if (!auctionsLoading && !auctionsIsError) {
-            setUserAuctionsData(userAuctions);
+            setUserAuctionsData(userAuctions.content);
         }
     });
 
