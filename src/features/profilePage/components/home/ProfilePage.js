@@ -6,7 +6,7 @@ import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
 import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
-import { useGetAuctionByIdQuery } from '../../../../store/auction/auctionApi';
+import { useGetAuctionsByUserIdQuery } from '../../../../store/auction/auctionApi';
 
 export const ProfilePage = () => {
     //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
@@ -16,12 +16,6 @@ export const ProfilePage = () => {
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
     const { data: userData, isLoading, isError } = useGetUserByIdQuery(userId);
-    const {
-        data: userAuctions,
-        isLoading: auctionsLoading,
-        isError: auctionsIsError,
-    } = useGetAuctionByIdQuery(userId);
-    const [userAuctionsData, setUserAuctionsData] = useState([]);
     const [userProfileData, setUserProfileData] = useState({
         username: '',
         mail: '',
@@ -39,9 +33,16 @@ export const ProfilePage = () => {
             });
         }
     }, [userData, isLoading, isError]);
+
+    const {
+        data: userAuctions,
+        isLoading: auctionsLoading,
+        isError: auctionsIsError,
+    } = useGetAuctionsByUserIdQuery(userId);
+    const [userAuctionsData, setUserAuctionsData] = useState([]);
     useEffect(() => {
         if (!auctionsLoading && !auctionsIsError) {
-            setUserAuctionsData(userData);
+            setUserAuctionsData(userAuctions);
         }
     });
 
@@ -124,7 +125,7 @@ export const ProfilePage = () => {
                             Published auctions
                         </Typography>
                         <AuctionHorizontalCardList
-                            auctionList={userAuctions}
+                            auctionList={userAuctionsData}
                         ></AuctionHorizontalCardList>
                     </Box>
                 </Box>

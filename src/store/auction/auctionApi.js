@@ -37,8 +37,15 @@ export const auctionApi = createApi({
                 currentCache.push(...newItems);
             },
         }),
+        getAuctionsByUserId: builder.query({
+            query: (userId) => `/user/${userId}`,
+        }),
     }),
 });
 
-export const { useGetAuctionByIdQuery, useGetFilteredAuctionsMutation, useGetAuctionListQuery } =
-    auctionApi;
+export const {
+    useGetAuctionByIdQuery,
+    useGetFilteredAuctionsMutation,
+    useGetAuctionListQuery,
+    useGetAuctionsByUserIdQuery,
+} = auctionApi;
