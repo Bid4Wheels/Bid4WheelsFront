@@ -6,6 +6,7 @@ import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
 import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
+import { useGetAuctionByIdQuery } from '../../../../store/auction/auctionApi';
 
 export const ProfilePage = () => {
     //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
@@ -14,7 +15,13 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-    const { data: userData, isLoading, isError, error } = useGetUserByIdQuery(userId);
+    const { data: userData, isLoading, isError } = useGetUserByIdQuery(userId);
+    const {
+        data: userAuctions,
+        isLoading: auctionsLoading,
+        isError: auctionsIsError,
+    } = useGetAuctionByIdQuery(userId);
+    const [userAuctionsData, setUserAuctionsData] = useState([]);
     const [userProfileData, setUserProfileData] = useState({
         username: '',
         mail: '',
@@ -32,6 +39,11 @@ export const ProfilePage = () => {
             });
         }
     }, [userData, isLoading, isError]);
+    useEffect(() => {
+        if (!auctionsLoading && !auctionsIsError) {
+            setUserAuctionsData(userData);
+        }
+    });
 
     return (
         <Box sx={{ padding: '1%', height: '80vh' }}>
@@ -111,7 +123,9 @@ export const ProfilePage = () => {
                         >
                             Published auctions
                         </Typography>
-                        <AuctionHorizontalCardList></AuctionHorizontalCardList>
+                        <AuctionHorizontalCardList
+                            auctionList={userAuctions}
+                        ></AuctionHorizontalCardList>
                     </Box>
                 </Box>
             </Box>
