@@ -21,8 +21,12 @@ export const auctionApi = createApi({
                 currentCache.push(...newItems);
             },
         }),
-        getFilteredAuctions: builder.query({
-            query: (page, size, filter) => ({ url: '/filter', params: { page, size, filter } }),
+        getFilteredAuctions: builder.mutation({
+            query: ({ filter, page, size }) => ({
+                url: `/filter?page=${page}&size=${size}`,
+                method: 'POST',
+                body: filter,
+            }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -36,5 +40,5 @@ export const auctionApi = createApi({
     }),
 });
 
-export const { useGetAuctionByIdQuery, useGetFilteredAuctionsQuery, useGetAuctionListQuery } =
+export const { useGetAuctionByIdQuery, useGetFilteredAuctionsMutation, useGetAuctionListQuery } =
     auctionApi;
