@@ -11,6 +11,7 @@ import { Dashboard } from './features/dashboard/Dashboard';
 import { PrivateRoute } from './features/commons/PrivateRoute';
 import ChangePassword from './features/logIn/changePassword';
 import { RoutesWithHeader } from './features/commons/RoutesWithHeader';
+import { inputMail } from './features/logIn/inputMail';
 
 function App() {
     return (
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/login" Component={LogIn} />
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/changePassword" Component={ChangePassword} />
+                    <Route path="/changePass" Component={inputMail} />
                     <Route
                         path="/auction/:auctionId"
                         element={
