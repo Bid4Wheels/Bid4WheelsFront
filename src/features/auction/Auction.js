@@ -37,6 +37,7 @@ export function Auction() {
     const [myBid, setMyBid] = useState('');
 
     const handleBidChange = (event) => {
+        event.preventDefault();
         const value = event.target.value.replace(/\D/g, '');
         setMyBid(value);
     };
@@ -46,7 +47,11 @@ export function Auction() {
     const images = [car1, car2, car3, car4, car5];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
-    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
+    const title = data?.title || '';
+    const description = data?.description || '';
+    const deadline = data?.deadline || '';
+    const auctionOwnerDTO = data?.auctionOwnerDTO || {};
+    const auctionHigestBidDTO = data?.auctionHigestBidDTO || {};
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
@@ -68,8 +73,8 @@ export function Auction() {
         console.log('Bid placed: ' + myBid); //should be changed when functionality is available
     };
 
-    function BidWidget(isUsers) {
-        if (!isUsers) {
+    function BidWidget() {
+        if (userId == auctionOwnerDTO.id) {
             return (
                 <Box
                     sx={{
@@ -96,7 +101,9 @@ export function Auction() {
                         Highest Bid:
                     </Typography>
                     <Typography variant="Medium">
-                        {auctionHighestBidDTO ? auctionHighestBidDTO.amount : 'No one has bid yet'}
+                        {auctionHigestBidDTO
+                            ? '$' + auctionHigestBidDTO.amount
+                            : 'No one has bid yet'}
                     </Typography>
                     <Typography variant="SemiSmall" fontWeight={700} marginY="15px">
                         Last Bids
@@ -178,7 +185,9 @@ export function Auction() {
                         Highest Bid:
                     </Typography>
                     <Typography variant="Medium">
-                        {auctionHighestBidDTO ? auctionHighestBidDTO.amount : 'No one has bid yet'}
+                        {auctionHigestBidDTO
+                            ? '$' + auctionHigestBidDTO.amount
+                            : 'No one has bid yet'}
                     </Typography>
                     {/*next line should check if user has bid already */}
                     <Typography variant="SemiSmall" marginY="30px">
@@ -396,7 +405,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                {<BidWidget isUsers={userId == auctionOwnerDTO.id} />}
+                {<BidWidget />}
             </Grid>
         </Grid>
     );
