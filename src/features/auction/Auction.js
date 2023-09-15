@@ -7,6 +7,7 @@ import {
     Toolbar,
     Button,
     Paper,
+    TextField,
     Skeleton,
     Alert,
     AlertTitle,
@@ -27,15 +28,195 @@ import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
+import { useSelector } from 'react-redux';
 
 export function Auction() {
+    const userId = useSelector((state) => state.user.userId);
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
+    const [myBid, setMyBid] = useState('');
+
+    const handleBidChange = (event) => {
+        const value = event.target.value.replace(/\D/g, '');
+        setMyBid(value);
+    };
 
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
     const images = [car1, car2, car3, car4, car5];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
+
+    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
+
+    const now = new Date();
+    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
+    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
+
+    let timerColor = colors.green;
+    if (timeDifferenceInDays < 0) {
+        timerColor = colors.grey;
+    } else if (timeDifferenceInDays < 1) {
+        timerColor = colors.yellow;
+        if (timeDifferenceInHours < 1) {
+            timerColor = colors.red;
+        }
+    }
+
+    const handlePlaceBid = () => {
+        console.log('Bid placed: ' + myBid); //should be changed when functionality is available
+    };
+
+    function BidWidget(isUsers) {
+        if (!isUsers) {
+            return (
+                <Box
+                    sx={{
+                        width: '70%',
+                        border: `1px solid ${colors.water_green}`,
+                        margin: 'auto',
+                        marginTop: '60px',
+                        borderRadius: '10px',
+                        padding: '20px',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        minWidth: '200px',
+                    }}
+                >
+                    <Typography
+                        variant="XLarge"
+                        sx={{ fontWeight: 700, color: colors.water_green, marginBottom: '15px' }}
+                    >
+                        Bids
+                    </Typography>
+                    <Typography variant="Medium" fontWeight={700}>
+                        Highest Bid:
+                    </Typography>
+                    <Typography variant="Medium">
+                        {auctionHighestBidDTO ? auctionHighestBidDTO.amount : 'No one has bid yet'}
+                    </Typography>
+                    <Typography variant="SemiSmall" fontWeight={700} marginY="15px">
+                        Last Bids
+                    </Typography>
+                    {/* map top 5 highest bids, next is placeholder*/}
+                    <Box
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            justifyContent: 'space-between',
+                            width: '90%',
+                            color: colors.water_green,
+                            marginBottom: '5px',
+                        }}
+                        justifyItems="space-between"
+                    >
+                        <Typography
+                            variant="SemiSmall"
+                            style={{ textAlign: 'left', color: 'inherit' }}
+                        >
+                            Chino
+                        </Typography>
+                        <Typography
+                            variant="SemiSmall"
+                            style={{ textAlign: 'right', color: 'inherit' }}
+                        >
+                            $999999
+                        </Typography>
+                    </Box>
+                    <Box
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: '1fr 1fr',
+                            justifyContent: 'space-between',
+                            width: '90%',
+                            marginBottom: '5px',
+                        }}
+                        justifyItems="space-between"
+                    >
+                        <Typography
+                            variant="SemiSmall"
+                            style={{ textAlign: 'left', color: 'inherit' }}
+                        >
+                            Testing
+                        </Typography>
+                        <Typography
+                            variant="SemiSmall"
+                            style={{ textAlign: 'right', color: 'inherit' }}
+                        >
+                            $12520
+                        </Typography>
+                    </Box>
+                </Box>
+            );
+        } else {
+            return (
+                <Box
+                    sx={{
+                        width: '70%',
+                        border: `1px solid ${colors.water_green}`,
+                        margin: 'auto',
+                        marginTop: '60px',
+                        borderRadius: '10px',
+                        padding: '20px',
+                        display: 'flex',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        textAlign: 'center',
+                    }}
+                >
+                    <Typography
+                        variant="XLarge"
+                        sx={{ fontWeight: 700, color: colors.water_green, marginBottom: '15px' }}
+                    >
+                        Bids
+                    </Typography>
+                    <Typography variant="Medium" fontWeight={700}>
+                        Highest Bid:
+                    </Typography>
+                    <Typography variant="Medium">
+                        {auctionHighestBidDTO ? auctionHighestBidDTO.amount : 'No one has bid yet'}
+                    </Typography>
+                    {/*next line should check if user has bid already */}
+                    <Typography variant="SemiSmall" marginY="30px">
+                        {/*eslint-disable-next-line react/no-unescaped-entities*/}
+                        You haven't made an offer yet!
+                    </Typography>
+                    <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
+                        Make your offer
+                    </Typography>
+                    <TextField
+                        variant="standard"
+                        inputProps={{
+                            maxLength: 200,
+                            type: 'text',
+                            style: { textAlign: 'center' },
+                        }}
+                        width="100%"
+                        color="water_green"
+                        value={myBid}
+                        onChange={handleBidChange}
+                        placeholder={`Starting at $${data.basePrice}`}
+                    />
+                    <Button
+                        variant="contained"
+                        color="water_green"
+                        sx={{
+                            maxWidth: '100px',
+                            width: '50%',
+                            marginY: '30px',
+                        }}
+                        onClick={handlePlaceBid}
+                    >
+                        PLACE BID
+                    </Button>
+                </Box>
+            );
+        }
+    }
 
     if (isLoading) {
         return (
@@ -89,24 +270,6 @@ export function Auction() {
                 </Alert>
             </div>
         );
-    }
-
-    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
-
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
-    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
-
-    let timerColor = colors.green;
-    if (timeDifferenceInDays < 0) {
-        timerColor = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        timerColor = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            timerColor = colors.red;
-        }
     }
 
     return (
@@ -233,9 +396,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                <Paper sx={{ padding: '20px', borderRadius: '5px', width: '100%' }}>
-                    <Typography variant="h5">Bids</Typography>
-                </Paper>
+                {<BidWidget isUsers={userId == auctionOwnerDTO.id} />}
             </Grid>
         </Grid>
     );
