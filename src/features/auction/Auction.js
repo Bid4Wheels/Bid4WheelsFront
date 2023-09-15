@@ -11,6 +11,7 @@ import {
     Skeleton,
     Alert,
     AlertTitle,
+    Modal,
 } from '@mui/material';
 import { useParams } from 'react-router';
 import {
@@ -29,15 +30,17 @@ import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
+import CloseIcon from '@mui/icons-material/Close';
+import PlaceBidImg from '../commons/PlaceBidImg.png';
 
 export function Auction() {
     const userId = useSelector((state) => state.user.userId);
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
     const [myBid, setMyBid] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleBidChange = (event) => {
-        event.preventDefault();
         const value = event.target.value.replace(/\D/g, '');
         setMyBid(value);
     };
@@ -47,11 +50,7 @@ export function Auction() {
     const images = [car1, car2, car3, car4, car5];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
-    const title = data?.title || '';
-    const description = data?.description || '';
-    const deadline = data?.deadline || '';
-    const auctionOwnerDTO = data?.auctionOwnerDTO || {};
-    const auctionHigestBidDTO = data?.auctionHigestBidDTO || {};
+    const { title, description, deadline, auctionOwnerDTO, auctionHigestBidDTO } = data;
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
@@ -71,6 +70,14 @@ export function Auction() {
 
     const handlePlaceBid = () => {
         console.log('Bid placed: ' + myBid); //should be changed when functionality is available
+    };
+
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleModalOpen = () => {
+        setIsModalOpen(true);
     };
 
     function BidWidget() {
@@ -101,7 +108,7 @@ export function Auction() {
                         Highest Bid:
                     </Typography>
                     <Typography variant="Medium">
-                        {auctionHigestBidDTO
+                        {auctionHigestBidDTO && auctionHigestBidDTO.amount
                             ? '$' + auctionHigestBidDTO.amount
                             : 'No one has bid yet'}
                     </Typography>
@@ -185,7 +192,7 @@ export function Auction() {
                         Highest Bid:
                     </Typography>
                     <Typography variant="Medium">
-                        {auctionHigestBidDTO
+                        {auctionHigestBidDTO && auctionHigestBidDTO.amount
                             ? '$' + auctionHigestBidDTO.amount
                             : 'No one has bid yet'}
                     </Typography>
@@ -218,10 +225,87 @@ export function Auction() {
                             width: '50%',
                             marginY: '30px',
                         }}
-                        onClick={handlePlaceBid}
+                        onClick={handleModalOpen}
                     >
                         PLACE BID
                     </Button>
+                    <Modal
+                        open={isModalOpen}
+                        onClose={handleModalClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                borderRadius: '10px',
+                                backgroundColor: '#fff',
+                                width: '500px',
+                                height: '500px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                            }}
+                        >
+                            <CloseIcon
+                                sx={{
+                                    opacity: '50%',
+                                    position: 'relative',
+                                    left: '230px',
+                                    cursor: 'pointer',
+                                    mt: '7px',
+                                    '&:hover': {
+                                        opacity: '100%',
+                                    },
+                                }}
+                                onClick={handleModalClose}
+                            />
+                            <img
+                                src={PlaceBidImg}
+                                alt="Place Bid"
+                                style={{
+                                    width: '320px',
+                                    height: '320px',
+                                    objectFit: 'contain',
+                                }}
+                            />
+                            <Typography sx={{ fontSize: '25px', fontWeight: 660 }}>
+                                Confirm bid
+                            </Typography>
+                            <Typography sx={{ fontSize: '15px' }}>
+                                Please confirm if you want to place this bid
+                            </Typography>
+                            <Typography sx={{ mb: '15px', fontWeight: 620 }}>
+                                ${myBid} for {title}
+                            </Typography>
+                            <Box sx={{ mb: '20px' }}>
+                                <Button
+                                    variant="contained"
+                                    onClick={handleModalClose}
+                                    style={{ backgroundColor: 'grey', marginRight: '10px' }}
+                                >
+                                    Cancel
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    sx={{
+                                        backgroundColor: colors.water_green,
+                                        '&:hover': {
+                                            backgroundColor: colors.water_green,
+                                        },
+                                    }}
+                                    onClick={handlePlaceBid}
+                                >
+                                    Bid
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Modal>
                 </Box>
             );
         }
@@ -405,7 +489,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                {<BidWidget />}
+                {<BidWidget isUsers={userId == auctionOwnerDTO.id} />}
             </Grid>
         </Grid>
     );
