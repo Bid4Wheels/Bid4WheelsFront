@@ -7,6 +7,7 @@ import {
     Toolbar,
     Button,
     Paper,
+    Tooltip,
     TextField,
     Skeleton,
     Alert,
@@ -41,6 +42,7 @@ export function Auction() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const handleBidChange = (event) => {
+        event.preventDefault();
         const value = event.target.value.replace(/\D/g, '');
         setMyBid(value);
     };
@@ -50,7 +52,11 @@ export function Auction() {
     const images = [car1, car2, car3, car4, car5];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
-    const { title, description, deadline, auctionOwnerDTO, auctionHigestBidDTO } = data;
+    const title = data?.title || '';
+    const description = data?.description || '';
+    const deadline = data?.deadline || '';
+    const auctionOwnerDTO = data?.auctionOwnerDTO || {};
+    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
@@ -81,6 +87,17 @@ export function Auction() {
     };
 
     function BidWidget() {
+        const isBidValid =
+            !isNaN(parseInt(myBid)) && parseInt(myBid) >= data.basePrice && checkHighestBid();
+
+        function checkHighestBid() {
+            if (auctionHigestBidDTO.amount) {
+                return myBid > auctionHigestBidDTO.amount;
+            } else {
+                return true;
+            }
+        }
+
         if (userId == auctionOwnerDTO.id) {
             return (
                 <Box
@@ -217,18 +234,34 @@ export function Auction() {
                         onChange={handleBidChange}
                         placeholder={`Starting at $${data.basePrice}`}
                     />
-                    <Button
-                        variant="contained"
-                        color="water_green"
-                        sx={{
-                            maxWidth: '100px',
-                            width: '50%',
-                            marginY: '30px',
-                        }}
-                        onClick={handleModalOpen}
+                    <Tooltip
+                        title={
+                            isBidValid
+                                ? ''
+                                : 'Bid amount must be greater than both starting price and highest bid'
+                        }
                     >
-                        PLACE BID
-                    </Button>
+                        <Box
+                            sx={{
+                                maxWidth: '100px',
+                                width: '70%',
+                                marginY: '30px',
+                                height: '30px',
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="water_green"
+                                sx={{
+                                    maxWidth: '100px',
+                                }}
+                                onClick={handleModalOpen}
+                                disabled={!isBidValid}
+                            >
+                                PLACE BID
+                            </Button>
+                        </Box>
+                    </Tooltip>
                     <Modal
                         open={isModalOpen}
                         onClose={handleModalClose}
