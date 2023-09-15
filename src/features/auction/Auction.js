@@ -75,7 +75,7 @@ export function Auction() {
     }
 
     const handlePlaceBid = () => {
-        console.log('Bid placed: ' + myBid); //should be changed when functionality is available
+        console.log('Bid placed: ' + myBid); //should upload bid to backend when the functionality is available
     };
 
     const handleModalClose = () => {
