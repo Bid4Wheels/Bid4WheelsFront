@@ -70,11 +70,18 @@ const AuctionCard = ({ endDate, image, carName, tags }) => {
                             }}
                         >
                             <Typography gutterBottom variant="Small">
-                                {timeDifferenceInHours > 0
-                                    ? `${timeDifferenceInHours}:${timeDifferenceInMinutes % 60}`
-                                    : timeDifferenceInMinutes > 0
-                                    ? `00:${timeDifferenceInMinutes}`
-                                    : 'Closed'}
+                                {`${timeDifferenceInDays > 0 && `${timeDifferenceInDays}:`}${
+                                    timeDifferenceInHours > 0 &&
+                                    `${timeDifferenceInHours % 24 < 10 ? '0' : ''}${
+                                        timeDifferenceInHours % 24
+                                    }:`
+                                }${
+                                    timeDifferenceInMinutes > 0
+                                        ? `${timeDifferenceInMinutes % 60 < 10 ? '0' : ''}${
+                                              timeDifferenceInMinutes % 60
+                                          }`
+                                        : 'Closed'
+                                }`}
                             </Typography>
                         </Box>
                         <Box display="flex" gap="3px">

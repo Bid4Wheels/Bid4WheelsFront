@@ -74,7 +74,7 @@ const AuctionHorizontalCardList = ({ auctionList }) => {
                     {auctions.map((auction, index) => (
                         <AuctionCard
                             key={index}
-                            endDate={auction.deadline}
+                            endDate={new Date(auction.deadline)}
                             image={auction.firstImageUrl}
                             carName={auction.title}
                             tags={tags}

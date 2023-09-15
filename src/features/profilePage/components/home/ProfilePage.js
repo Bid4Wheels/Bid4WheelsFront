@@ -120,6 +120,7 @@ export const ProfilePage = () => {
                                 color: 'black',
                                 fontSize: theme.typography.Medium.fontSize,
                                 paddingLeft: '2.5%',
+                                fontWeight: 500,
                             }}
                         >
                             Published auctions
