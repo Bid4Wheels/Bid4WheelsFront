@@ -21,6 +21,12 @@ export const authenticatedUserApi = createApi({
                 method: 'GET',
             }),
         }),
+        getUploadImageUrl: builder.query({
+            query: () => ({
+                url: `/image-url`,
+                method: 'POST',
+            }),
+        }),
     }),
 });
 
