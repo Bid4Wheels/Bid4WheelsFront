@@ -35,7 +35,7 @@ export function Auction() {
 
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
-    const images = [car1, car2, car3, car4, car5];
+    const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
     if (isLoading) {
