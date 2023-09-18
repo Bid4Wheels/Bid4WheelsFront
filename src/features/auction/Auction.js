@@ -30,7 +30,7 @@ import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 
 export function Auction() {
-    const id = useParams().auctionId;
+    const auctionId = useParams().auctionId;
     const [window, setWindow] = useState('info');
 
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
@@ -237,7 +237,11 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                {authenticatedUserId === ownerId ? <DangerZone title={title} /> : <></>}
+                {authenticatedUserId === ownerId ? (
+                    <DangerZone title={title} auctionId={auctionId} />
+                ) : (
+                    <></>
+                )}
             </Grid>
         </Grid>
     );

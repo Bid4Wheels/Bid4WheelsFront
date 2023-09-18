@@ -3,9 +3,11 @@ import { Box, Button, Typography, Modal } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import DeleteAuction from '../commons/DeleteAuction.png';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDeleteAuctionMutation } from '../../store/auction/auctionApi';
 
-export function DangerZone({ title }) {
+export function DangerZone({ title, auctionId }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const deleteAuction = useDeleteAuctionMutation();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -13,6 +15,10 @@ export function DangerZone({ title }) {
 
     const handleModalClose = () => {
         setIsModalOpen(false);
+    };
+
+    const handleDelete = () => {
+        deleteAuction(auctionId);
     };
 
     return (
@@ -121,6 +127,7 @@ export function DangerZone({ title }) {
                                     backgroundColor: '#fc2b2b',
                                 },
                             }}
+                            onClick={handleDelete}
                         >
                             Delete
                         </Button>
