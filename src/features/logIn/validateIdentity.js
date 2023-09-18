@@ -5,7 +5,7 @@ import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/UserSlice';
-import { useGetValidationCodeQuery } from '../../store/user/UserApi';
+import { useGetValidationCodeMutation } from '../../store/user/UserApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
@@ -14,7 +14,7 @@ function ValidateIdentity() {
     const navigate = useNavigate();
     const userData = useSelector(userSelector);
 
-    const [validateCode] = useGetValidationCodeQuery();
+    const [validateCode] = useGetValidationCodeMutation();
 
     function getEmail() {
         if (userData.userEmail !== null) {
@@ -30,23 +30,23 @@ function ValidateIdentity() {
         const userEmail = getEmail();
         const payload = {
             email: userEmail,
-            code: validationCode,
+            passwordCode: parseInt(validationCode),
         };
         try {
-            const response = await validateCode(payload).unwrap();
-            if (response === 200) {
-                navigate('/changePassword');
-            }
-            if (response === 400) {
-                console.log('Invalid code'); //change to alert
-                setValidationCode('');
-            }
-            if (response === 404) {
-                console.log('Email not found'); //change to alert
-                navigate('/login');
-            }
-        } catch (err) {
-            console.error(err);
+            await validateCode(payload)
+                .unwrap()
+                .then(
+                    () => {
+                        navigate('/changePassword');
+                    },
+                    () => {
+                        setValidationCode('');
+                        alert('Invalid code');
+                    },
+                );
+        } catch (error) {
+            console.log(error);
+            setValidationCode('');
         }
     };
 
