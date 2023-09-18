@@ -6,7 +6,6 @@ import {
     Box,
     Toolbar,
     Button,
-    Paper,
     Skeleton,
     Alert,
     AlertTitle,
@@ -27,6 +26,8 @@ import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
+import { useSelector } from 'react-redux';
+import { DangerZone } from './DeleteWidget';
 
 export function Auction() {
     const id = useParams().auctionId;
@@ -92,6 +93,9 @@ export function Auction() {
     }
 
     const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
+
+    const authenticatedUserId = useSelector((state) => state.user.userId);
+    const ownerId = auctionOwnerDTO.id;
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
@@ -233,9 +237,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                <Paper sx={{ padding: '20px', borderRadius: '5px', width: '100%' }}>
-                    <Typography variant="h5">Bids</Typography>
-                </Paper>
+                {authenticatedUserId === ownerId ? <DangerZone title={title} /> : <></>}
             </Grid>
         </Grid>
     );
