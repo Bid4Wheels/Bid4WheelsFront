@@ -8,10 +8,13 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
-import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
+import {
+    useGetUploadImageUrl,
+    useUpdateUserMutation,
+} from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
@@ -226,8 +229,25 @@ function uploadImage({ imgUrl }) {
                 }}
             >
                 Upload Image
-                <input type="file" accept="image/*" hidden />
+                <input type="file" accept="image/*" hidden onChange={handleUploadImage} />
             </Button>
         </Box>
     );
+}
+function handleUploadImage({ image }) {
+    const [url, setUrl] = useState('');
+    const [urlData, isLoading, isError] = useGetUploadImageUrl;
+    useEffect(() => {
+        if (!isLoading && !isError) {
+            setUrl(urlData);
+        }
+    });
+    if (url) {
+        const req = new XMLHttpRequest();
+        req.open('PUT', url, true);
+        req.onload = (event) => {
+            // Uploaded
+        };
+        req.send(image);
+    }
 }

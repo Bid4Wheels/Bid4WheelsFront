@@ -30,4 +30,5 @@ export const authenticatedUserApi = createApi({
     }),
 });
 
-export const { useUpdateUserMutation, useGetUserByIdQuery } = authenticatedUserApi;
+export const { useUpdateUserMutation, useGetUserByIdQuery, useGetUploadImageUrl } =
+    authenticatedUserApi;
