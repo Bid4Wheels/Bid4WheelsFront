@@ -7,6 +7,8 @@ import {
     Stack,
     TextField,
     Typography,
+    Grid,
+    CircularProgress,
 } from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
@@ -15,6 +17,9 @@ import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserA
 import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
+import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../../../store/user/UserSlice';
 
 export function EditProfileModal({ open, onClose }) {
     const modalStyle = {
@@ -136,6 +141,43 @@ function formToComplete({ userInfo, setUserInfo }) {
         return lastName !== '';
     };
 
+    const [sendValidationCode, { isLoading }] = useSendValidationCodeMutation();
+
+    const userData = useSelector(userSelector);
+
+    function getEmail() {
+        if (userData.userEmail !== null) {
+            return userData.userEmail;
+        }
+    }
+
+    const handleChangePasswordClick = async () => {
+        const userEmail = getEmail();
+        const payload = {
+            email: userEmail,
+        };
+        try {
+            await sendValidationCode(payload)
+                .unwrap()
+                .then(
+                    () => {
+                        navigate('/validateIdentity');
+                    },
+                    (err) => console.log(err),
+                );
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center">
+                <CircularProgress />
+            </Grid>
+        );
+    }
+
     return (
         <Box>
             <form onSubmit={(e) => handleConfirmButton(e)}>
@@ -200,7 +242,7 @@ function formToComplete({ userInfo, setUserInfo }) {
                             color: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
                         }}
-                        onClick={() => navigate('/changePassword')}
+                        onClick={handleChangePasswordClick}
                     >
                         CHANGE PASSWORD
                     </Button>
