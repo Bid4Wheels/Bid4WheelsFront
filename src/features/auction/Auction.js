@@ -17,11 +17,6 @@ import {
     differenceInMinutes,
     differenceInSeconds,
 } from 'date-fns';
-import car1 from '../commons/temp/car1.jpeg';
-import car2 from '../commons/temp/car2.jpeg';
-import car3 from '../commons/temp/car3.jpeg';
-import car4 from '../commons/temp/car4.jpeg';
-import car5 from '../commons/temp/car5.jpg';
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
@@ -37,8 +32,7 @@ export function Auction() {
 
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
-    const images = [car1, car2, car3, car4, car5];
-    //const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
+    const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
     const title = data?.title || '';
