@@ -1,4 +1,4 @@
-import { Grid, Box, Typography, Button, Input } from '@mui/material';
+import { Grid, Box, Typography, Button, Input, FormHelperText } from '@mui/material';
 import B4W_logo from '../commons/B4W_logo.svg';
 import React from 'react';
 import theme from '../../utils/desgin/Theme';
@@ -13,6 +13,7 @@ function ValidateIdentity() {
     const [validationCode, setValidationCode] = useState('');
     const navigate = useNavigate();
     const userData = useSelector(userSelector);
+    const [error, setError] = useState(false);
 
     const [validateCode] = useGetValidationCodeMutation();
 
@@ -41,7 +42,7 @@ function ValidateIdentity() {
                     },
                     () => {
                         setValidationCode('');
-                        alert('Invalid code');
+                        setError(true);
                     },
                 );
         } catch (error) {
@@ -87,6 +88,7 @@ function ValidateIdentity() {
                             value={validationCode}
                             onChange={handleCodeChange}
                             inputProps={{ maxLength: 6 }}
+                            error={error}
                             sx={{
                                 border: '2px solid',
                                 padding: '8px',
@@ -99,6 +101,11 @@ function ValidateIdentity() {
                                 },
                             }}
                         ></Input>
+                        {error && (
+                            <FormHelperText sx={{ fontSize: '16px' }} error>
+                                Invalid code.
+                            </FormHelperText>
+                        )}
                     </Box>
                     <Button
                         variant="contained"
