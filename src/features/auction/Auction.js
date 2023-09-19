@@ -119,7 +119,7 @@ export function Auction() {
                 flexDirection: { xs: 'column', sm: 'row' },
             }}
         >
-            <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
+            <Grid item xs={12} sm={7.5} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
                         {title.toUpperCase()}
