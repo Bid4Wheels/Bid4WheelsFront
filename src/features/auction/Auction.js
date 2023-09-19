@@ -31,6 +31,7 @@ import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
+import { DangerZone } from './DeleteWidget';
 import CloseIcon from '@mui/icons-material/Close';
 import PlaceBidImg from '../commons/PlaceBidImg.png';
 
@@ -49,7 +50,7 @@ export function Auction() {
 
     const { data, error, isLoading } = useGetAuctionByIdQuery(id);
 
-    const images = [car1, car2, car3, car4, car5];
+    const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
     const title = data?.title || '';
@@ -522,6 +523,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
+                {authenticatedUserId === ownerId ? <DangerZone title={title} /> : <></>}
                 {<BidWidget isUsers={userId == auctionOwnerDTO.id} />}
             </Grid>
         </Grid>
