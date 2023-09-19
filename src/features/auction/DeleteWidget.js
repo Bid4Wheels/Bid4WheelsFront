@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Button, Typography, Modal } from '@mui/material';
+import { useNavigate } from 'react-router';
 import colors from '../../utils/desgin/Colors';
 import DeleteAuction from '../commons/DeleteAuction.png';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,7 +8,8 @@ import { useDeleteAuctionMutation } from '../../store/auction/auctionApi';
 
 export function DangerZone({ title, auctionId }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const deleteAuction = useDeleteAuctionMutation();
+    const [deleteAuction, { isSuccess }] = useDeleteAuctionMutation();
+    const navigate = useNavigate();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -19,6 +21,8 @@ export function DangerZone({ title, auctionId }) {
 
     const handleDelete = () => {
         deleteAuction(auctionId);
+        handleModalClose();
+        navigate('/');
     };
 
     return (
