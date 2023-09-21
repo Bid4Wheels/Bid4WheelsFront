@@ -81,7 +81,6 @@ function formToComplete({ userInfo, setUserInfo }) {
     const [updateUser] = useUpdateUserMutation();
     const userId = useParams().userId;
     const navigate = useNavigate();
-    console.log(userId);
     const handleConfirmButton = async (event) => {
         event.preventDefault();
         if (
@@ -213,7 +212,9 @@ function formToComplete({ userInfo, setUserInfo }) {
 }
 
 function uploadImage({ imgUrl }) {
-    const { data: uploadUrl, isLoading, isError } = useGetUploadImageUrlQuery();
+    const { data: uploadUrl, isLoading, isError, error } = useGetUploadImageUrlQuery();
+    console.log(uploadUrl);
+    console.log(error);
     return (
         <Box marginRight={5} marginLeft={6}>
             <Avatar
@@ -236,40 +237,6 @@ function uploadImage({ imgUrl }) {
                     onChange={(e) => handleUploadImage(e, uploadUrl)}
                 />
             </Button>
-            {!isLoading && !isError ? (
-                <Button
-                    variant="contained"
-                    component="label"
-                    sx={{
-                        backgroundColor: colors.water_green,
-                        '&:hover': { backgroundColor: colors.on_stand_water_green },
-                    }}
-                >
-                    {uploadUrl}
-                </Button>
-            ) : isLoading ? (
-                <Button
-                    variant="contained"
-                    component="label"
-                    sx={{
-                        backgroundColor: colors.water_green,
-                        '&:hover': { backgroundColor: colors.on_stand_water_green },
-                    }}
-                >
-                    isLoading
-                </Button>
-            ) : (
-                <Button
-                    variant="contained"
-                    component="label"
-                    sx={{
-                        backgroundColor: colors.water_green,
-                        '&:hover': { backgroundColor: colors.on_stand_water_green },
-                    }}
-                >
-                    Error
-                </Button>
-            )}
         </Box>
     );
 }

@@ -25,6 +25,7 @@ export const authenticatedUserApi = createApi({
             query: () => ({
                 url: `/image-url`,
                 method: 'POST',
+                responseHandler: (response) => response.text(),
             }),
         }),
     }),
