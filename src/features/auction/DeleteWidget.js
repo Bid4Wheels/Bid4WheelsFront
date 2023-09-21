@@ -22,7 +22,7 @@ export function DangerZone({ title }) {
                 width: '70%',
                 border: `1px solid ${colors.red} `,
                 margin: 'auto',
-                marginTop: '60px',
+                marginBottom: '25px',
                 borderRadius: '10px',
                 padding: '20px',
                 display: 'flex',
