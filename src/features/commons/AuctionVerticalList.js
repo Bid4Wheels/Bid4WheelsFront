@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/system';
+import { Box, Typography } from '@mui/material';
 import { useEventCallback, CircularProgress } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGetAuctionList } from '../../store/auction/auctionApi';
@@ -6,17 +6,12 @@ import AuctionCard from './AuctionCard';
 import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionVerticalList = () => {
+const AuctionVerticalList = ({ ref }) => {
     const [page, setPage] = useState(0);
     //const { data, error, isFetching } = useGetAuctionList(page, 20);
     const data = useState([]);
     const error = useState('');
     const isFetching = useState(false);
-    const onScroll = () => {
-        setPage(page + 1);
-    };
-    const ref = useRef();
-    useInfiniteScroll(ref, onScroll);
 
     return (
         <Box>

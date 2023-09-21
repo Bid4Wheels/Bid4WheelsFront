@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,6 +7,8 @@ import {
     useGetAuctionListQuery,
     useGetFilteredAuctionsMutation,
 } from '../../store/auction/auctionApi';
+import AuctionVerticalList from '../commons/AuctionVerticalList';
+import { useInfiniteScroll } from '../commons/hooks';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
@@ -15,6 +17,11 @@ export function Dashboard() {
     const [size, setSize] = useState(10);
     //const { data, isLoading, isError } = useGetAuctionListQuery(page, size); //todavia no se usa (deberia ser para traer todos los auctions. Se puede hacer con getFiltered pasando un filter que sea vacio)
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
+    const ref = useRef();
+    useInfiniteScroll(ref, onScroll);
+    const onScroll = () => {
+        setPage(page + 1);
+    };
 
     useEffect(() => {
         setSelectedButton('Search Results');
@@ -34,7 +41,8 @@ export function Dashboard() {
 
     useEffect(() => {
         if (selectedButton === 'Ending Soon') {
-            // Fetch 'Ending Soon' data here.
+            
+        }
         } else if (selectedButton === 'Newly Listed') {
             // Fetch 'Newly Listed' data here.
         }
@@ -104,7 +112,10 @@ export function Dashboard() {
             {isFilterOpen && <Filter filterFunct={filterAuct} page={page} size={size} />}
             {selectedButton === 'Ending Soon' &&
                 !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
-                    <Typography>Ending Soon Auctions</Typography> //aca va el componente de la lista de auctions
+                    <Box>
+                        <AuctionVerticalList ref={ref}></AuctionVerticalList>
+                        <Typography>Ending Soon Auctions</Typography>
+                    </Box>
                 )}
             {selectedButton === 'Newly Listed' &&
                 !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
