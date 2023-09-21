@@ -17,19 +17,16 @@ import {
     differenceInMinutes,
     differenceInSeconds,
 } from 'date-fns';
-import car1 from '../commons/temp/car1.jpeg';
-import car2 from '../commons/temp/car2.jpeg';
-import car3 from '../commons/temp/car3.jpeg';
-import car4 from '../commons/temp/car4.jpeg';
-import car5 from '../commons/temp/car5.jpg';
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
 import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
+import { BidWidget } from './BidWidget';
 
 export function Auction() {
+    const userId = useSelector((state) => state.user.userId);
     const id = useParams().auctionId;
     const [window, setWindow] = useState('info');
 
@@ -37,6 +34,28 @@ export function Auction() {
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
+
+    const title = data?.title || '';
+    const description = data?.description || '';
+    const deadline = data?.deadline || '';
+    const auctionOwnerDTO = data?.auctionOwnerDTO || {};
+    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
+
+    const now = new Date();
+    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
+    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
+
+    let timerColor = colors.green;
+    if (timeDifferenceInDays < 0) {
+        timerColor = colors.grey;
+    } else if (timeDifferenceInDays < 1) {
+        timerColor = colors.yellow;
+        if (timeDifferenceInHours < 1) {
+            timerColor = colors.red;
+        }
+    }
 
     if (isLoading) {
         return (
@@ -90,27 +109,6 @@ export function Auction() {
                 </Alert>
             </div>
         );
-    }
-
-    const { title, description, deadline, auctionOwnerDTO, auctionHighestBidDTO } = data;
-
-    const authenticatedUserId = useSelector((state) => state.user.userId);
-    const ownerId = auctionOwnerDTO.id;
-
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
-    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
-
-    let timerColor = colors.green;
-    if (timeDifferenceInDays < 0) {
-        timerColor = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        timerColor = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            timerColor = colors.red;
-        }
     }
 
     return (
@@ -236,8 +234,17 @@ export function Auction() {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto' }}>
-                {authenticatedUserId === ownerId ? <DangerZone title={title} /> : <></>}
+            <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
+                {userId === auctionOwnerDTO.id ? <DangerZone title={title} /> : <></>}
+                {
+                    <BidWidget
+                        auctionData={data}
+                        userId={userId}
+                        ownerId={auctionOwnerDTO.id}
+                        highestBidDTO={auctionHigestBidDTO}
+                        title={title}
+                    />
+                }
             </Grid>
         </Grid>
     );
