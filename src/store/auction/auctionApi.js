@@ -40,6 +40,12 @@ export const auctionApi = createApi({
         getAuctionsByUserId: builder.query({
             query: (userId) => `/user/${userId}`,
         }),
+        deleteAuction: builder.mutation({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -48,4 +54,5 @@ export const {
     useGetFilteredAuctionsMutation,
     useGetAuctionListQuery,
     useGetAuctionsByUserIdQuery,
+    useDeleteAuctionMutation,
 } = auctionApi;

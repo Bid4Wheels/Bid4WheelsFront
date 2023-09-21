@@ -1,10 +1,56 @@
-import { Grid, Box, Typography, Button, Input } from '@mui/material';
+import { Grid, Box, Typography, Button, Input, FormHelperText } from '@mui/material';
 import B4W_logo from '../commons/B4W_logo.svg';
 import React from 'react';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
+import { useSelector } from 'react-redux';
+import { userSelector } from '../../store/user/UserSlice';
+import { useGetValidationCodeMutation } from '../../store/user/UserApi';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 function ValidateIdentity() {
+    const [validationCode, setValidationCode] = useState('');
+    const navigate = useNavigate();
+    const userData = useSelector(userSelector);
+    const [error, setError] = useState(false);
+
+    const [validateCode] = useGetValidationCodeMutation();
+
+    function getEmail() {
+        if (userData.userEmail !== null) {
+            return userData.userEmail;
+        }
+    }
+
+    const handleCodeChange = (event) => {
+        setValidationCode(event.target.value);
+    };
+
+    const handleContinueClick = async () => {
+        const userEmail = getEmail();
+        const payload = {
+            email: userEmail,
+            passwordCode: parseInt(validationCode),
+        };
+        try {
+            await validateCode(payload)
+                .unwrap()
+                .then(
+                    () => {
+                        navigate('/changePassword');
+                    },
+                    () => {
+                        setValidationCode('');
+                        setError(true);
+                    },
+                );
+        } catch (error) {
+            console.log(error);
+            setValidationCode('');
+        }
+    };
+
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>
@@ -39,7 +85,10 @@ function ValidateIdentity() {
                             disableUnderline
                             fullWidth
                             autoFocus
+                            value={validationCode}
+                            onChange={handleCodeChange}
                             inputProps={{ maxLength: 6 }}
+                            error={error}
                             sx={{
                                 border: '2px solid',
                                 padding: '8px',
@@ -52,6 +101,11 @@ function ValidateIdentity() {
                                 },
                             }}
                         ></Input>
+                        {error && (
+                            <FormHelperText sx={{ fontSize: '16px' }} error>
+                                Invalid code.
+                            </FormHelperText>
+                        )}
                     </Box>
                     <Button
                         variant="contained"
@@ -64,6 +118,7 @@ function ValidateIdentity() {
                             fontFamily: theme.typography.fontFamily,
                             fontSize: theme.typography.ButtonTypography.fontSize,
                         }}
+                        onClick={handleContinueClick}
                     >
                         CONTINUE
                     </Button>

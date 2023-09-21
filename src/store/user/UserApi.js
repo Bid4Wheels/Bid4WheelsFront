@@ -25,7 +25,26 @@ export const userApi = createApi({
                 body: payload,
             }),
         }),
+        sendValidationCode: builder.mutation({
+            query: (payload) => ({
+                url: '',
+                method: 'PATCH',
+                body: payload,
+            }),
+        }),
+        getValidationCode: builder.mutation({
+            query: (payload) => ({
+                url: '/password',
+                method: 'POST',
+                body: payload,
+            }),
+        }),
     }),
 });
 
-export const { useSignUpMutation, useChangePasswordMutation } = userApi;
+export const {
+    useSignUpMutation,
+    useChangePasswordMutation,
+    useSendValidationCodeMutation,
+    useGetValidationCodeMutation,
+} = userApi;
