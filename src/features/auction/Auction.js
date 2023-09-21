@@ -26,11 +26,11 @@ import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
 
 export function Auction() {
-    const userId = useSelector((state) => state.user.userId);
-    const id = useParams().auctionId;
+    const auctionId = useParams().auctionId;
+    const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading } = useGetAuctionByIdQuery(id);
+    const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
@@ -122,7 +122,7 @@ export function Auction() {
                 flexDirection: { xs: 'column', sm: 'row' },
             }}
         >
-            <Grid item xs={12} sm={7} sx={{ padding: '20px' }}>
+            <Grid item xs={12} sm={7.5} sx={{ padding: '20px' }}>
                 <Box>
                     <Typography variant="h3" fontWeight={500}>
                         {title.toUpperCase()}
@@ -235,11 +235,11 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {userId === auctionOwnerDTO.id ? <DangerZone title={title} /> : <></>}
+                {authenticatedUserId === auctionOwnerDTO.id ? <DangerZone title={title} /> : <></>}
                 {
                     <BidWidget
                         auctionData={data}
-                        userId={userId}
+                        userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
                         highestBidDTO={auctionHigestBidDTO}
                         title={title}
