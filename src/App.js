@@ -62,7 +62,7 @@ function App() {
                     />
                     <Route
                         path="/user"
-                        Component={
+                        element={
                             <PrivateRoute>
                                 <ProfilePage />
                             </PrivateRoute>

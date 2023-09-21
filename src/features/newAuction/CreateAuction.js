@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import TechnicalInformation from './TechnicalInformation';
 import AuctionInformation from './AuctionInformation';
 import AuctionSuccess from './AuctionSuccess';
+import { useCreateAuctionMutation, useGetImageLinksMutation } from '../../store/auction/auctionApi';
+import { id } from 'date-fns/locale';
+import { useSelector } from 'react-redux';
+import { pushImage } from '../../utils/requests';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('');
@@ -25,8 +29,13 @@ const CreateAuction = () => {
     const [description, setDescription] = useState();
     const [selectedDate, setSelectedDate] = useState();
     const [auctionCreated, setAuctionCreated] = useState(false);
-
     const [droppedImages, setDroppedImages] = useState([]);
+    const token = useSelector((state) => state.user.token);
+    const user = useSelector((state) => state.user);
+    const userId = user.userId;
+
+    const [makeAuction, { data, isError, error }] = useCreateAuctionMutation();
+    const [getLinks, { data: imageLinks }] = useGetImageLinksMutation();
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -34,6 +43,7 @@ const CreateAuction = () => {
         const imageFiles = files.filter((file) => file.type.startsWith('image/'));
 
         setDroppedImages((prevImages) => [...prevImages, ...imageFiles]);
+        console.log(droppedImages);
     };
 
     const handleDeleteImage = (index) => {
@@ -60,8 +70,45 @@ const CreateAuction = () => {
     };
 
     const handleAuctionCreate = () => {
-        setAuctionCreated(true);
+        const body = {
+            userId: userId,
+            title: title,
+            description: description,
+            deadline: selectedDate,
+            brand: brandValue.toUpperCase(),
+            model: modelValue,
+            basePrice: startingPrice,
+            milage: mileage,
+            gasType: fuelTypeValue.toUpperCase(),
+            modelYear: years,
+            color: colorValue.toUpperCase(),
+            doorsAmount: selectedDoors,
+            gearShiftType: selectedGear.toUpperCase(),
+            tags: tags,
+        };
+
+        makeAuction(body);
+
+        if (isError) {
+            console.log(error);
+        }
     };
+
+    useEffect(() => {
+        if (data) {
+            getLinks(data.auctionId);
+            //setAuctionCreated(true);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (imageLinks) {
+            droppedImages.forEach((image, index) => {
+                pushImage(imageLinks[index], token, image);
+            });
+        }
+    }, [imageLinks]);
+
     useEffect(() => {
         setIsNextButtonDisabled(
             !brandValue ||
@@ -87,8 +134,12 @@ const CreateAuction = () => {
     ]);
 
     useEffect(() => {
-        setIsCreateButtonDisabled(!(title && description && selectedDate));
-    }, [title, description, selectedDate]);
+        const isInputValid = title && description && selectedDate;
+
+        const isImageCountValid = droppedImages.length >= 1 && droppedImages.length <= 7;
+
+        setIsCreateButtonDisabled(!(isInputValid && isImageCountValid));
+    }, [title, description, selectedDate, droppedImages]);
 
     const addTag = () => {
         if (inputValue.trim() === '') {

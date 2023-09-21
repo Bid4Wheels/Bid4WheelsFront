@@ -37,8 +37,26 @@ export const auctionApi = createApi({
                 currentCache.push(...newItems);
             },
         }),
+        createAuction: builder.mutation({
+            query: (body) => ({
+                url: '',
+                method: 'POST',
+                body: body,
+            }),
+        }),
+        getImageLinks: builder.mutation({
+            query: (auctionId) => ({
+                url: `/image-url/${auctionId}`,
+                method: 'POST',
+            }),
+        }),
     }),
 });
 
-export const { useGetAuctionByIdQuery, useGetFilteredAuctionsMutation, useGetAuctionListQuery } =
-    auctionApi;
+export const {
+    useGetAuctionByIdQuery,
+    useGetFilteredAuctionsMutation,
+    useGetAuctionListQuery,
+    useCreateAuctionMutation,
+    useGetImageLinksMutation,
+} = auctionApi;
