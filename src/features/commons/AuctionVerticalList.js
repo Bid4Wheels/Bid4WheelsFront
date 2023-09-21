@@ -6,12 +6,8 @@ import AuctionCard from './AuctionCard';
 import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionVerticalList = ({ ref }) => {
+const AuctionVerticalList = ({ ref, data, isFetching, error }) => {
     const [page, setPage] = useState(0);
-    //const { data, error, isFetching } = useGetAuctionList(page, 20);
-    const data = useState([]);
-    const error = useState('');
-    const isFetching = useState(false);
 
     return (
         <Box>
@@ -20,26 +16,29 @@ const AuctionVerticalList = ({ ref }) => {
                     An error occurred while fetching the data.
                 </Typography>
             )}
-            <Box
-                sx={{
-                    display: 'flex',
-                    'flex-flow': 'row wrap',
-                    'min-width': '700px',
-                }}
-            >
-                {data.map((auction) => (
-                    <AuctionCard
-                        key={auction}
-                        endDate={auction.deadline}
-                        image={auction.image}
-                        carName={auction.title}
-                        tags={auction.tags}
-                    ></AuctionCard>
-                ))}
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {isFetching ? <CircularProgress ref={ref}></CircularProgress> : null}
-            </Box>
+            {data ? (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        'flex-flow': 'row wrap',
+                        'min-width': '700px',
+                    }}
+                >
+                    {data.map((auction) => (
+                        <AuctionCard
+                            key={auction}
+                            endDate={auction.deadline}
+                            image={auction.image}
+                            carName={auction.title}
+                            tags={auction.tags}
+                        ></AuctionCard>
+                    ))}
+                </Box>
+            ) : (
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    {isFetching ? <CircularProgress ref={ref}></CircularProgress> : null}
+                </Box>
+            )}
         </Box>
     );
 };

@@ -6,6 +6,7 @@ import { Filter } from '../filter/Filter';
 import {
     useGetAuctionListQuery,
     useGetFilteredAuctionsMutation,
+    useGetNewAuctionListQuery,
 } from '../../store/auction/auctionApi';
 import AuctionVerticalList from '../commons/AuctionVerticalList';
 import { useInfiniteScroll } from '../commons/hooks';
@@ -15,13 +16,17 @@ export function Dashboard() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
-    //const { data, isLoading, isError } = useGetAuctionListQuery(page, size); //todavia no se usa (deberia ser para traer todos los auctions. Se puede hacer con getFiltered pasando un filter que sea vacio)
+    const {
+        data: newData,
+        isError: newIsError,
+        isLoading: newIsLoading,
+    } = useGetNewAuctionListQuery(page, size);
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
-    useInfiniteScroll(ref, onScroll);
     const onScroll = () => {
         setPage(page + 1);
     };
+    useInfiniteScroll(ref, onScroll);
 
     useEffect(() => {
         setSelectedButton('Search Results');
@@ -38,16 +43,6 @@ export function Dashboard() {
     const toggleFilter = () => {
         setIsFilterOpen(!isFilterOpen);
     };
-
-    useEffect(() => {
-        if (selectedButton === 'Ending Soon') {
-            
-        }
-        } else if (selectedButton === 'Newly Listed') {
-            // Fetch 'Newly Listed' data here.
-        }
-        // You can add more conditions for other button options.
-    }, [selectedButton]);
 
     return (
         <Box
@@ -113,7 +108,12 @@ export function Dashboard() {
             {selectedButton === 'Ending Soon' &&
                 !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
                     <Box>
-                        <AuctionVerticalList ref={ref}></AuctionVerticalList>
+                        <AuctionVerticalList
+                            ref={ref}
+                            data={newData}
+                            isFetching={newIsLoading}
+                            error={newIsError}
+                        ></AuctionVerticalList>
                         <Typography>Ending Soon Auctions</Typography>
                     </Box>
                 )}
