@@ -37,8 +37,18 @@ export const auctionApi = createApi({
                 currentCache.push(...newItems);
             },
         }),
+        deleteAuction: builder.mutation({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
-export const { useGetAuctionByIdQuery, useGetFilteredAuctionsMutation, useGetAuctionListQuery } =
-    auctionApi;
+export const {
+    useGetAuctionByIdQuery,
+    useGetFilteredAuctionsMutation,
+    useGetAuctionListQuery,
+    useDeleteAuctionMutation,
+} = auctionApi;
