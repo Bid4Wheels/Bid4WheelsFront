@@ -241,6 +241,8 @@ function uploadImage({ imgUrl }) {
     );
 }
 function handleUploadImage(event, url) {
+    //in case of back not having the new link use this and change fetch url to newUrl
+    //const newUrl = url.replace('bid4wheels.s3.us-east-2.amazonaws.com', 's3.bid4wheels.com');
     const image = event.target.files[0];
     fetch(url, {
         method: 'PUT',
