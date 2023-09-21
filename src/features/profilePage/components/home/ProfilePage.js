@@ -138,14 +138,13 @@ export const ProfilePage = () => {
                                             backgroundColor: colors.water_green,
                                             color: 'white',
                                             textTransform: 'none',
-                                            height: '25%',
-                                            width: '100%',
+                                            padding: '20px',
                                         }}
                                         onClick={handleCreateAuctionClick}
                                     >
                                         <Typography
                                             sx={{
-                                                fontSize: theme.typography.Large.fontSize,
+                                                fontSize: theme.typography.Small.fontSize,
                                                 fontWeight: 500,
                                             }}
                                         >
