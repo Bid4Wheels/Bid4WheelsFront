@@ -12,7 +12,7 @@ import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import {
-    useGetUploadImageUrl,
+    useGetUploadImageUrlQuery,
     useUpdateUserMutation,
 } from '../../../../store/user/authenticatedUserApi';
 import { useParams } from 'react-router';
@@ -40,7 +40,6 @@ export function EditProfileModal({ open, onClose, imgUrl }) {
     };
 
     const [userInfo, setUserInfo] = useState(initialState);
-
     const handleCloseModal = () => {
         setUserInfo(initialState);
         onClose();
@@ -214,6 +213,7 @@ function formToComplete({ userInfo, setUserInfo }) {
 }
 
 function uploadImage({ imgUrl }) {
+    const { data: uploadUrl, isLoading, isError } = useGetUploadImageUrlQuery();
     return (
         <Box marginRight={5} marginLeft={6}>
             <Avatar
@@ -229,25 +229,63 @@ function uploadImage({ imgUrl }) {
                 }}
             >
                 Upload Image
-                <input type="file" accept="image/*" hidden onChange={handleUploadImage} />
+                <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => handleUploadImage(e, uploadUrl)}
+                />
             </Button>
+            {!isLoading && !isError ? (
+                <Button
+                    variant="contained"
+                    component="label"
+                    sx={{
+                        backgroundColor: colors.water_green,
+                        '&:hover': { backgroundColor: colors.on_stand_water_green },
+                    }}
+                >
+                    {uploadUrl}
+                </Button>
+            ) : isLoading ? (
+                <Button
+                    variant="contained"
+                    component="label"
+                    sx={{
+                        backgroundColor: colors.water_green,
+                        '&:hover': { backgroundColor: colors.on_stand_water_green },
+                    }}
+                >
+                    isLoading
+                </Button>
+            ) : (
+                <Button
+                    variant="contained"
+                    component="label"
+                    sx={{
+                        backgroundColor: colors.water_green,
+                        '&:hover': { backgroundColor: colors.on_stand_water_green },
+                    }}
+                >
+                    Error
+                </Button>
+            )}
         </Box>
     );
 }
-function handleUploadImage({ image }) {
-    const [url, setUrl] = useState('');
-    const [urlData, isLoading, isError] = useGetUploadImageUrl;
-    useEffect(() => {
-        if (!isLoading && !isError) {
-            setUrl(urlData);
-        }
-    });
-    if (url) {
-        const req = new XMLHttpRequest();
-        req.open('PUT', url, true);
-        req.onload = (event) => {
-            // Uploaded
-        };
-        req.send(image);
-    }
+function handleUploadImage(event, url) {
+    const image = event.target.files[0];
+    fetch(url, {
+        method: 'PUT',
+        body: image, // This is your file object
+    })
+        .then(
+            (response) => response.json(), // if the response is a JSON object
+        )
+        .then(
+            (success) => console.log(success), // Handle the success response object
+        )
+        .catch(
+            (error) => console.log(error), // Handle the error response object
+        );
 }
