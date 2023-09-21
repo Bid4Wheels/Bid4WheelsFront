@@ -84,7 +84,6 @@ function formToComplete({ userInfo, setUserInfo }) {
     const [updateUser] = useUpdateUserMutation();
     const userId = useParams().userId;
     const navigate = useNavigate();
-    console.log(userId);
     const handleConfirmButton = async (event) => {
         event.preventDefault();
         if (
