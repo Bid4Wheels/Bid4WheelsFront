@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Filter } from '../filter/Filter';
 import {
     useGetAuctionListQuery,
+    useGetEndingAuctionListQuery,
     useGetFilteredAuctionsMutation,
     useGetNewAuctionListQuery,
 } from '../../store/auction/auctionApi';
@@ -21,6 +22,11 @@ export function Dashboard() {
         isError: newIsError,
         isLoading: newIsLoading,
     } = useGetNewAuctionListQuery(page, size);
+    const {
+        data: endingData,
+        isError: endingIsError,
+        isLoading: endingIsLoading,
+    } = useGetEndingAuctionListQuery(page, size);
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
     const onScroll = () => {
@@ -30,6 +36,7 @@ export function Dashboard() {
 
     useEffect(() => {
         setSelectedButton('Search Results');
+        console.log(newData);
     }, [data]);
 
     const filterAuct = (filter) => {
@@ -105,22 +112,26 @@ export function Dashboard() {
                 </Box>
             </Box>
             {isFilterOpen && <Filter filterFunct={filterAuct} page={page} size={size} />}
-            {selectedButton === 'Ending Soon' &&
-                !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
-                    <Box>
-                        <AuctionVerticalList
-                            ref={ref}
-                            data={newData}
-                            isFetching={newIsLoading}
-                            error={newIsError}
-                        ></AuctionVerticalList>
-                        <Typography>Ending Soon Auctions</Typography>
-                    </Box>
-                )}
-            {selectedButton === 'Newly Listed' &&
-                !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
-                    <Typography>Newly Listed Auctions</Typography> //aca va el componente de la lista de auctions
-                )}
+            {selectedButton === 'Ending Soon' && !false && (
+                <Box>
+                    <AuctionVerticalList
+                        ref={ref}
+                        data={endingData}
+                        isFetching={endingIsLoading}
+                        error={endingIsError}
+                    ></AuctionVerticalList>
+                </Box>
+            )}
+            {selectedButton === 'Newly Listed' && !false && (
+                <Box>
+                    <AuctionVerticalList
+                        ref={ref}
+                        data={newData}
+                        isFetching={newIsLoading}
+                        error={newIsError}
+                    ></AuctionVerticalList>
+                </Box>
+            )}
             {selectedButton === 'Search Results' &&
                 data &&
                 !isError &&

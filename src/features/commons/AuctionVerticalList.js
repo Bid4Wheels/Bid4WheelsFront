@@ -7,8 +7,6 @@ import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
 const AuctionVerticalList = ({ ref, data, isFetching, error }) => {
-    const [page, setPage] = useState(0);
-
     return (
         <Box>
             {error && ( // Display error message if error exists
@@ -22,15 +20,17 @@ const AuctionVerticalList = ({ ref, data, isFetching, error }) => {
                         display: 'flex',
                         'flex-flow': 'row wrap',
                         'min-width': '700px',
+                        justifyContent: 'center',
                     }}
                 >
-                    {data.map((auction) => (
+                    {data.content.map((auction) => (
                         <AuctionCard
                             key={auction}
                             endDate={auction.deadline}
-                            image={auction.image}
+                            image={auction.firstImageUrl}
                             carName={auction.title}
-                            tags={auction.tags}
+                            tags={auction.tagNames}
+                            highestBid={auction.highestBidAmount}
                         ></AuctionCard>
                     ))}
                 </Box>

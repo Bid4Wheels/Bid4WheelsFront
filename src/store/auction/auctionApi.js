@@ -33,6 +33,18 @@ export const auctionApi = createApi({
                 currentCache.push(...newItems);
             },
         }),
+        getEndingAuctionList: builder.query({
+            query: (page, size) => ({ url: '/ending', params: { page, size } }),
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg;
+            },
+            serializeQueryArgs: ({ endpointName }) => {
+                return endpointName;
+            },
+            merge: (currentCache, newItems) => {
+                currentCache.push(...newItems);
+            },
+        }),
         getFilteredAuctions: builder.mutation({
             query: ({ filter, page, size }) => ({
                 url: `/filter?page=${page}&size=${size}`,
@@ -64,4 +76,5 @@ export const {
     useGetAuctionListQuery,
     useDeleteAuctionMutation,
     useGetNewAuctionListQuery,
+    useGetEndingAuctionListQuery,
 } = auctionApi;
