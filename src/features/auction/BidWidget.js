@@ -27,6 +27,7 @@ export function BidWidget({
     const [myBid, setMyBid] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bid, { isLoading, error }] = useBidMutation();
+    console.log(auctionData);
 
     const handleBidChange = (event) => {
         event.preventDefault();
@@ -57,6 +58,53 @@ export function BidWidget({
     };
 
     const isOwner = userId === ownerId;
+
+    function topBidsMap() {
+        if (topBids.length > 0) {
+            const top5Bids = topBids.slice(0, 5);
+            return top5Bids.map((bid, index) => (
+                <Box
+                    key={index}
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        justifyContent: 'space-between',
+                        width: '90%',
+                        color: index == 0 ? colors.water_green : 'black',
+                        marginBottom: '5px',
+                    }}
+                    justifyItems="space-between"
+                >
+                    <Typography
+                        variant="SemiSmall"
+                        style={{
+                            textAlign: 'left',
+                            color: 'inherit',
+                            opacity: index == 4 ? '50%' : '100%',
+                        }}
+                    >
+                        {bid.userName}
+                    </Typography>
+                    <Typography
+                        variant="SemiSmall"
+                        style={{
+                            textAlign: 'right',
+                            color: 'inherit',
+                            opacity: index == 4 ? '50%' : '100%',
+                        }}
+                    >
+                        ${bid.amount}
+                    </Typography>
+                </Box>
+            ));
+        } else {
+            return (
+                <Typography variant="SemiSmall" style={{ textAlign: 'center' }}>
+                    No bids yet
+                </Typography>
+            );
+        }
+    }
 
     return (
         <Box
@@ -97,49 +145,7 @@ export function BidWidget({
                     <Typography variant="SemiSmall" fontWeight={700} marginY="15px">
                         Last Bids
                     </Typography>
-                    {/* Map top 5 highest bids, next is a placeholder */}
-                    {[
-                        { name: 'Chino', amount: '999999' },
-                        { name: 'Testing', amount: '12520' },
-                        { name: 'Alan', amount: '1001' },
-                        { name: 'Test', amount: '1000' },
-                        { name: 'Lucho', amount: '3' },
-                        // Add more bids here
-                    ].map((bid, index) => (
-                        <Box
-                            key={index}
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr',
-                                justifyContent: 'space-between',
-                                width: '90%',
-                                color: index == 0 ? colors.water_green : 'black',
-                                marginBottom: '5px',
-                            }}
-                            justifyItems="space-between"
-                        >
-                            <Typography
-                                variant="SemiSmall"
-                                style={{
-                                    textAlign: 'left',
-                                    color: 'inherit',
-                                    opacity: index == 4 ? '50%' : '100%',
-                                }}
-                            >
-                                {bid.name}
-                            </Typography>
-                            <Typography
-                                variant="SemiSmall"
-                                style={{
-                                    textAlign: 'right',
-                                    color: 'inherit',
-                                    opacity: index == 4 ? '50%' : '100%',
-                                }}
-                            >
-                                ${bid.amount}
-                            </Typography>
-                        </Box>
-                    ))}
+                    {topBidsMap()}
                 </>
             ) : (
                 <>
@@ -165,7 +171,11 @@ export function BidWidget({
                         color="water_green"
                         value={myBid}
                         onChange={handleBidChange}
-                        placeholder={`Starting at $${auctionData.basePrice}`}
+                        placeholder={
+                            topBids.length > 0
+                                ? `Starting at $${topBids[0].amount}`
+                                : `Starting at $${auctionData.basePrice}`
+                        }
                     />
                     <Tooltip
                         title={
