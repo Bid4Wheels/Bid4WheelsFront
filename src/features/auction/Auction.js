@@ -30,7 +30,7 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
@@ -39,7 +39,8 @@ export function Auction() {
     const description = data?.description || '';
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
-    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
+    const topBids = data?.topBids || {};
+    const myHighestBid = data?.myHighestBid || null;
 
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
@@ -241,8 +242,11 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        highestBidDTO={auctionHigestBidDTO}
+                        topBids={topBids}
+                        myHighestBid={myHighestBid}
                         title={title}
+                        auctionId={auctionId}
+                        reload={refetch}
                     />
                 }
             </Grid>

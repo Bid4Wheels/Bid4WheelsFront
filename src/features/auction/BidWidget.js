@@ -1,12 +1,32 @@
-import { Box, Typography, Modal, Tooltip, TextField, Button } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Modal,
+    Tooltip,
+    TextField,
+    Button,
+    CircularProgress,
+    Alert,
+} from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import PlaceBidImg from '../commons/PlaceBidImg.png';
 import colors from '../../utils/desgin/Colors';
+import { useBidMutation } from '../../store/auction/bidApi';
 
-export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }) {
+export function BidWidget({
+    auctionData,
+    userId,
+    ownerId,
+    topBids,
+    title,
+    myHighestBid,
+    auctionId,
+    reload,
+}) {
     const [myBid, setMyBid] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [bid, { isLoading, error }] = useBidMutation();
 
     const handleBidChange = (event) => {
         event.preventDefault();
@@ -18,11 +38,14 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
         !isNaN(parseInt(myBid)) && parseInt(myBid) >= auctionData.basePrice && checkHighestBid();
 
     function checkHighestBid() {
-        return highestBidDTO.amount ? myBid > highestBidDTO.amount : true;
+        return topBids.length > 0 ? myBid > topBids[0].amount : true;
     }
 
     const handlePlaceBid = () => {
-        console.log('Bid placed: ' + myBid); // Upload bid to backend when the functionality is available
+        bid({ amount: myBid, userId: userId, auctionId: auctionId });
+        setMyBid('');
+        handleModalClose();
+        reload();
     };
 
     const handleModalClose = () => {
@@ -34,7 +57,6 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
     };
 
     const isOwner = userId === ownerId;
-    console.log(isOwner);
 
     return (
         <Box
@@ -67,10 +89,9 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                 Highest Bid:
             </Typography>
             <Typography variant="Medium">
-                {highestBidDTO && highestBidDTO.amount
-                    ? '$' + highestBidDTO.amount
-                    : 'No one has bid yet'}
+                {topBids.length > 0 ? '$' + topBids[0].amount : 'No one has bid yet'}
             </Typography>
+
             {isOwner ? (
                 <>
                     <Typography variant="SemiSmall" fontWeight={700} marginY="15px">
@@ -122,9 +143,13 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                 </>
             ) : (
                 <>
-                    <Typography variant="SemiSmall" marginY="30px">
-                        {/*eslint-disable-next-line react/no-unescaped-entities*/}
-                        You haven't made an offer yet!
+                    <Typography variant="SemiSmall" marginTop="30px" fontWeight={700}>
+                        Your Highest Bid:
+                    </Typography>
+                    <Typography variant="SemiSmall" marginBottom="30px">
+                        {myHighestBid && myHighestBid != null
+                            ? '$' + myHighestBid
+                            : "You haven't made an offer yet!"}
                     </Typography>
                     <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
                         Make your offer
@@ -170,6 +195,11 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                             </Button>
                         </Box>
                     </Tooltip>
+                    {error && (
+                        <Alert severity="error">
+                            There was an error while bidding. Please, try again
+                        </Alert>
+                    )}
                 </>
             )}
             <Modal
@@ -243,6 +273,19 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                             onClick={handlePlaceBid}
                         >
                             Bid
+                            {isLoading && (
+                                <CircularProgress
+                                    size={24}
+                                    sx={{
+                                        color: 'inherit',
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}
+                                />
+                            )}
                         </Button>
                     </Box>
                 </Box>
