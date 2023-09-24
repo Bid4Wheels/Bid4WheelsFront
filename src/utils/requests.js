@@ -5,6 +5,8 @@ export const pushImage = (url, token, image) => {
         Authorization: `Bearer ${token}`,
     };
 
+    console.log(url);
+
     fetch(url, {
         method: 'PUT',
         headers: headers,
