@@ -9,7 +9,7 @@ import { useCreateAuctionMutation, useGetImageLinksMutation } from '../../store/
 import { id } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
 import { pushImage } from '../../utils/requests';
-import { resizeFile } from 'react-image-file-resizer';
+import Resizer from 'react-image-file-resizer';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('');
@@ -44,7 +44,6 @@ const CreateAuction = () => {
         const imageFiles = files.filter((file) => file.type.startsWith('image/'));
 
         setDroppedImages((prevImages) => [...prevImages, ...imageFiles]);
-        console.log(droppedImages);
     };
 
     const handleDeleteImage = (index) => {
@@ -98,17 +97,33 @@ const CreateAuction = () => {
     useEffect(() => {
         if (data) {
             getLinks(data.auctionId);
-            //setAuctionCreated(true);
+            setAuctionCreated(true);
         }
     }, [data]);
 
     useEffect(() => {
         if (imageLinks) {
             droppedImages.forEach((image, index) => {
-                pushImage(imageLinks[index], token, image, 1280);
+                resizeFile(image).then((result) => pushImage(imageLinks[index], token, result));
             });
         }
     }, [imageLinks]);
+
+    const resizeFile = (file) =>
+        new Promise((resolve) => {
+            Resizer.imageFileResizer(
+                file,
+                317,
+                204,
+                'JPEG',
+                100,
+                0,
+                (uri) => {
+                    resolve(uri);
+                },
+                'base64',
+            );
+        });
 
     useEffect(() => {
         setIsNextButtonDisabled(
@@ -158,19 +173,8 @@ const CreateAuction = () => {
         const updatedTags = tags.filter((tag) => tag !== tagToRemove);
         setTags(updatedTags);
     };
-    const handleImageSelect = async (imageFile) => {
-        try {
-            // Resize the selected image to a maximum width of 1280 pixels
-            const maxWidth = 1280;
-            const quality = 0.7; // You can adjust the quality as needed
-            const resizedImage = await resizeFile(imageFile, maxWidth, maxWidth, 'JPEG', quality);
-
-            // Add the resized image to the droppedImages state
-            setDroppedImages((prevImages) => [...prevImages, resizedImage]);
-        } catch (error) {
-            // Handle any errors that occur during image resizing
-            console.error('Error resizing image:', error);
-        }
+    const handleImageSelect = (image) => {
+        setDroppedImages((prevImages) => [...prevImages, image]);
     };
 
     if (auctionCreated) {

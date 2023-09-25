@@ -1,15 +1,10 @@
 import { async } from 'q';
 
 export const pushImage = (url, token, image) => {
-    const headers = {
-        Authorization: `Bearer ${token}`,
-    };
-
     console.log(url);
 
     fetch(url, {
         method: 'PUT',
-        headers: headers,
         body: image,
     })
         .then((response) => {
