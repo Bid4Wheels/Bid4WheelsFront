@@ -71,7 +71,21 @@ export function EditProfileModal({ open, onClose }) {
                         </IconButton>
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
-                        {uploadImage()}
+                        <Box display="flex" flexDirection="column" alignItems="center">
+                            {uploadImage()}
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                style={{
+                                    height: '50px',
+                                    backgroundColor: '#FC4141',
+                                    marginTop: '9.25%',
+                                    marginLeft: '3.5%',
+                                }}
+                            >
+                                DELETE ACCOUNT
+                            </Button>
+                        </Box>
                         {formToComplete({ userInfo, setUserInfo })}
                     </Box>
                 </Box>
@@ -239,6 +253,7 @@ function formToComplete({ userInfo, setUserInfo }) {
                         variant="outlined"
                         sx={{
                             color: colors.water_green,
+                            borderColor: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
                         }}
                         onClick={handleChangePasswordClick}
@@ -253,7 +268,13 @@ function formToComplete({ userInfo, setUserInfo }) {
 
 function uploadImage() {
     return (
-        <Box marginRight={5} marginLeft={6}>
+        <Box
+            marginRight={5}
+            marginLeft={6}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+        >
             <Avatar sx={{ width: 150, height: 150, marginBottom: 2 }}></Avatar>
             <Button
                 variant="contained"

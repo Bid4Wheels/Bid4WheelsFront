@@ -5,11 +5,14 @@ import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
+import { useSelector } from 'react-redux';
 
 export const ProfilePage = () => {
     //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
-    const { userId } = useParams();
-    const canEdit = !userId;
+    const { userId: queryUserId } = useParams();
+    const canEdit = !queryUserId;
+    const currentUser = useSelector((state) => state.user);
+    const userId = queryUserId || currentUser.userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
