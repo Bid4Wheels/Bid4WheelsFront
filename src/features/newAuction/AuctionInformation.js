@@ -153,7 +153,7 @@ const AuctionInformation = ({
                             />
                         </Box>
                     ) : (
-                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', overflow: 'auto' }}>
                             {droppedImages.map((file, index) => (
                                 <div
                                     key={index}
