@@ -40,7 +40,13 @@ const Header = () => {
     return (
         <AppBar
             position="static"
-            sx={{ backgroundColor: 'white', minWidth: '700px', position: 'fixed', zIndex: 1000 }}
+            sx={{
+                backgroundColor: 'white',
+                minWidth: '700px',
+                position: 'sticky',
+                top: '0px',
+                zIndex: 1000,
+            }}
         >
             <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
