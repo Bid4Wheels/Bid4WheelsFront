@@ -29,8 +29,15 @@ export const auctionApi = createApi({
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
-            merge: (currentCache, newItems) => {
-                currentCache.push(...newItems.content);
+            merge(currentCacheData, responseData) {
+                if (responseData.page > 1) {
+                    currentCacheData.content.push(...responseData.content);
+                    return currentCacheData;
+                }
+                return responseData;
+            },
+            transformResponse: (response) => {
+                return { content: response.content, last: response.last };
             },
         }),
         getEndingAuctionList: builder.query({
@@ -41,11 +48,15 @@ export const auctionApi = createApi({
             serializeQueryArgs: ({ endpointName }) => {
                 return endpointName;
             },
-            merge: (currentCache, newItems) => {
-                currentCache.push(...newItems.content);
+            merge(currentCacheData, responseData) {
+                if (responseData.page > 1) {
+                    currentCacheData.content.push(...responseData.content);
+                    return currentCacheData;
+                }
+                return responseData;
             },
             transformResponse: (response) => {
-                return response.content;
+                return { content: response.content, last: response.last };
             },
         }),
         getFilteredAuctions: builder.mutation({

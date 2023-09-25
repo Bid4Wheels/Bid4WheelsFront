@@ -18,14 +18,16 @@ export function Dashboard() {
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
     const {
-        data: newData,
+        content: newData,
         isError: newIsError,
-        isLoading: newIsLoading,
+        isFetching: newIsLoading,
+        last: newLast,
     } = useGetNewAuctionListQuery(page, size);
     const {
-        data: endingData,
+        content: endingData,
         isError: endingIsError,
-        isLoading: endingIsLoading,
+        isFetching: endingIsLoading,
+        last: endingLast,
     } = useGetEndingAuctionListQuery(page, size);
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
@@ -122,6 +124,7 @@ export function Dashboard() {
                         data={endingData}
                         isFetching={endingIsLoading}
                         error={endingIsError}
+                        last={endingLast}
                     ></AuctionVerticalList>
                 </Box>
             )}
@@ -132,6 +135,7 @@ export function Dashboard() {
                         data={newData}
                         isFetching={newIsLoading}
                         error={newIsError}
+                        last={newLast}
                     ></AuctionVerticalList>
                 </Box>
             )}

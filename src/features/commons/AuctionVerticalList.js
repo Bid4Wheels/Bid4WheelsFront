@@ -6,7 +6,7 @@ import AuctionCard from './AuctionCard';
 import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionVerticalList = ({ loaderRef, data, isFetching, error }) => {
+const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
     return (
         <Box>
             {error && ( // Display error message if error exists
@@ -25,7 +25,7 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error }) => {
                             justifyContent: 'center',
                         }}
                     >
-                        {data.content.map((auction) => (
+                        {data.map((auction) => (
                             <AuctionCard
                                 key={auction}
                                 endDate={auction.deadline}
@@ -37,7 +37,9 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error }) => {
                         ))}
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        {!isFetching ? <CircularProgress ref={loaderRef}></CircularProgress> : null}
+                        {!isFetching && !last ? (
+                            <CircularProgress ref={loaderRef}></CircularProgress>
+                        ) : null}
                     </Box>
                 </Box>
             )}
