@@ -87,8 +87,10 @@ const CreateAuction = () => {
     ]);
 
     useEffect(() => {
-        setIsCreateButtonDisabled(!(title && description && selectedDate));
-    }, [title, description, selectedDate]);
+        setIsCreateButtonDisabled(
+            !(title && description && selectedDate && droppedImages.length !== 0),
+        );
+    }, [title, description, selectedDate, droppedImages]);
 
     const addTag = () => {
         if (inputValue.trim() === '') {
