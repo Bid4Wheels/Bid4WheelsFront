@@ -50,6 +50,12 @@ export const auctionApi = createApi({
                 method: 'POST',
             }),
         }),
+        deleteAuction: builder.mutation({
+            query: (id) => ({
+                url: `/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
 });
 
@@ -59,4 +65,5 @@ export const {
     useGetAuctionListQuery,
     useCreateAuctionMutation,
     useGetImageLinksMutation,
+    useDeleteAuctionMutation,
 } = auctionApi;
