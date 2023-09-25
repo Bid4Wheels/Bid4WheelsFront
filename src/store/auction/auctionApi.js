@@ -30,14 +30,16 @@ export const auctionApi = createApi({
                 return endpointName;
             },
             merge(currentCacheData, responseData) {
-                if (responseData.page > 1) {
+                // eslint-disable-next-line no-debugger
+                debugger;
+                if (responseData.page > 0) {
                     currentCacheData.content.push(...responseData.content);
                     return currentCacheData;
                 }
                 return responseData;
             },
             transformResponse: (response) => {
-                return { content: response.content, last: response.last };
+                return { content: response.content, last: response.last, page: response.number };
             },
         }),
         getEndingAuctionList: builder.query({
@@ -49,14 +51,14 @@ export const auctionApi = createApi({
                 return endpointName;
             },
             merge(currentCacheData, responseData) {
-                if (responseData.page > 1) {
+                if (responseData.page > 0) {
                     currentCacheData.content.push(...responseData.content);
                     return currentCacheData;
                 }
                 return responseData;
             },
             transformResponse: (response) => {
-                return { content: response.content, last: response.last };
+                return { content: response.content, last: response.last, page: response.number };
             },
         }),
         getFilteredAuctions: builder.mutation({
