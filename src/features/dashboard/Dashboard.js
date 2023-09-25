@@ -29,7 +29,10 @@ export function Dashboard() {
     } = useGetEndingAuctionListQuery(page, size);
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
+    console.log(ref?.current);
     const onScroll = () => {
+        // eslint-disable-next-line no-debugger
+        debugger;
         setPage(page + 1);
     };
     useInfiniteScroll(ref, onScroll);
@@ -115,7 +118,7 @@ export function Dashboard() {
             {selectedButton === 'Ending Soon' && !false && (
                 <Box>
                     <AuctionVerticalList
-                        ref={ref}
+                        loaderRef={ref}
                         data={endingData}
                         isFetching={endingIsLoading}
                         error={endingIsError}

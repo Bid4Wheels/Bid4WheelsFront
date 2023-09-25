@@ -30,7 +30,7 @@ export const auctionApi = createApi({
                 return endpointName;
             },
             merge: (currentCache, newItems) => {
-                currentCache.push(...newItems);
+                currentCache.push(...newItems.content);
             },
         }),
         getEndingAuctionList: builder.query({
@@ -42,7 +42,10 @@ export const auctionApi = createApi({
                 return endpointName;
             },
             merge: (currentCache, newItems) => {
-                currentCache.push(...newItems);
+                currentCache.push(...newItems.content);
+            },
+            transformResponse: (response) => {
+                return response.content;
             },
         }),
         getFilteredAuctions: builder.mutation({

@@ -6,7 +6,7 @@ import AuctionCard from './AuctionCard';
 import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionVerticalList = ({ ref, data, isFetching, error }) => {
+const AuctionVerticalList = ({ loaderRef, data, isFetching, error }) => {
     return (
         <Box>
             {error && ( // Display error message if error exists
@@ -14,29 +14,31 @@ const AuctionVerticalList = ({ ref, data, isFetching, error }) => {
                     An error occurred while fetching the data.
                 </Typography>
             )}
-            {data ? (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        'flex-flow': 'row wrap',
-                        'min-width': '700px',
-                        justifyContent: 'center',
-                    }}
-                >
-                    {data.content.map((auction) => (
-                        <AuctionCard
-                            key={auction}
-                            endDate={auction.deadline}
-                            image={auction.firstImageUrl}
-                            carName={auction.title}
-                            tags={auction.tagNames}
-                            highestBid={auction.highestBidAmount}
-                        ></AuctionCard>
-                    ))}
-                </Box>
-            ) : (
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                    {isFetching ? <CircularProgress ref={ref}></CircularProgress> : null}
+            {console.log(data)}
+            {data && (
+                <Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            'flex-flow': 'row wrap',
+                            'min-width': '700px',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        {data.content.map((auction) => (
+                            <AuctionCard
+                                key={auction}
+                                endDate={auction.deadline}
+                                image={auction.firstImageUrl}
+                                carName={auction.title}
+                                tags={auction.tagNames}
+                                highestBid={auction.highestBidAmount}
+                            ></AuctionCard>
+                        ))}
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        {!isFetching ? <CircularProgress ref={loaderRef}></CircularProgress> : null}
+                    </Box>
                 </Box>
             )}
         </Box>
