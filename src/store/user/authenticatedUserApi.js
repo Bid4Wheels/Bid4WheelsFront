@@ -18,8 +18,8 @@ export const authenticatedUserApi = createApi({
         deleteUser: builder.mutation({
             query(id) {
                 return {
-                    url: `/${id}`,
                     method: 'DELETE',
+                    body: '',
                 };
             },
         }),
