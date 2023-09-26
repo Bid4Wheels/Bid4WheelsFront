@@ -82,7 +82,7 @@ export function EditProfileModal({ open, onClose, userId }) {
                                 style={{
                                     height: '50px',
                                     backgroundColor: '#FC4141',
-                                    marginTop: '9.25%',
+                                    marginTop: '9.225%',
                                     marginLeft: '3.5%',
                                 }}
                                 onClick={handleOpenDeleteModal}
