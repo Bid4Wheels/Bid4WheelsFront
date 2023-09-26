@@ -89,6 +89,7 @@ export const ProfilePage = () => {
                     Username={userProfileData.username}
                     Email={userProfileData.mail}
                     Phone={userProfileData.phone}
+                    UserId={userId}
                 />
             </Box>
         </Box>

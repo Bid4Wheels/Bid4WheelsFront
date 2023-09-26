@@ -7,7 +7,7 @@ import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { EditProfileModal } from './EditProfile';
 
-export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
+export const ProfileCard = ({ canEdit, Username, Email, Phone, UserId }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
@@ -118,7 +118,11 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone }) => {
                         <div className="EditText">Edit</div>
                         <EditIcon style={{ color: 'white' }} />
                     </Button>
-                    <EditProfileModal open={openEditModal} onClose={handleCloseEditModal} />
+                    <EditProfileModal
+                        open={openEditModal}
+                        onClose={handleCloseEditModal}
+                        userId={UserId}
+                    />
                 </Button>
             )}
         </Box>

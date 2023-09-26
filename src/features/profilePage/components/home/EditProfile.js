@@ -14,14 +14,14 @@ import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
-import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
+import { DeleteAccountModal } from './DeleteProfile';
 
-export function EditProfileModal({ open, onClose }) {
+export function EditProfileModal({ open, onClose, userId }) {
     const modalStyle = {
         position: 'absolute',
         top: '40%',
@@ -48,6 +48,9 @@ export function EditProfileModal({ open, onClose }) {
         onClose();
     };
 
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
     return (
         <div>
             <Modal open={open} onClose={handleCloseModal}>
@@ -82,11 +85,18 @@ export function EditProfileModal({ open, onClose }) {
                                     marginTop: '9.25%',
                                     marginLeft: '3.5%',
                                 }}
+                                onClick={handleOpenDeleteModal}
                             >
                                 DELETE ACCOUNT
                             </Button>
+                            <DeleteAccountModal
+                                open={openDeleteModal}
+                                onClose={handleCloseDeleteModal}
+                                userId={userId}
+                                modalStyle={modalStyle}
+                            />
                         </Box>
-                        {formToComplete({ userInfo, setUserInfo })}
+                        {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
                 </Box>
             </Modal>
@@ -94,9 +104,8 @@ export function EditProfileModal({ open, onClose }) {
     );
 }
 
-function formToComplete({ userInfo, setUserInfo }) {
+function formToComplete({ userInfo, setUserInfo, userId }) {
     const [updateUser] = useUpdateUserMutation();
-    const userId = useParams().userId;
     const navigate = useNavigate();
     const handleConfirmButton = async (event) => {
         event.preventDefault();
@@ -251,7 +260,7 @@ function formToComplete({ userInfo, setUserInfo }) {
                     </Button>
                     <Button
                         variant="outlined"
-                        sx={{
+                        style={{
                             color: colors.water_green,
                             borderColor: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
