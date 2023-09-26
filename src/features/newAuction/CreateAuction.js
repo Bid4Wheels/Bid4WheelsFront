@@ -154,7 +154,9 @@ const CreateAuction = () => {
 
         const isImageCountValid = droppedImages.length >= 1 && droppedImages.length <= 7;
 
-        setIsCreateButtonDisabled(!(isInputValid && isImageCountValid && droppedImages.length !== 0));
+        setIsCreateButtonDisabled(
+            !(isInputValid && isImageCountValid && droppedImages.length !== 0),
+        );
     }, [title, description, selectedDate, droppedImages]);
 
     const addTag = () => {
