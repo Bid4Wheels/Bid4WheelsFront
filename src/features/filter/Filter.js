@@ -85,13 +85,8 @@ export function Filter({ filterFunct, page, size }) {
             filter.gearShiftType = selectedGearShiftType[0].toUpperCase();
         }
 
-        if (selectedModel !== '' && selectedModel !== null) {
-            filter.model = selectedModel.toUpperCase();
-        }
-
-        //if (selectedTags.length > 0 && selectedTags !== null) {
-        //    filter.tags = selectedTags;
-        //} tags aren't yet implemented for the filter
+        filter.model = selectedModel.toUpperCase(); //model seems to be a required field
+        filter.tags = selectedTags; //tags is required, even if blank
 
         filterFunct(filter);
     };

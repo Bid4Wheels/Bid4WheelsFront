@@ -6,14 +6,16 @@ import {
     differenceInHours,
     differenceInDays,
     differenceInMinutes,
+    differenceInSeconds,
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionCard = ({ endDate, image, carName, tags }) => {
+const AuctionCard = ({ endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
-    const timeDifferenceInHours = differenceInHours(endDate, now);
-    const timeDifferenceInMinutes = differenceInMinutes(endDate, now);
-    const timeDifferenceInDays = differenceInDays(endDate, now);
+    const timeDifferenceInHours = differenceInHours(new Date(endDate), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(endDate), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(endDate), now);
+    const timeDifferenceInDays = differenceInDays(new Date(endDate), now);
 
     let color = colors.green;
     if (timeDifferenceInDays < 1) {
@@ -64,17 +66,26 @@ const AuctionCard = ({ endDate, image, carName, tags }) => {
                             sx={{
                                 backgroundColor: color,
                                 borderRadius: '10px',
-                                padding: '4px 8px',
-                                width: 'fit-content',
-                                marginBottom: '8px',
+                                padding: '4px 2px',
+                                marginBottom: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: '14px',
                             }}
                         >
-                            <Typography gutterBottom variant="Small">
-                                {timeDifferenceInHours > 0
-                                    ? `${timeDifferenceInHours}:${timeDifferenceInMinutes % 60}`
-                                    : timeDifferenceInMinutes > 0
-                                    ? `00:${timeDifferenceInMinutes}`
-                                    : 'Closed'}
+                            <Typography gutterBottom variant="XSmall">
+                                {timeDifferenceInHours}:
+                                {timeDifferenceInMinutes < 10
+                                    ? `0${timeDifferenceInMinutes}`
+                                    : `${timeDifferenceInMinutes % 60}`}
+                                :
+                                {timeDifferenceInSeconds < 10
+                                    ? `0${timeDifferenceInSeconds % 60}`
+                                    : `${timeDifferenceInSeconds % 60}`}
+                            </Typography>
+                            <Typography gutterBottom variant="XSmall">
+                                Latest: <b>${highestBid}</b>
                             </Typography>
                         </Box>
                         <Box display="flex" gap="3px">

@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/system';
+import { Box, Typography } from '@mui/material';
 import { useEventCallback, CircularProgress } from '@mui/material';
 import React, { useRef, useState } from 'react';
 import { useGetAuctionList } from '../../store/auction/auctionApi';
@@ -6,18 +6,7 @@ import AuctionCard from './AuctionCard';
 import { useInfiniteScroll } from './hooks';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionVerticalList = () => {
-    const [page, setPage] = useState(0);
-    //const { data, error, isFetching } = useGetAuctionList(page, 20);
-    const data = useState([]);
-    const error = useState('');
-    const isFetching = useState(false);
-    const onScroll = () => {
-        setPage(page + 1);
-    };
-    const ref = useRef();
-    useInfiniteScroll(ref, onScroll);
-
+const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
     return (
         <Box>
             {error && ( // Display error message if error exists
@@ -25,26 +14,34 @@ const AuctionVerticalList = () => {
                     An error occurred while fetching the data.
                 </Typography>
             )}
-            <Box
-                sx={{
-                    display: 'flex',
-                    'flex-flow': 'row wrap',
-                    'min-width': '700px',
-                }}
-            >
-                {data.map((auction) => (
-                    <AuctionCard
-                        key={auction}
-                        endDate={auction.deadline}
-                        image={auction.image}
-                        carName={auction.title}
-                        tags={auction.tags}
-                    ></AuctionCard>
-                ))}
-            </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                {isFetching ? <CircularProgress ref={ref}></CircularProgress> : null}
-            </Box>
+            {data && (
+                <Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            'flex-flow': 'row wrap',
+                            'min-width': '700px',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        {data.map((auction) => (
+                            <AuctionCard
+                                key={auction}
+                                endDate={auction.deadline}
+                                image={auction.firstImageUrl}
+                                carName={auction.title}
+                                tags={auction.tagNames}
+                                highestBid={auction.highestBidAmount}
+                            ></AuctionCard>
+                        ))}
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                        {!isFetching && !last ? (
+                            <CircularProgress ref={loaderRef}></CircularProgress>
+                        ) : null}
+                    </Box>
+                </Box>
+            )}
         </Box>
     );
 };

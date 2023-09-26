@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import CloseIcon from '@mui/icons-material/Close';
@@ -7,6 +7,7 @@ import {
     useGetAuctionListQuery,
     useGetFilteredAuctionsMutation,
 } from '../../store/auction/auctionApi';
+import AuctionVerticalList from '../commons/AuctionVerticalList';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
@@ -15,6 +16,7 @@ export function Dashboard() {
     const [size, setSize] = useState(10);
     //const { data, isLoading, isError } = useGetAuctionListQuery(page, size); //todavia no se usa (deberia ser para traer todos los auctions. Se puede hacer con getFiltered pasando un filter que sea vacio)
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
+    const ref = useRef();
 
     useEffect(() => {
         setSelectedButton('Search Results');
@@ -110,15 +112,23 @@ export function Dashboard() {
                 !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
                     <Typography>Newly Listed Auctions</Typography> //aca va el componente de la lista de auctions
                 )}
-            {selectedButton === 'Search Results' &&
-                data &&
-                !isError &&
-                data.content.map((auction) => (
-                    <Typography key={auction.id}>
-                        id: {auction.id}, title: {auction.title}, deadline: {auction.deadline},
-                        status: {auction.status}
-                    </Typography>
-                ))}
+            {selectedButton === 'Search Results' && data && !isError && (
+                <Box>
+                    {data?.content.length > 0 ? (
+                        <AuctionVerticalList
+                            ref={ref}
+                            data={data?.content}
+                            isFetching={isLoading}
+                            error={isError}
+                            last={data?.last}
+                        ></AuctionVerticalList>
+                    ) : (
+                        <Typography variant="h4" color={colors.red}>
+                            No results found
+                        </Typography>
+                    )}
+                </Box>
+            )}
         </Box>
     );
 }
