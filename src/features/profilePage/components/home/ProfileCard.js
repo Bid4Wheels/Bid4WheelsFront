@@ -7,7 +7,18 @@ import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { EditProfileModal } from './EditProfile';
 
-export const ProfileCard = ({ canEdit, Username, Email, Phone, imgUrl }) => {
+export const ProfileCard = ({
+    canEdit,
+    Username,
+    Email,
+    Phone,
+    imgUrl,
+    UserId,
+    Name,
+    Surname,
+    refetchUserData,
+}) => {
+    console.log('imgUrl:', imgUrl);
     const [openEditModal, setOpenEditModal] = useState(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
@@ -89,44 +100,51 @@ export const ProfileCard = ({ canEdit, Username, Email, Phone, imgUrl }) => {
                 </Typography>
             </Box>
             {canEdit && (
-                <Button
-                    className="EditButton"
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 4,
-                        backgroundColor: colors.water_green,
-                        boxShadow: theme.shadows[3],
-                        border: 'none',
-                        marginTop: 2,
-                    }}
-                >
+                <>
                     <Button
-                        sx={{
+                        className="EditButton"
+                        style={{
                             display: 'flex',
-                            alignItems: 'center',
+                            flexDirection: 'row',
                             justifyContent: 'center',
-                            '& .EditText': {
+                            alignItems: 'center',
+                            borderRadius: 4,
+                            backgroundColor: colors.water_green,
+                            boxShadow: theme.shadows[3],
+                            border: 'none',
+                            marginTop: 2,
+                            padding: '3.5%',
+                        }}
+                        onClick={handleOpenEditModal}
+                    >
+                        <Typography
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
                                 color: 'white',
                                 fontSize: theme.typography.Small.fontSize,
                                 fontWeight: 500,
                                 letterSpacing: '0.4px',
                                 textTransform: 'uppercase',
-                            },
-                        }}
-                        onClick={handleOpenEditModal}
-                    >
-                        <div className="EditText">Edit</div>
+                            }}
+                        >
+                            Edit
+                        </Typography>
                         <EditIcon style={{ color: 'white' }} />
                     </Button>
                     <EditProfileModal
                         open={openEditModal}
                         onClose={handleCloseEditModal}
                         imgUrl={imgUrl}
+                        refetchUserData={refetchUserData}
+                        userName={Name}
+                        lastName={Surname}
+                        email={Email}
+                        phone={Phone}
+                        userId={UserId}
                     />
-                </Button>
+                </>
             )}
         </Box>
     );

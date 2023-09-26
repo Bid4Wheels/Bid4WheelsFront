@@ -15,9 +15,16 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-    const { data: userData, isLoading, isError } = useGetUserByIdQuery(userId);
+    const {
+        data: userData,
+        isLoading,
+        isError,
+        refetch: refetchUserData,
+    } = useGetUserByIdQuery(userId);
     const [userProfileData, setUserProfileData] = useState({
         username: '',
+        name: '',
+        surname: '',
         mail: '',
         phone: '',
         imageUrl: 'default',
@@ -29,6 +36,8 @@ export const ProfilePage = () => {
         if (!isLoading && !isError && userData) {
             setUserProfileData({
                 username: fullNameBuilder(userData.name, userData.lastName),
+                name: userData.name,
+                surname: userData.lastName,
                 mail: userData.email,
                 phone: userData.phoneNumber,
                 imageUrl: userData.imgURL,
@@ -91,6 +100,10 @@ export const ProfilePage = () => {
                     Email={userProfileData.mail}
                     Phone={userProfileData.phone}
                     imgUrl={userProfileData.imageUrl}
+                    UserId={userId}
+                    Name={userProfileData.name}
+                    Surname={userProfileData.surname}
+                    refetchUserData={refetchUserData}
                 />
             </Box>
         </Box>

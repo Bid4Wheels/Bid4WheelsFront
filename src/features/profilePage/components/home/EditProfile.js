@@ -10,7 +10,7 @@ import {
     Grid,
     CircularProgress,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import {
@@ -23,8 +23,20 @@ import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
+import { resizeFile } from '../../../../utils/resize';
+import { pushImage } from '../../../../utils/requests';
 
-export function EditProfileModal({ open, onClose, imgUrl }) {
+export function EditProfileModal({
+    open,
+    onClose,
+    imgUrl,
+    refetchUserData,
+    userName,
+    lastName,
+    email,
+    phone,
+    userId,
+}) {
     const modalStyle = {
         position: 'absolute',
         top: '40%',
@@ -38,10 +50,10 @@ export function EditProfileModal({ open, onClose, imgUrl }) {
     };
 
     const initialState = {
-        name: '',
-        lastName: '',
-        email: '',
-        phone: '',
+        name: userName || '',
+        lastName: lastName || '',
+        email: email || '',
+        phone: phone || '',
     };
 
     const [userInfo, setUserInfo] = useState(initialState);
@@ -73,8 +85,8 @@ export function EditProfileModal({ open, onClose, imgUrl }) {
                         </IconButton>
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
-                        {uploadImage({ imgUrl })}
-                        {formToComplete({ userInfo, setUserInfo })}
+                        {uploadImage({ imgUrl, refetchUserData })}
+                        {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
                 </Box>
             </Modal>
@@ -82,9 +94,8 @@ export function EditProfileModal({ open, onClose, imgUrl }) {
     );
 }
 
-function formToComplete({ userInfo, setUserInfo }) {
+function formToComplete({ userInfo, setUserInfo, userId }) {
     const [updateUser] = useUpdateUserMutation();
-    const userId = useParams().userId;
     const navigate = useNavigate();
     const handleConfirmButton = async (event) => {
         event.preventDefault();
@@ -239,8 +250,9 @@ function formToComplete({ userInfo, setUserInfo }) {
                     </Button>
                     <Button
                         variant="outlined"
-                        sx={{
+                        style={{
                             color: colors.water_green,
+                            borderColor: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
                         }}
                         onClick={handleChangePasswordClick}
@@ -253,12 +265,18 @@ function formToComplete({ userInfo, setUserInfo }) {
     );
 }
 
-function uploadImage({ imgUrl }) {
+function uploadImage({ imgUrl, refetchUserData }) {
     const { data: uploadUrl, isLoading, isError, error } = useGetUploadImageUrlQuery();
     console.log(uploadUrl);
     console.log(error);
     return (
-        <Box marginRight={5} marginLeft={6}>
+        <Box
+            marginRight={5}
+            marginLeft={6}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+        >
             <Avatar
                 src={imgUrl === 'default' ? null : imgUrl}
                 sx={{ width: 150, height: 150, marginBottom: 2 }}
@@ -276,27 +294,17 @@ function uploadImage({ imgUrl }) {
                     type="file"
                     accept="image/*"
                     hidden
-                    onChange={(e) => handleUploadImage(e, uploadUrl)}
+                    onChange={(e) =>
+                        handleUploadImage(e, uploadUrl).then(() => {
+                            refetchUserData();
+                        })
+                    }
                 />
             </Button>
         </Box>
     );
 }
 function handleUploadImage(event, url) {
-    //in case of back not having the new link use this and change fetch url to newUrl
-    //const newUrl = url.replace('bid4wheels.s3.us-east-2.amazonaws.com', 's3.bid4wheels.com');
     const image = event.target.files[0];
-    fetch(url, {
-        method: 'PUT',
-        body: image, // This is your file object
-    })
-        .then(
-            (response) => response.json(), // if the response is a JSON object
-        )
-        .then(
-            (success) => console.log(success), // Handle the success response object
-        )
-        .catch(
-            (error) => console.log(error), // Handle the error response object
-        );
+    return resizeFile(image, 500, 500).then((result) => pushImage(url, result));
 }

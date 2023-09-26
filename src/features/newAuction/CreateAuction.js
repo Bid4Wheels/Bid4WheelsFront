@@ -6,10 +6,9 @@ import TechnicalInformation from './TechnicalInformation';
 import AuctionInformation from './AuctionInformation';
 import AuctionSuccess from './AuctionSuccess';
 import { useCreateAuctionMutation, useGetImageLinksMutation } from '../../store/auction/auctionApi';
-import { id } from 'date-fns/locale';
 import { useSelector } from 'react-redux';
 import { pushImage } from '../../utils/requests';
-import Resizer from 'react-image-file-resizer';
+import { resizeFile } from '../../utils/resize';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('');
@@ -31,7 +30,6 @@ const CreateAuction = () => {
     const [selectedDate, setSelectedDate] = useState();
     const [auctionCreated, setAuctionCreated] = useState(false);
     const [droppedImages, setDroppedImages] = useState([]);
-    const token = useSelector((state) => state.user.token);
     const user = useSelector((state) => state.user);
     const userId = user.userId;
 
@@ -104,26 +102,10 @@ const CreateAuction = () => {
     useEffect(() => {
         if (imageLinks) {
             droppedImages.forEach((image, index) => {
-                resizeFile(image).then((result) => pushImage(imageLinks[index], token, result));
+                resizeFile(image, 317, 204).then((result) => pushImage(imageLinks[index], result));
             });
         }
     }, [imageLinks]);
-
-    const resizeFile = (file) =>
-        new Promise((resolve) => {
-            Resizer.imageFileResizer(
-                file,
-                317,
-                204,
-                'JPEG',
-                100,
-                0,
-                (uri) => {
-                    resolve(uri);
-                },
-                'base64',
-            );
-        });
 
     useEffect(() => {
         setIsNextButtonDisabled(
