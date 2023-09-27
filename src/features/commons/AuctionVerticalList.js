@@ -43,34 +43,6 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                     </Box>
                 </Box>
             )}
-            {data && (
-                <Box>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            'flex-flow': 'row wrap',
-                            'min-width': '700px',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        {data.map((auction) => (
-                            <AuctionCard
-                                key={auction}
-                                endDate={auction.deadline}
-                                image={auction.firstImageUrl}
-                                carName={auction.title}
-                                tags={auction.tagNames}
-                                highestBid={auction.highestBidAmount}
-                            ></AuctionCard>
-                        ))}
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                        {!isFetching && !last ? (
-                            <CircularProgress ref={loaderRef}></CircularProgress>
-                        ) : null}
-                    </Box>
-                </Box>
-            )}
         </Box>
     );
 };
