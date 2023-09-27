@@ -38,8 +38,11 @@ export function Dashboard() {
     useInfiniteScroll(ref, onScroll);
 
     useEffect(() => {
-        setSelectedButton('Search Results');
-        console.log(newData);
+        if (data) {
+            setSelectedButton('Search Results');
+        } else {
+            setSelectedButton('Ending Soon');
+        }
     }, [data]);
 
     const filterAuct = (filter) => {
