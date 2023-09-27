@@ -88,6 +88,7 @@ const AuctionCard = ({ endDate, image, carName, tags, highestBid }) => {
                                 Latest: <b>${highestBid}</b>
                             </Typography>
                         </Box>
+
                         <Box display="flex" gap="3px">
                             {tags.map((tag, index) => (
                                 <Box
