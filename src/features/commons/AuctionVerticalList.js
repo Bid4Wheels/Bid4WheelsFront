@@ -27,6 +27,7 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                         {data.map((auction) => (
                             <AuctionCard
                                 key={auction}
+                                id={auction.id}
                                 endDate={auction.deadline}
                                 image={auction.firstImageUrl}
                                 carName={auction.title}
@@ -42,7 +43,6 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                     </Box>
                 </Box>
             )}
-            {console.log(data)}
             {data && (
                 <Box>
                     <Box
