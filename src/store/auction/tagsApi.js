@@ -7,6 +7,7 @@ export const tagsApiSlice = createApi({
     endpoints: (builder) => ({
         getAllTags: builder.query({
             query: () => ({ url: '/all', method: 'GET' }),
+            providesTags: ['tags'],
         }),
     }),
 });

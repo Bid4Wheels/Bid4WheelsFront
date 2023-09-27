@@ -14,7 +14,6 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                     An error occurred while fetching the data.
                 </Typography>
             )}
-            {console.log(data)}
             {data && (
                 <Box>
                     <Box
@@ -28,6 +27,7 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                         {data.map((auction) => (
                             <AuctionCard
                                 key={auction}
+                                id={auction.id}
                                 endDate={auction.deadline}
                                 image={auction.firstImageUrl}
                                 carName={auction.title}

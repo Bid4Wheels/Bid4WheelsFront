@@ -14,6 +14,7 @@ import { useInfiniteScroll } from '../commons/hooks';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
+    const [isMounted, setIsMounted] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
@@ -39,8 +40,18 @@ export function Dashboard() {
 
     useEffect(() => {
         setSelectedButton('Search Results');
-        console.log(newData);
     }, [data]);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Conditionally set the default selected button only when the component is mounted
+    useEffect(() => {
+        if (isMounted) {
+            setSelectedButton('Ending Soon');
+        }
+    }, [isMounted]);
 
     const filterAuct = (filter) => {
         GetFilteredAuctions({ filter, page, size });
@@ -114,7 +125,7 @@ export function Dashboard() {
                     </Button>
                 </Box>
             </Box>
-            {isFilterOpen && <Filter filterFunct={filterAuct} page={page} size={size} />}
+            {isFilterOpen && <Filter filterFunct={filterAuct} />}
             {selectedButton === 'Ending Soon' && !false && (
                 <Box>
                     <AuctionVerticalList
@@ -137,15 +148,23 @@ export function Dashboard() {
                     ></AuctionVerticalList>
                 </Box>
             )}
-            {selectedButton === 'Search Results' &&
-                data &&
-                !isError &&
-                data.content.map((auction) => (
-                    <Typography key={auction.id}>
-                        id: {auction.id}, title: {auction.title}, deadline: {auction.deadline},
-                        status: {auction.status}
-                    </Typography>
-                ))}
+            {selectedButton === 'Search Results' && data && !isError && (
+                <Box>
+                    {data?.content.length > 0 ? (
+                        <AuctionVerticalList
+                            ref={ref}
+                            data={data?.content}
+                            isFetching={isLoading}
+                            error={isError}
+                            last={data?.last}
+                        ></AuctionVerticalList>
+                    ) : (
+                        <Typography variant="" color={colors.red}>
+                            No auctions were found.
+                        </Typography>
+                    )}
+                </Box>
+            )}
         </Box>
     );
 }

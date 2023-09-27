@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card, Box, CardActionArea, CardMedia, Typography, CardContent } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {
     formatDistanceToNow,
     isWithinInterval,
@@ -10,12 +11,13 @@ import {
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionCard = ({ endDate, image, carName, tags, highestBid }) => {
+const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(endDate), now);
     const timeDifferenceInMinutes = differenceInMinutes(new Date(endDate), now);
     const timeDifferenceInSeconds = differenceInSeconds(new Date(endDate), now);
     const timeDifferenceInDays = differenceInDays(new Date(endDate), now);
+    const nav = useNavigate();
 
     let color = colors.green;
     if (timeDifferenceInDays < 1) {
@@ -38,6 +40,7 @@ const AuctionCard = ({ endDate, image, carName, tags, highestBid }) => {
                     transition: 'transform 0.2s ease-in-out',
                     ':hover': { transform: 'scale(1.05)' },
                 }}
+                onClick={() => nav(`/auction/${id}`)}
             >
                 <CardActionArea>
                     <CardMedia
