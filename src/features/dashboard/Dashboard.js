@@ -14,6 +14,7 @@ import { useInfiniteScroll } from '../commons/hooks';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
+    const [isMounted, setIsMounted] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
@@ -38,12 +39,19 @@ export function Dashboard() {
     useInfiniteScroll(ref, onScroll);
 
     useEffect(() => {
-        if (data) {
-            setSelectedButton('Search Results');
-        } else {
+        setSelectedButton('Search Results');
+    }, [data]);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Conditionally set the default selected button only when the component is mounted
+    useEffect(() => {
+        if (isMounted) {
             setSelectedButton('Ending Soon');
         }
-    }, [data]);
+    }, [isMounted]);
 
     const filterAuct = (filter) => {
         GetFilteredAuctions({ filter, page, size });
@@ -117,7 +125,7 @@ export function Dashboard() {
                     </Button>
                 </Box>
             </Box>
-            {isFilterOpen && <Filter filterFunct={filterAuct} page={page} size={size} />}
+            {isFilterOpen && <Filter filterFunct={filterAuct} />}
             {selectedButton === 'Ending Soon' && !false && (
                 <Box>
                     <AuctionVerticalList
