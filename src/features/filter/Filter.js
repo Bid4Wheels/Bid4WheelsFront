@@ -86,7 +86,10 @@ export function Filter({ filterFunct }) {
             filter.gearShiftType = selectedGearShiftType[0].toUpperCase();
         }
 
-        filter.model = selectedModel.toUpperCase(); //model seems to be a required field
+        if (selectedModel !== '' && selectedModel !== null) {
+            filter.model = selectedModel.toUpperCase();
+        }
+
         filter.tags = selectedTags; //tags is required, even if blank
 
         filterFunct(filter);
@@ -297,12 +300,8 @@ function customTagsAutocomplete(
 ) {
     const { data, isLoading, isError } = useGetAllTagsQuery();
 
-    const options = data?.map((tag) => tag.tagName) || [];
-
-    const tagMap = {};
-    data?.forEach((tag) => {
-        tagMap[tag.tagName] = tag.id;
-    });
+    console.log('DATA', data);
+    const options = data?.map((tag) => ({ label: tag.tagName, value: tag.id })) || [];
 
     return (
         <Autocomplete
@@ -324,15 +323,14 @@ function customTagsAutocomplete(
             value={selectedTagNames}
             onChange={(event, values) => {
                 setSelectedTagNames(values);
-                const selectedTagIds = selectedTagNames.map((name) => tagMap[name]);
-                setSelectedTags(selectedTagIds);
+                setSelectedTags(values.map((v) => v.value));
             }}
             options={options}
             renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                         variant="outlined"
-                        label={option}
+                        label={option.label}
                         key={index}
                         {...getTagProps({ index })}
                     />
