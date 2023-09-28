@@ -14,14 +14,25 @@ export const authenticatedUserApi = createApi({
                     body: userInfo,
                 };
             },
+            invalidatesTags: ['userData'],
         }),
         getUserById: builder.query({
             query: (id) => ({
                 url: `/${id}`,
                 method: 'GET',
             }),
+            providesTags: ['userData'],
+        }),
+        getUploadImageUrl: builder.query({
+            query: () => ({
+                url: `/image-url`,
+                method: 'POST',
+                responseHandler: (response) => response.text(),
+            }),
+            providesTags: ['userImageUrl'],
         }),
     }),
 });
 
-export const { useUpdateUserMutation, useGetUserByIdQuery } = authenticatedUserApi;
+export const { useUpdateUserMutation, useGetUserByIdQuery, useGetUploadImageUrlQuery } =
+    authenticatedUserApi;

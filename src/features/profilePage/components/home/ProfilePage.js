@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Button, Box } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Box, Typography } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
+import { useSelector } from 'react-redux';
+import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
+import { useGetAuctionsByUserIdQuery } from '../../../../store/auction/auctionApi';
 
 export const ProfilePage = () => {
-    //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
-    const { userId } = useParams();
-    const canEdit = !userId;
+    const nav = useNavigate();
+    const { userId: queryUserId } = useParams();
+    const canEdit = !queryUserId;
+    const currentUser = useSelector((state) => state.user);
+    const userId = queryUserId || currentUser.userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-    const { data: userData, isLoading, isError, error } = useGetUserByIdQuery(userId);
+    const {
+        data: userData,
+        isLoading,
+        isError,
+        refetch: refetchUserData,
+    } = useGetUserByIdQuery(userId);
     const [userProfileData, setUserProfileData] = useState({
         username: '',
+        name: '',
+        surname: '',
         mail: '',
         phone: '',
+        imageUrl: 'default',
     });
     const fullNameBuilder = (name, lastName) => {
         return name + ' ' + lastName;
@@ -26,11 +39,29 @@ export const ProfilePage = () => {
         if (!isLoading && !isError && userData) {
             setUserProfileData({
                 username: fullNameBuilder(userData.name, userData.lastName),
+                name: userData.name,
+                surname: userData.lastName,
                 mail: userData.email,
                 phone: userData.phoneNumber,
+                imageUrl: userData.imgURL,
             });
         }
     }, [userData, isLoading, isError]);
+
+    const {
+        data: userAuctions,
+        isLoading: auctionsLoading,
+        isError: auctionsIsError,
+    } = useGetAuctionsByUserIdQuery(userId);
+    const [userAuctionsData, setUserAuctionsData] = useState([]);
+    useEffect(() => {
+        if (!auctionsLoading && !auctionsIsError) {
+            setUserAuctionsData(userAuctions.content);
+        }
+    });
+    const handleCreateAuctionClick = () => {
+        nav('/newAuction');
+    };
 
     return (
         <Box sx={{ padding: '1%', height: '80vh' }}>
@@ -86,7 +117,93 @@ export const ProfilePage = () => {
                     Username={userProfileData.username}
                     Email={userProfileData.mail}
                     Phone={userProfileData.phone}
+                    imgUrl={userProfileData.imageUrl}
+                    UserId={userId}
+                    Name={userProfileData.name}
+                    Surname={userProfileData.surname}
+                    refetchUserData={refetchUserData}
                 />
+                <Box
+                    className="AuctionLists"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column-reverse',
+                        paddingLeft: '5%',
+                        height: '100%',
+                        width: '60%',
+                    }}
+                >
+                    <Box
+                        className="PublishedAuctions"
+                        sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
+                    >
+                        {userAuctionsData.length === 0 ? (
+                            canEdit ? (
+                                <>
+                                    <Typography
+                                        sx={{
+                                            color: 'black',
+                                            fontSize: theme.typography.Medium.fontSize,
+                                            paddingLeft: '2.5%',
+                                            paddingBottom: '5%',
+                                            fontWeight: 500,
+                                        }}
+                                    >
+                                        You have not created any auctions
+                                    </Typography>
+                                    <Button
+                                        style={{
+                                            backgroundColor: colors.water_green,
+                                            color: 'white',
+                                            textTransform: 'none',
+                                            padding: '20px',
+                                            width: 'fit-content',
+                                            height: 'fit-content',
+                                            marginLeft: '2.5%',
+                                        }}
+                                        onClick={handleCreateAuctionClick}
+                                    >
+                                        <Typography
+                                            sx={{
+                                                fontSize: theme.typography.Small.fontSize,
+                                                fontWeight: 500,
+                                            }}
+                                        >
+                                            Create new auction
+                                        </Typography>
+                                    </Button>
+                                </>
+                            ) : (
+                                <Typography
+                                    sx={{
+                                        color: 'black',
+                                        fontSize: theme.typography.Medium.fontSize,
+                                        paddingLeft: '2.5%',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    This user has not created any auctions yet
+                                </Typography>
+                            )
+                        ) : (
+                            <>
+                                <Typography
+                                    sx={{
+                                        color: 'black',
+                                        fontSize: theme.typography.Medium.fontSize,
+                                        paddingLeft: '2.5%',
+                                        fontWeight: 500,
+                                    }}
+                                >
+                                    Published auctions
+                                </Typography>
+                                <AuctionHorizontalCardList
+                                    auctionList={userAuctionsData}
+                                ></AuctionHorizontalCardList>
+                            </>
+                        )}
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );

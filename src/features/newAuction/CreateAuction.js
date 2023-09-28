@@ -5,6 +5,10 @@ import { useNavigate } from 'react-router-dom';
 import TechnicalInformation from './TechnicalInformation';
 import AuctionInformation from './AuctionInformation';
 import AuctionSuccess from './AuctionSuccess';
+import { useCreateAuctionMutation, useGetImageLinksMutation } from '../../store/auction/auctionApi';
+import { useSelector } from 'react-redux';
+import { pushImage } from '../../utils/requests';
+import { resizeFile } from '../../utils/resize';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('');
@@ -25,8 +29,12 @@ const CreateAuction = () => {
     const [description, setDescription] = useState();
     const [selectedDate, setSelectedDate] = useState();
     const [auctionCreated, setAuctionCreated] = useState(false);
-
     const [droppedImages, setDroppedImages] = useState([]);
+    const user = useSelector((state) => state.user);
+    const userId = user.userId;
+
+    const [makeAuction, { data, isError, error }] = useCreateAuctionMutation();
+    const [getLinks, { data: imageLinks }] = useGetImageLinksMutation();
 
     const handleDrop = (e) => {
         e.preventDefault();
@@ -60,8 +68,45 @@ const CreateAuction = () => {
     };
 
     const handleAuctionCreate = () => {
-        setAuctionCreated(true);
+        const body = {
+            userId: userId,
+            title: title,
+            description: description,
+            deadline: selectedDate,
+            brand: brandValue.toUpperCase(),
+            model: modelValue,
+            basePrice: startingPrice,
+            milage: mileage,
+            gasType: fuelTypeValue.toUpperCase(),
+            modelYear: years,
+            color: colorValue.toUpperCase(),
+            doorsAmount: selectedDoors,
+            gearShiftType: selectedGear.toUpperCase(),
+            tags: tags,
+        };
+
+        makeAuction(body);
+
+        if (isError) {
+            console.log(error);
+        }
     };
+
+    useEffect(() => {
+        if (data) {
+            getLinks(data.auctionId);
+            setAuctionCreated(true);
+        }
+    }, [data]);
+
+    useEffect(() => {
+        if (imageLinks) {
+            droppedImages.forEach((image, index) => {
+                resizeFile(image, 317, 204).then((result) => pushImage(imageLinks[index], result));
+            });
+        }
+    }, [imageLinks]);
+
     useEffect(() => {
         setIsNextButtonDisabled(
             !brandValue ||
@@ -87,8 +132,14 @@ const CreateAuction = () => {
     ]);
 
     useEffect(() => {
-        setIsCreateButtonDisabled(!(title && description && selectedDate));
-    }, [title, description, selectedDate]);
+        const isInputValid = title && description && selectedDate;
+
+        const isImageCountValid = droppedImages.length >= 1 && droppedImages.length <= 7;
+
+        setIsCreateButtonDisabled(
+            !(isInputValid && isImageCountValid && droppedImages.length !== 0),
+        );
+    }, [title, description, selectedDate, droppedImages]);
 
     const addTag = () => {
         if (inputValue.trim() === '') {
@@ -106,9 +157,10 @@ const CreateAuction = () => {
         const updatedTags = tags.filter((tag) => tag !== tagToRemove);
         setTags(updatedTags);
     };
-    const handleImageSelect = (imageFile) => {
-        setDroppedImages((prevImages) => [...prevImages, imageFile]);
+    const handleImageSelect = (image) => {
+        setDroppedImages((prevImages) => [...prevImages, image]);
     };
+
     if (auctionCreated) {
         return <AuctionSuccess></AuctionSuccess>;
     }

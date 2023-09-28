@@ -23,7 +23,7 @@ import {
 } from '../../utils/mocks/constants';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
-export function Filter({ filterFunct, page, size }) {
+export function Filter({ filterFunct }) {
     const [selectedCarDoors, setSelectedCarDoors] = useState('');
     const [selectedGearShiftType, setSelectedGearShiftType] = useState([]);
     const [selectedBrand, setSelectedBrand] = useState('');
@@ -37,6 +37,7 @@ export function Filter({ filterFunct, page, size }) {
     const [selectedMileageMin, setSelectedMileageMin] = useState('');
     const [selectedMileageMax, setSelectedMileageMax] = useState('');
     const [selectedTags, setSelectedTags] = useState([]);
+    const [selectedTagNames, setSelectedTagNames] = useState([]);
 
     const handleApplyFilters = () => {
         const filter = {};
@@ -89,9 +90,7 @@ export function Filter({ filterFunct, page, size }) {
             filter.model = selectedModel.toUpperCase();
         }
 
-        //if (selectedTags.length > 0 && selectedTags !== null) {
-        //    filter.tags = selectedTags;
-        //} tags aren't yet implemented for the filter
+        filter.tags = selectedTags; //tags is required, even if blank
 
         filterFunct(filter);
     };
@@ -180,7 +179,12 @@ export function Filter({ filterFunct, page, size }) {
                 }}
             >
                 <Box style={{ maxHeight: '250px', overflowY: 'auto' }}>
-                    {customTagsAutocomplete(selectedTags, setSelectedTags)}
+                    {customTagsAutocomplete(
+                        selectedTags,
+                        setSelectedTags,
+                        selectedTagNames,
+                        setSelectedTagNames,
+                    )}
                 </Box>
                 {customCheckBoxMapping(
                     'Car Doors',
@@ -288,10 +292,16 @@ function customMinMaxField(fieldName, min, max, setMin, setMax) {
     );
 }
 
-function customTagsAutocomplete(selectedTags, setSelectedTags) {
+function customTagsAutocomplete(
+    selectedTags,
+    setSelectedTags,
+    selectedTagNames,
+    setSelectedTagNames,
+) {
     const { data, isLoading, isError } = useGetAllTagsQuery();
 
-    const options = data?.map((tag) => tag.tagName) || [];
+    console.log('DATA', data);
+    const options = data?.map((tag) => ({ label: tag.tagName, value: tag.id })) || [];
 
     return (
         <Autocomplete
@@ -310,14 +320,17 @@ function customTagsAutocomplete(selectedTags, setSelectedTags) {
                     color: colors.water_green,
                 },
             }}
-            value={selectedTags}
-            onChange={(event, value) => setSelectedTags(value)}
+            value={selectedTagNames}
+            onChange={(event, values) => {
+                setSelectedTagNames(values);
+                setSelectedTags(values.map((v) => v.value));
+            }}
             options={options}
             renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
                     <Chip
                         variant="outlined"
-                        label={option}
+                        label={option.label}
                         key={index}
                         {...getTagProps({ index })}
                     />
