@@ -178,7 +178,7 @@ export function Filter({ filterFunct }) {
                     paddingLeft: '20px',
                 }}
             >
-                <Box>
+                <Box sx={{ maxHeight: '135px', overflow: 'auto' }}>
                     {customTagsAutocomplete(
                         selectedTags,
                         setSelectedTags,
