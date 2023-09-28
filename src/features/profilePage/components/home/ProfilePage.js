@@ -63,6 +63,21 @@ export const ProfilePage = () => {
         nav('/newAuction');
     };
 
+    console.log(userAuctionsData);
+
+    const dummyDataForBidsMade = [
+        {
+            deadline: '2023-10-19T03:00:00',
+            firstImageUrl:
+                'https://s3.bid4wheels.com/auction/auction_12/img0?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20230928T225029Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3599&X-Amz-Credential=AKIAV6MH63FJGUMS3ZW3%2F20230928%2Fus-east-2%2Fs3%2Faws4_request&X-Amz-Signature=890235d79c1b3dfe1a9d311d512961798f70af3f488325c270d1277375b22952',
+            highestBidAmount: 300000,
+            id: 12,
+            status: 'OPEN',
+            tagNames: ['new', 'fast'],
+            title: 'Alfa Romeo',
+        },
+    ];
+
     return (
         <Box sx={{ padding: '1%', height: '80vh' }}>
             <Box
@@ -127,15 +142,30 @@ export const ProfilePage = () => {
                     className="AuctionLists"
                     sx={{
                         display: 'flex',
-                        flexDirection: 'column-reverse',
+                        flexDirection: 'column',
                         paddingLeft: '5%',
                         height: '100%',
                         width: '60%',
                     }}
                 >
+                    <Box className="BidsMade" sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography
+                            sx={{
+                                color: 'black',
+                                fontSize: theme.typography.Medium.fontSize,
+                                paddingLeft: '2.5%',
+                                fontWeight: 500,
+                            }}
+                        >
+                            Bids Made
+                        </Typography>
+                        <AuctionHorizontalCardList
+                            auctionList={dummyDataForBidsMade}
+                        ></AuctionHorizontalCardList>
+                    </Box>
                     <Box
                         className="PublishedAuctions"
-                        sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
+                        sx={{ display: 'flex', flexDirection: 'column' }}
                     >
                         {userAuctionsData.length === 0 ? (
                             canEdit ? (
