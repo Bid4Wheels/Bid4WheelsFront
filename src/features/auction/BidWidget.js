@@ -27,7 +27,6 @@ export function BidWidget({
     const [myBid, setMyBid] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [bid, { isLoading, error }] = useBidMutation();
-    console.log(auctionData);
 
     const handleBidChange = (event) => {
         event.preventDefault();
