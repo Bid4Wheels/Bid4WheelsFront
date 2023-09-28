@@ -1,9 +1,6 @@
-import { async } from 'q';
-
-export const pushImage = (url, token, image) => {
-    console.log(url);
-
-    fetch(url, {
+export const pushImage = (url, image) => {
+    console.log(image);
+    return fetch(url, {
         method: 'PUT',
         body: image,
     })
