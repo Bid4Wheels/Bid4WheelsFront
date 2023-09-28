@@ -1,19 +1,23 @@
 import React from 'react';
 import { Card, Box, CardActionArea, CardMedia, Typography, CardContent } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import {
     formatDistanceToNow,
     isWithinInterval,
     differenceInHours,
     differenceInDays,
     differenceInMinutes,
+    differenceInSeconds,
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 
-const AuctionCard = ({ endDate, image, carName, tags }) => {
+const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
-    const timeDifferenceInHours = differenceInHours(endDate, now);
-    const timeDifferenceInMinutes = differenceInMinutes(endDate, now);
-    const timeDifferenceInDays = differenceInDays(endDate, now);
+    const timeDifferenceInHours = differenceInHours(new Date(endDate), now);
+    const timeDifferenceInMinutes = differenceInMinutes(new Date(endDate), now);
+    const timeDifferenceInSeconds = differenceInSeconds(new Date(endDate), now);
+    const timeDifferenceInDays = differenceInDays(new Date(endDate), now);
+    const nav = useNavigate();
 
     let color = colors.green;
     if (timeDifferenceInDays < 1) {
@@ -36,6 +40,7 @@ const AuctionCard = ({ endDate, image, carName, tags }) => {
                     transition: 'transform 0.2s ease-in-out',
                     ':hover': { transform: 'scale(1.05)' },
                 }}
+                onClick={() => nav(`/auction/${id}`)}
             >
                 <CardActionArea>
                     <CardMedia
@@ -64,9 +69,12 @@ const AuctionCard = ({ endDate, image, carName, tags }) => {
                             sx={{
                                 backgroundColor: color,
                                 borderRadius: '10px',
-                                padding: '4px 8px',
-                                width: 'fit-content',
-                                marginBottom: '8px',
+                                padding: '4px 2px',
+                                marginBottom: '14px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'space-between',
+                                marginTop: '14px',
                             }}
                         >
                             <Typography gutterBottom variant="Small">
@@ -83,7 +91,11 @@ const AuctionCard = ({ endDate, image, carName, tags }) => {
                                         : 'Closed'
                                 }`}
                             </Typography>
+                            <Typography gutterBottom variant="XSmall">
+                                Latest: <b>${highestBid}</b>
+                            </Typography>
                         </Box>
+
                         <Box display="flex" gap="3px">
                             {tags.map((tag, index) => (
                                 <Box

@@ -10,18 +10,32 @@ import {
     Grid,
     CircularProgress,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
-import { useUpdateUserMutation } from '../../../../store/user/authenticatedUserApi';
-import { useParams } from 'react-router';
+import {
+    useGetUploadImageUrlQuery,
+    useUpdateUserMutation,
+} from '../../../../store/user/authenticatedUserApi';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
+import { resizeFile } from '../../../../utils/resize';
+import { pushImage } from '../../../../utils/requests';
 
-export function EditProfileModal({ open, onClose }) {
+export function EditProfileModal({
+    open,
+    onClose,
+    imgUrl,
+    refetchUserData,
+    userName,
+    lastName,
+    email,
+    phone,
+    userId,
+}) {
     const modalStyle = {
         position: 'absolute',
         top: '40%',
@@ -33,16 +47,22 @@ export function EditProfileModal({ open, onClose }) {
         p: 5,
         borderRadius: 3,
     };
-
     const initialState = {
-        name: '',
-        lastName: '',
-        email: '',
-        phone: '',
+        name: userName || '',
+        lastName: lastName || '',
+        email: email || '',
+        phone: phone || '',
     };
 
     const [userInfo, setUserInfo] = useState(initialState);
-
+    useEffect(() => {
+        setUserInfo({
+            name: userName || '',
+            lastName: lastName || '',
+            email: email || '',
+            phone: phone || '',
+        });
+    }, [userName, lastName, email, phone]);
     const handleCloseModal = () => {
         setUserInfo(initialState);
         onClose();
@@ -71,8 +91,8 @@ export function EditProfileModal({ open, onClose }) {
                         </IconButton>
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
-                        {uploadImage()}
-                        {formToComplete({ userInfo, setUserInfo })}
+                        {uploadImage({ imgUrl, refetchUserData })}
+                        {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
                 </Box>
             </Modal>
@@ -80,9 +100,8 @@ export function EditProfileModal({ open, onClose }) {
     );
 }
 
-function formToComplete({ userInfo, setUserInfo }) {
+function formToComplete({ userInfo, setUserInfo, userId }) {
     const [updateUser] = useUpdateUserMutation();
-    const userId = useParams().userId;
     const navigate = useNavigate();
     const handleConfirmButton = async (event) => {
         event.preventDefault();
@@ -237,8 +256,9 @@ function formToComplete({ userInfo, setUserInfo }) {
                     </Button>
                     <Button
                         variant="outlined"
-                        sx={{
+                        style={{
                             color: colors.water_green,
+                            borderColor: colors.water_green,
                             '&:hover': { color: colors.on_stand_water_green },
                         }}
                         onClick={handleChangePasswordClick}
@@ -251,10 +271,20 @@ function formToComplete({ userInfo, setUserInfo }) {
     );
 }
 
-function uploadImage() {
+function uploadImage({ imgUrl, refetchUserData }) {
+    const { data: uploadUrl } = useGetUploadImageUrlQuery();
     return (
-        <Box marginRight={5} marginLeft={6}>
-            <Avatar sx={{ width: 150, height: 150, marginBottom: 2 }}></Avatar>
+        <Box
+            marginRight={5}
+            marginLeft={6}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+        >
+            <Avatar
+                src={imgUrl === 'default' ? null : imgUrl}
+                sx={{ width: 150, height: 150, marginBottom: 2 }}
+            ></Avatar>
             <Button
                 variant="contained"
                 component="label"
@@ -264,8 +294,21 @@ function uploadImage() {
                 }}
             >
                 Upload Image
-                <input type="file" accept="image/*" hidden />
+                <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) =>
+                        handleUploadImage(e, uploadUrl).then(() => {
+                            refetchUserData();
+                        })
+                    }
+                />
             </Button>
         </Box>
     );
+}
+function handleUploadImage(event, url) {
+    const image = event.target.files[0];
+    return resizeFile(image, 500, 500).then((result) => pushImage(url, result));
 }

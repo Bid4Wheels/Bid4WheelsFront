@@ -5,22 +5,32 @@ import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
+import { useSelector } from 'react-redux';
 import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
 import { useGetAuctionsByUserIdQuery } from '../../../../store/auction/auctionApi';
 
 export const ProfilePage = () => {
-    //Hay que hacer que pueda agarrar el userId desde el store, sino nunca se va a ver nada cuando puedas editar
     const nav = useNavigate();
-    const { userId } = useParams();
-    const canEdit = !userId;
+    const { userId: queryUserId } = useParams();
+    const canEdit = !queryUserId;
+    const currentUser = useSelector((state) => state.user);
+    const userId = queryUserId || currentUser.userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
-    const { data: userData, isLoading, isError } = useGetUserByIdQuery(userId);
+    const {
+        data: userData,
+        isLoading,
+        isError,
+        refetch: refetchUserData,
+    } = useGetUserByIdQuery(userId);
     const [userProfileData, setUserProfileData] = useState({
         username: '',
+        name: '',
+        surname: '',
         mail: '',
         phone: '',
+        imageUrl: 'default',
     });
     const fullNameBuilder = (name, lastName) => {
         return name + ' ' + lastName;
@@ -29,8 +39,11 @@ export const ProfilePage = () => {
         if (!isLoading && !isError && userData) {
             setUserProfileData({
                 username: fullNameBuilder(userData.name, userData.lastName),
+                name: userData.name,
+                surname: userData.lastName,
                 mail: userData.email,
                 phone: userData.phoneNumber,
+                imageUrl: userData.imgURL,
             });
         }
     }, [userData, isLoading, isError]);
@@ -104,6 +117,11 @@ export const ProfilePage = () => {
                     Username={userProfileData.username}
                     Email={userProfileData.mail}
                     Phone={userProfileData.phone}
+                    imgUrl={userProfileData.imageUrl}
+                    UserId={userId}
+                    Name={userProfileData.name}
+                    Surname={userProfileData.surname}
+                    refetchUserData={refetchUserData}
                 />
                 <Box
                     className="AuctionLists"
