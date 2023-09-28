@@ -139,6 +139,9 @@ export const ProfilePage = () => {
                                             color: 'white',
                                             textTransform: 'none',
                                             padding: '20px',
+                                            width: 'fit-content',
+                                            height: 'fit-content',
+                                            marginLeft: '2.5%',
                                         }}
                                         onClick={handleCreateAuctionClick}
                                     >
