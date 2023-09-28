@@ -178,7 +178,7 @@ export function Filter({ filterFunct }) {
                     paddingLeft: '20px',
                 }}
             >
-                <Box style={{ maxHeight: '250px', overflowY: 'auto' }}>
+                <Box>
                     {customTagsAutocomplete(
                         selectedTags,
                         setSelectedTags,
@@ -311,7 +311,6 @@ function customTagsAutocomplete(
             sx={{
                 width: '95%',
                 maxWidth: '400px',
-                height: '56px',
                 marginX: 'auto',
                 '&.Mui-focused .MuiInputLabel-root': {
                     color: colors.water_green,
