@@ -86,7 +86,7 @@ const Header = () => {
                                 cursor: 'pointer',
                                 ml: '1rem',
                                 mr: '1rem',
-                                fontWeight: location.pathname === '/auction/new' ? 650 : 400,
+                                fontWeight: location.pathname === '/newAuction' ? 650 : 400,
                             }}
                             onClick={handleCreateAuctionClick}
                         >
