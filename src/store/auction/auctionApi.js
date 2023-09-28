@@ -97,6 +97,7 @@ export const auctionApi = createApi({
         //get auction list of user
         getAuctionsByUserId: builder.query({
             query: (userId) => `/user/${userId}`,
+            providesTags: ['userAuctions'],
         }),
         deleteAuction: builder.mutation({
             query: (id) => ({
