@@ -3,39 +3,7 @@ import AuctionCard from './AuctionCard';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 
 const AuctionHorizontalCardList = ({ auctionList }) => {
-    const tags = ['Luxury', 'Sedan', 'Auction'];
-    const [auctions, setAuctions] = useState([
-        {
-            endDate: new Date('2023-09-10T18:30:00'),
-            image: 'https://example.com/car1.jpg',
-            carName: 'Luxury Sedan',
-            tags: ['Luxury', 'Sedan', 'Auction'],
-        },
-        {
-            endDate: new Date('2023-09-15T20:00:00'),
-            image: 'https://example.com/car2.jpg',
-            carName: 'Sports Coupe',
-            tags: ['Sports', 'Coupe', 'Auction'],
-        },
-        {
-            endDate: new Date('2023-09-20T12:45:00'),
-            image: 'https://example.com/car3.jpg',
-            carName: 'Classic Convertible',
-            tags: ['Classic', 'Convertible', 'Auction'],
-        },
-        {
-            endDate: new Date('2023-09-25T16:15:00'),
-            image: 'https://example.com/car4.jpg',
-            carName: 'Electric Hatchback',
-            tags: ['Electric', 'Hatchback', 'Auction'],
-        },
-        {
-            endDate: new Date('2023-09-25T16:15:00'),
-            image: 'https://example.com/car4.jpg',
-            carName: 'Electric Hatchback',
-            tags: ['Electric', 'Hatchback', 'Auction'],
-        },
-    ]);
+    const [auctions, setAuctions] = useState([]);
     useEffect(() => {
         if (auctionList) {
             setAuctions(auctionList);
@@ -78,7 +46,7 @@ const AuctionHorizontalCardList = ({ auctionList }) => {
                             endDate={new Date(auction.deadline)}
                             image={auction.firstImageUrl}
                             carName={auction.title}
-                            tags={tags}
+                            tags={auction.tagNames}
                         />
                     ))}
                 </div>
