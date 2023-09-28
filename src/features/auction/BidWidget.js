@@ -45,7 +45,6 @@ export function BidWidget({
         bid({ amount: myBid, userId: userId, auctionId: auctionId });
         setMyBid('');
         handleModalClose();
-        reload();
     };
 
     const handleModalClose = () => {

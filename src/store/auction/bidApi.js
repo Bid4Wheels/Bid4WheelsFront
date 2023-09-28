@@ -12,6 +12,7 @@ export const bidApi = createApi({
                 method: 'POST',
                 body: { amount, userId, auctionId },
             }),
+            invalidatesTags: ['Auction'],
         }),
     }),
 });

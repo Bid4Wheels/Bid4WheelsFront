@@ -8,6 +8,7 @@ export const auctionApi = createApi({
     endpoints: (builder) => ({
         getAuctionById: builder.query({
             query: (id) => `/${id}`,
+            providesTags: ['Auction'],
         }),
         getAuctionList: builder.query({
             query: (page, size) => ({ url: '/', params: { page, size } }),
