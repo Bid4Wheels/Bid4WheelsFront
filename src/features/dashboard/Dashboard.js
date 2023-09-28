@@ -1,24 +1,57 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import CloseIcon from '@mui/icons-material/Close';
 import { Filter } from '../filter/Filter';
 import {
     useGetAuctionListQuery,
+    useGetEndingAuctionListQuery,
     useGetFilteredAuctionsMutation,
+    useGetNewAuctionListQuery,
 } from '../../store/auction/auctionApi';
+import AuctionVerticalList from '../commons/AuctionVerticalList';
+import { useInfiniteScroll } from '../commons/hooks';
 
 export function Dashboard() {
     const [selectedButton, setSelectedButton] = useState('Ending Soon');
+    const [isMounted, setIsMounted] = useState(false);
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(10);
-    //const { data, isLoading, isError } = useGetAuctionListQuery(page, size); //todavia no se usa (deberia ser para traer todos los auctions. Se puede hacer con getFiltered pasando un filter que sea vacio)
+    const {
+        data: newData,
+        isError: newIsError,
+        isFetching: newIsLoading,
+    } = useGetNewAuctionListQuery(page, size);
+    const {
+        data: endingData,
+        isError: endingIsError,
+        isFetching: endingIsLoading,
+    } = useGetEndingAuctionListQuery(page, size);
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
+    const ref = useRef();
+    console.log(ref?.current);
+    const onScroll = () => {
+        // eslint-disable-next-line no-debugger
+        debugger;
+        setPage(page + 1);
+    };
+    useInfiniteScroll(ref, onScroll);
 
     useEffect(() => {
         setSelectedButton('Search Results');
     }, [data]);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // Conditionally set the default selected button only when the component is mounted
+    useEffect(() => {
+        if (isMounted) {
+            setSelectedButton('Ending Soon');
+        }
+    }, [isMounted]);
 
     const filterAuct = (filter) => {
         GetFilteredAuctions({ filter, page, size });
@@ -31,15 +64,6 @@ export function Dashboard() {
     const toggleFilter = () => {
         setIsFilterOpen(!isFilterOpen);
     };
-
-    useEffect(() => {
-        if (selectedButton === 'Ending Soon') {
-            // Fetch 'Ending Soon' data here.
-        } else if (selectedButton === 'Newly Listed') {
-            // Fetch 'Newly Listed' data here.
-        }
-        // You can add more conditions for other button options.
-    }, [selectedButton]);
 
     return (
         <Box
@@ -101,24 +125,46 @@ export function Dashboard() {
                     </Button>
                 </Box>
             </Box>
-            {isFilterOpen && <Filter filterFunct={filterAuct} page={page} size={size} />}
-            {selectedButton === 'Ending Soon' &&
-                !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
-                    <Typography>Ending Soon Auctions</Typography> //aca va el componente de la lista de auctions
-                )}
-            {selectedButton === 'Newly Listed' &&
-                !false && ( //false hay que cambiarlo por el isError de la query para TODAS las auctions
-                    <Typography>Newly Listed Auctions</Typography> //aca va el componente de la lista de auctions
-                )}
-            {selectedButton === 'Search Results' &&
-                data &&
-                !isError &&
-                data.content.map((auction) => (
-                    <Typography key={auction.id}>
-                        id: {auction.id}, title: {auction.title}, deadline: {auction.deadline},
-                        status: {auction.status}
-                    </Typography>
-                ))}
+            {isFilterOpen && <Filter filterFunct={filterAuct} />}
+            {selectedButton === 'Ending Soon' && !false && (
+                <Box>
+                    <AuctionVerticalList
+                        loaderRef={ref}
+                        data={endingData?.content}
+                        isFetching={endingIsLoading}
+                        error={endingIsError}
+                        last={endingData?.last}
+                    ></AuctionVerticalList>
+                </Box>
+            )}
+            {selectedButton === 'Newly Listed' && !false && (
+                <Box>
+                    <AuctionVerticalList
+                        ref={ref}
+                        data={newData?.content}
+                        isFetching={newIsLoading}
+                        error={newIsError}
+                        last={newData?.last}
+                    ></AuctionVerticalList>
+                </Box>
+            )}
+            {selectedButton === 'Search Results' && data && !isError && (
+                <Box>
+                    {data?.content.length > 0 ? (
+                        <AuctionVerticalList
+                            ref={ref}
+                            data={data?.content}
+                            isFetching={isLoading}
+                            error={isError}
+                            last={data?.last}
+                        ></AuctionVerticalList>
+                    ) : (
+                        <Typography variant="" color={colors.red}>
+                            No auctions were found.
+                        </Typography>
+                    )}
+                </Box>
+            )}
         </Box>
     );
 }
