@@ -10,14 +10,13 @@ import {
     Grid,
     CircularProgress,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import colors from '../../../../utils/desgin/Colors';
 import {
     useGetUploadImageUrlQuery,
     useUpdateUserMutation,
 } from '../../../../store/user/authenticatedUserApi';
-import { useParams } from 'react-router';
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
@@ -48,7 +47,6 @@ export function EditProfileModal({
         p: 5,
         borderRadius: 3,
     };
-
     const initialState = {
         name: userName || '',
         lastName: lastName || '',
@@ -57,6 +55,14 @@ export function EditProfileModal({
     };
 
     const [userInfo, setUserInfo] = useState(initialState);
+    useEffect(() => {
+        setUserInfo({
+            name: userName || '',
+            lastName: lastName || '',
+            email: email || '',
+            phone: phone || '',
+        });
+    }, [userName, lastName, email, phone]);
     const handleCloseModal = () => {
         setUserInfo(initialState);
         onClose();
@@ -266,9 +272,7 @@ function formToComplete({ userInfo, setUserInfo, userId }) {
 }
 
 function uploadImage({ imgUrl, refetchUserData }) {
-    const { data: uploadUrl, isLoading, isError, error } = useGetUploadImageUrlQuery();
-    console.log(uploadUrl);
-    console.log(error);
+    const { data: uploadUrl } = useGetUploadImageUrlQuery();
     return (
         <Box
             marginRight={5}

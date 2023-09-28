@@ -6,6 +6,9 @@ import PersonIcon from '@mui/icons-material/Person';
 import bid4wheels_logo from '../commons/bid4wheels_logo.svg';
 import colors from '../../utils/desgin/Colors';
 import { removeUser } from '../../store/user/UserSlice';
+import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
+import { auctionApi } from '../../store/auction/auctionApi';
+import { tagsApiSlice } from '../../store/auction/tagsApi';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -19,6 +22,9 @@ const Header = () => {
 
     const handleLogoutClick = () => {
         dispatch(removeUser());
+        dispatch(authenticatedUserApi.util.resetApiState());
+        dispatch(auctionApi.util.resetApiState());
+        dispatch(tagsApiSlice.util.resetApiState());
         navigate('/login');
     };
 

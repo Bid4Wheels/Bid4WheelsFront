@@ -18,7 +18,6 @@ export const ProfileCard = ({
     Surname,
     refetchUserData,
 }) => {
-    console.log('imgUrl:', imgUrl);
     const [openEditModal, setOpenEditModal] = useState(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
