@@ -8,7 +8,7 @@ import { useDeleteUserMutation } from '../../../../store/user/authenticatedUserA
 import { removeUser } from '../../../../store/user/UserSlice';
 import { useDispatch } from 'react-redux';
 
-export function DeleteAccountModal({ open, onClose, userId, modalStyle }) {
+export function DeleteAccountModal({ open, onClose, userId }) {
     const handleCloseDeleteAccountModal = () => {
         onClose();
     };
@@ -25,7 +25,17 @@ export function DeleteAccountModal({ open, onClose, userId, modalStyle }) {
             console.error('Error al eliminar la cuenta:', error);
         }
     };
-    console.log('El valor de userId al abrir el modal es:', userId);
+    const modalStyle = {
+        position: 'absolute',
+        top: '40%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 600,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 5,
+        borderRadius: 3,
+    };
 
     return (
         <div>
@@ -43,7 +53,7 @@ export function DeleteAccountModal({ open, onClose, userId, modalStyle }) {
                             component="h2"
                             marginLeft="8px"
                         >
-                            Delete account
+                            Delete your account?
                         </Typography>
                         <IconButton aria-label="Close">
                             <CloseIcon onClick={handleCloseDeleteAccountModal} fontSize="large" />
@@ -55,7 +65,7 @@ export function DeleteAccountModal({ open, onClose, userId, modalStyle }) {
                             sx={{
                                 textAlign: 'center',
                                 color: 'black',
-                                fontSize: theme.typography.Medium.fontSize,
+                                fontSize: theme.typography.SemiSmall.fontSize,
                                 fontWeight: 500,
                                 lineHeight: '30px',
                                 letterSpacing: 0.46,
@@ -63,24 +73,39 @@ export function DeleteAccountModal({ open, onClose, userId, modalStyle }) {
                                 marginBottom: 2,
                             }}
                         >
-                            Are you sure you want to delete your account? This action is
-                            irreversible and you will not be able to create another account with the
-                            same mail.
+                            Are you sure? You will lose all of your auctions and bids. There is no
+                            way to restore your account once it is deleted.
                         </Typography>
-                        <Button
-                            variant="contained"
-                            type="submit"
-                            style={{
-                                height: '50px',
-                                backgroundColor: '#FC4141',
-                                marginTop: '2%',
-                                paddingLeft: '20%',
-                                paddingRight: '20%',
-                            }}
-                            onClick={handleDeleteAccount}
-                        >
-                            Yes, I want to delete my account
-                        </Button>
+                        <Box display="flex" alignItems="center">
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                style={{
+                                    height: '50px',
+                                    backgroundColor: '#FC4141',
+                                    marginTop: '2%',
+                                    marginRight: '5%',
+                                    width: '120px',
+                                }}
+                                onClick={handleDeleteAccount}
+                            >
+                                Delete
+                            </Button>
+                            <Button
+                                variant="contained"
+                                type="submit"
+                                style={{
+                                    height: '50px',
+                                    backgroundColor: 'grey',
+                                    marginTop: '2%',
+                                    marginLeft: '5%',
+                                    width: '120px',
+                                }}
+                                onClick={handleCloseDeleteAccountModal}
+                            >
+                                Cancel
+                            </Button>
+                        </Box>
                     </Box>
                 </Box>
             </Modal>

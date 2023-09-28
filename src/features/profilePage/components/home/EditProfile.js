@@ -69,9 +69,6 @@ export function EditProfileModal({
         onClose();
     };
 
-    const [openDeleteModal, setOpenDeleteModal] = useState(false);
-    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
-    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
     return (
         <div>
             <Modal open={open} onClose={handleCloseModal}>
@@ -97,25 +94,6 @@ export function EditProfileModal({
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
                         <Box display="flex" flexDirection="column" alignItems="center">
                             {uploadImage({ imgUrl, refetchUserData })}
-                            <Button
-                                variant="contained"
-                                type="submit"
-                                style={{
-                                    height: '50px',
-                                    backgroundColor: '#FC4141',
-                                    marginTop: '9.225%',
-                                    marginLeft: '3.5%',
-                                }}
-                                onClick={handleOpenDeleteModal}
-                            >
-                                DELETE ACCOUNT
-                            </Button>
-                            <DeleteAccountModal
-                                open={openDeleteModal}
-                                onClose={handleCloseDeleteModal}
-                                userId={userId}
-                                modalStyle={modalStyle}
-                            />
                         </Box>
                         {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
