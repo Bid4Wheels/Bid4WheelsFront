@@ -77,15 +77,19 @@ const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
                                 marginTop: '14px',
                             }}
                         >
-                            <Typography gutterBottom variant="XSmall">
-                                {timeDifferenceInHours}:
-                                {timeDifferenceInMinutes < 10
-                                    ? `0${timeDifferenceInMinutes}`
-                                    : `${timeDifferenceInMinutes % 60}`}
-                                :
-                                {timeDifferenceInSeconds < 10
-                                    ? `0${timeDifferenceInSeconds % 60}`
-                                    : `${timeDifferenceInSeconds % 60}`}
+                            <Typography gutterBottom variant="Small">
+                                {`${timeDifferenceInDays > 0 && `${timeDifferenceInDays}:`}${
+                                    timeDifferenceInHours > 0 &&
+                                    `${timeDifferenceInHours % 24 < 10 ? '0' : ''}${
+                                        timeDifferenceInHours % 24
+                                    }:`
+                                }${
+                                    timeDifferenceInMinutes > 0
+                                        ? `${timeDifferenceInMinutes % 60 < 10 ? '0' : ''}${
+                                              timeDifferenceInMinutes % 60
+                                          }`
+                                        : 'Closed'
+                                }`}
                             </Typography>
                             <Typography gutterBottom variant="XSmall">
                                 Latest: <b>${highestBid}</b>

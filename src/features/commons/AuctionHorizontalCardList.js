@@ -1,8 +1,9 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import AuctionCard from './AuctionCard';
 import { ArrowBackIosNewRounded, ArrowForwardIosRounded } from '@mui/icons-material';
 
-const AuctionHorizontalCardList = () => {
+const AuctionHorizontalCardList = ({ auctionList }) => {
+    const tags = ['Luxury', 'Sedan', 'Auction'];
     const [auctions, setAuctions] = useState([
         {
             endDate: new Date('2023-09-10T18:30:00'),
@@ -28,7 +29,18 @@ const AuctionHorizontalCardList = () => {
             carName: 'Electric Hatchback',
             tags: ['Electric', 'Hatchback', 'Auction'],
         },
+        {
+            endDate: new Date('2023-09-25T16:15:00'),
+            image: 'https://example.com/car4.jpg',
+            carName: 'Electric Hatchback',
+            tags: ['Electric', 'Hatchback', 'Auction'],
+        },
     ]);
+    useEffect(() => {
+        if (auctionList) {
+            setAuctions(auctionList);
+        }
+    });
 
     const cardContainerRef = useRef(null);
     const cardWidth = 341;
@@ -62,10 +74,11 @@ const AuctionHorizontalCardList = () => {
                     {auctions.map((auction, index) => (
                         <AuctionCard
                             key={index}
-                            endDate={auction.endDate}
-                            image={auction.image}
-                            carName={auction.carName}
-                            tags={auction.tags}
+                            id={auction.id}
+                            endDate={new Date(auction.deadline)}
+                            image={auction.firstImageUrl}
+                            carName={auction.title}
+                            tags={tags}
                         />
                     ))}
                 </div>
