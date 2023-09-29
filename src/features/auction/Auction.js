@@ -24,6 +24,7 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 export function Auction() {
     const auctionId = useParams().auctionId;
@@ -33,7 +34,6 @@ export function Auction() {
     const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
-    const tags = ['Sedan', 'Low mileage', 'Great condition', 'One owner'];
 
     const title = data?.title || '';
     const description = data?.description || '';
@@ -162,10 +162,10 @@ export function Auction() {
                     spacing={1}
                 >
                     <Typography variant="h5">Tags:</Typography>
-                    {tags.map((tag) => (
-                        <Grid item key={tag}>
+                    {data.tags.map((tag) => (
+                        <Grid item key={tag.tagName}>
                             <Chip
-                                label={tag}
+                                label={capitalizeFirstLetter(tag.tagName)}
                                 size="medium"
                                 sx={{
                                     backgroundColor: colors.water_green,
