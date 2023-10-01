@@ -20,6 +20,11 @@ import { useChangePasswordMutation } from '../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/UserSlice';
 import { useNavigate } from 'react-router-dom';
+import { removeUser } from '../../store/user/UserSlice';
+import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
+import { auctionApi } from '../../store/auction/auctionApi';
+import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { useDispatch } from 'react-redux';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,6 +44,8 @@ function ChangePassword() {
     const handleToolTipClose = () => {
         setToolTipOpen(false);
     };
+
+    const dispatch = useDispatch();
 
     const navigate = useNavigate();
 
@@ -61,6 +68,11 @@ function ChangePassword() {
         try {
             await changePassword(payload).unwrap();
             console.log('Password changed successfully');
+            dispatch(removeUser());
+            dispatch(authenticatedUserApi.util.resetApiState());
+            dispatch(auctionApi.util.resetApiState());
+            dispatch(tagsApiSlice.util.resetApiState());
+            navigate('/login');
             navigate('/login');
         } catch (err) {
             console.error(err);
