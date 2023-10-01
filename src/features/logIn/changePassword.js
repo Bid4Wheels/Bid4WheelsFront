@@ -19,6 +19,7 @@ import { validatePassword } from '../../utils/validationFunctions';
 import { useChangePasswordMutation } from '../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/UserSlice';
+import { useNavigate } from 'react-router-dom';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,6 +40,8 @@ function ChangePassword() {
         setToolTipOpen(false);
     };
 
+    const navigate = useNavigate();
+
     const [changePassword] = useChangePasswordMutation();
 
     const userData = useSelector(userSelector);
@@ -58,6 +61,7 @@ function ChangePassword() {
         try {
             await changePassword(payload).unwrap();
             console.log('Password changed successfully');
+            navigate('/login');
         } catch (err) {
             console.error(err);
         }
