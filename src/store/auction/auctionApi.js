@@ -94,9 +94,12 @@ export const auctionApi = createApi({
                 method: 'POST',
             }),
         }),
-        //get auction list of user
         getAuctionsByUserId: builder.query({
             query: (userId) => `/user/${userId}`,
+            providesTags: ['userAuctions'],
+        }),
+        getAuctionsByBidderId: builder.query({
+            query: (userId) => `/bidder/${userId}`,
             providesTags: ['userAuctions'],
         }),
         deleteAuction: builder.mutation({
@@ -119,4 +122,5 @@ export const {
     useDeleteAuctionMutation,
     useGetNewAuctionListQuery,
     useGetEndingAuctionListQuery,
+    useGetAuctionsByBidderIdQuery,
 } = auctionApi;
