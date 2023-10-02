@@ -231,7 +231,15 @@ export function Auction() {
                         ) : (
                             <></>
                         )}
-                        {window === 'questions' ? <QuestionInput auctionId={auctionId} /> : <></>}
+                        {window === 'questions' ? (
+                            <QuestionInput
+                                auctionId={auctionId}
+                                authenticatedUserId={authenticatedUserId}
+                                ownerId={auctionOwnerDTO.id}
+                            />
+                        ) : (
+                            <></>
+                        )}
                     </Grid>
                 </Grid>
             </Grid>

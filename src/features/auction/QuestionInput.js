@@ -2,8 +2,12 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 
-export function QuestionInput({ auctionId }) {
+export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
+
+    if (authenticatedUserId === ownerId) {
+        return null;
+    }
 
     return (
         <div
