@@ -24,7 +24,7 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
-import { QuestionInput } from './QuestionInput';
+import { QuestionsContainer } from './QuestionsContainer';
 
 export function Auction() {
     const auctionId = useParams().auctionId;
@@ -232,7 +232,7 @@ export function Auction() {
                             <></>
                         )}
                         {window === 'questions' ? (
-                            <QuestionInput
+                            <QuestionsContainer
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
