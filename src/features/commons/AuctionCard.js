@@ -10,6 +10,7 @@ import {
     differenceInSeconds,
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
+import { TimeBar } from './TimeBar';
 
 const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
@@ -67,33 +68,15 @@ const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
                         </Typography>
                         <Box
                             sx={{
-                                backgroundColor: color,
-                                borderRadius: '10px',
-                                padding: '4px 2px',
+                                padding: '2px 1px',
                                 marginBottom: '14px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'space-between',
                                 marginTop: '14px',
+                                height: '30px',
                             }}
                         >
-                            <Typography gutterBottom variant="Small">
-                                {`${timeDifferenceInDays > 0 && `${timeDifferenceInDays}:`}${
-                                    timeDifferenceInHours > 0 &&
-                                    `${timeDifferenceInHours % 24 < 10 ? '0' : ''}${
-                                        timeDifferenceInHours % 24
-                                    }:`
-                                }${
-                                    timeDifferenceInMinutes > 0
-                                        ? `${timeDifferenceInMinutes % 60 < 10 ? '0' : ''}${
-                                              timeDifferenceInMinutes % 60
-                                          }`
-                                        : 'Closed'
-                                }`}
-                            </Typography>
-                            <Typography gutterBottom variant="XSmall">
-                                Latest: <b>${highestBid}</b>
-                            </Typography>
+                            <TimeBar deadline={endDate} isSmall latestBid={highestBid} />
                         </Box>
 
                         <Box display="flex" gap="3px">
