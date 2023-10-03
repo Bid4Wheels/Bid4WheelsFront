@@ -1,12 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import colors from '../../utils/desgin/Colors';
-import {
-    differenceInDays,
-    differenceInHours,
-    differenceInMinutes,
-    differenceInSeconds,
-} from 'date-fns';
+import { differenceInSeconds } from 'date-fns';
 
 export function TimeBar({ deadline, isSmall = false, latestBid = null }) {
     const now = new Date();
