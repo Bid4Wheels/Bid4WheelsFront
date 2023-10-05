@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
+import { DeleteAccountModal } from './DeleteProfile';
 import { resizeFile } from '../../../../utils/resize';
 import { pushImage } from '../../../../utils/requests';
 
@@ -91,8 +92,10 @@ export function EditProfileModal({
                         </IconButton>
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
-                        {uploadImage({ imgUrl, refetchUserData })}
-                        {formToComplete({ userInfo, setUserInfo, userId, onClose })}
+                        <Box display="flex" flexDirection="column" alignItems="center">
+                            {uploadImage({ imgUrl, refetchUserData, onClose })}
+                        </Box>
+                        {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
                 </Box>
             </Modal>
