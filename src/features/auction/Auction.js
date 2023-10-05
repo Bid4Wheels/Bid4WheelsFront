@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import { QuestionsContainer } from './QuestionsContainer';
 
 export function Auction() {
     const auctionId = useParams().auctionId;
@@ -229,13 +230,26 @@ export function Auction() {
                         {window === 'info' ? (
                             <TechnicalInfo info={data} user={auctionOwnerDTO} />
                         ) : (
-                            <Typography>Questions & Comments</Typography>
+                            <></>
+                        )}
+                        {window === 'questions' ? (
+                            <QuestionsContainer
+                                auctionId={auctionId}
+                                authenticatedUserId={authenticatedUserId}
+                                ownerId={auctionOwnerDTO.id}
+                            />
+                        ) : (
+                            <></>
                         )}
                     </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {authenticatedUserId === auctionOwnerDTO.id ? <DangerZone title={title} /> : <></>}
+                {authenticatedUserId === auctionOwnerDTO.id ? (
+                    <DangerZone title={title} auctionId={auctionId} />
+                ) : (
+                    <></>
+                )}
                 {
                     <BidWidget
                         auctionData={data}
