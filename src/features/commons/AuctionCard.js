@@ -10,6 +10,7 @@ import {
     differenceInSeconds,
 } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
@@ -108,7 +109,7 @@ const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
                                     }}
                                 >
                                     <Typography gutterBottom variant="XSmall" component="div">
-                                        {tag}
+                                        {capitalizeFirstLetter(tag)}
                                     </Typography>
                                 </Box>
                             ))}
