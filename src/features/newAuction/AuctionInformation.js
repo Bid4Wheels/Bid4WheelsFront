@@ -94,7 +94,7 @@ const AuctionInformation = ({
                     />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                            label="Date & Time"
+                            label="Ending Date"
                             sx={{ marginTop: '95px' }}
                             onChange={handleDateChange}
                             slotProps={{ textField: { variant: 'standard' } }}

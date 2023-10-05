@@ -244,7 +244,11 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {authenticatedUserId === auctionOwnerDTO.id ? <DangerZone title={title} /> : <></>}
+                {authenticatedUserId === auctionOwnerDTO.id ? (
+                    <DangerZone title={title} auctionId={auctionId} />
+                ) : (
+                    <></>
+                )}
                 {
                     <BidWidget
                         auctionData={data}
