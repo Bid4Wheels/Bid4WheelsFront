@@ -45,8 +45,9 @@ export function TimeBar({ deadline, isSmall = false, latestBid = null }) {
                 }}
             >
                 <Typography sx={{ fontWeight: 400, fontSize: size, marginLeft: '10px' }}>
-                    {days > 0 ? `${days}:` : ''}
-                    {`${hours}:${minutes}:${seconds}`}
+                    {`${days > 0 ? `${days} d, ` : ''}${hours} hr, ${minutes}:${
+                        seconds < 10 ? `0${seconds}` : seconds
+                    } min left`}
                 </Typography>
                 {latestBid && (
                     <Typography sx={{ fontSize: size, marginRight: '10px' }}>
