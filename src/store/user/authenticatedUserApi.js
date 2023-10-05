@@ -16,6 +16,14 @@ export const authenticatedUserApi = createApi({
             },
             invalidatesTags: ['userData'],
         }),
+        deleteUser: builder.mutation({
+            query(id) {
+                return {
+                    method: 'DELETE',
+                    body: '',
+                };
+            },
+        }),
         getUserById: builder.query({
             query: (id) => ({
                 url: `/${id}`,
@@ -34,5 +42,9 @@ export const authenticatedUserApi = createApi({
     }),
 });
 
-export const { useUpdateUserMutation, useGetUserByIdQuery, useGetUploadImageUrlQuery } =
-    authenticatedUserApi;
+export const {
+    useUpdateUserMutation,
+    useDeleteUserMutation,
+    useGetUserByIdQuery,
+    useGetUploadImageUrlQuery,
+} = authenticatedUserApi;
