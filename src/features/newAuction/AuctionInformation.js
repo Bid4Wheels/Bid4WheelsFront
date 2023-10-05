@@ -130,7 +130,6 @@ const AuctionInformation = ({
                             <p>
                                 Drop your car image here or{' '}
                                 <label
-                                    htmlFor="fileInput"
                                     onClick={handleSelectClick}
                                     style={{
                                         cursor: 'pointer',
