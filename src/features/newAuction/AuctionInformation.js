@@ -94,7 +94,7 @@ const AuctionInformation = ({
                     />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                            label="Date & Time"
+                            label="Ending Date"
                             sx={{ marginTop: '55px' }}
                             onChange={handleDateChange}
                             slotProps={{ textField: { variant: 'standard' } }}
@@ -130,7 +130,6 @@ const AuctionInformation = ({
                             <p>
                                 Drop your car image here or{' '}
                                 <label
-                                    htmlFor="fileInput"
                                     onClick={handleSelectClick}
                                     style={{
                                         cursor: 'pointer',
