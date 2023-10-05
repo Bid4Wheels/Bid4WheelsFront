@@ -26,8 +26,10 @@ import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
+import { useNavigate } from 'react-router-dom';
 
 export function Auction() {
+    const nav = useNavigate();
     const auctionId = useParams().auctionId;
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
@@ -108,6 +110,7 @@ export function Auction() {
                     <AlertTitle>Error</AlertTitle>
                     <strong>{error.data}</strong>
                 </Alert>
+                {nav('*')}
             </div>
         );
     }
