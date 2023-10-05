@@ -86,7 +86,7 @@ export const auctionApi = createApi({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['AuctionList', 'tags'],
+            invalidatesTags: ['AuctionList', 'tags', 'userAuctions'],
         }),
         getImageLinks: builder.mutation({
             query: (auctionId) => ({
@@ -107,7 +107,7 @@ export const auctionApi = createApi({
                 url: `/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['AuctionList'],
+            invalidatesTags: ['AuctionList', 'userAuctions'],
         }),
     }),
 });
