@@ -7,7 +7,10 @@ import colors from '../../../../utils/desgin/Colors';
 import { useGetUserByIdQuery } from '../../../../store/user/authenticatedUserApi';
 import { useSelector } from 'react-redux';
 import AuctionHorizontalCardList from '../../../commons/AuctionHorizontalCardList';
-import { useGetAuctionsByUserIdQuery } from '../../../../store/auction/auctionApi';
+import {
+    useGetAuctionsByUserIdQuery,
+    useGetAuctionsByBidderIdQuery,
+} from '../../../../store/auction/auctionApi';
 
 export const ProfilePage = () => {
     const nav = useNavigate();
@@ -18,6 +21,11 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const handleHistoryClick = () => setHistoryIsClicked(true);
     const handleReviewClick = () => setHistoryIsClicked(false);
+    const {
+        data: biddedData,
+        isLoading: isUserLoading,
+        isError: isUserError,
+    } = useGetAuctionsByBidderIdQuery(userId);
     const {
         data: userData,
         isLoading,
@@ -59,6 +67,12 @@ export const ProfilePage = () => {
             setUserAuctionsData(userAuctions.content);
         }
     });
+    const [biddedAuctionsData, setBiddedAuctionsData] = useState([]);
+    useEffect(() => {
+        if (!isUserLoading && !isUserError) {
+            setBiddedAuctionsData(biddedData.content);
+        }
+    });
     const handleCreateAuctionClick = () => {
         nav('/newAuction');
     };
@@ -75,7 +89,13 @@ export const ProfilePage = () => {
             >
                 <Box
                     className="ButtonsContainer"
-                    sx={{ display: 'flex', gap: 3, flexDirection: 'row' }}
+                    sx={{
+                        display: 'flex',
+                        gap: 3,
+                        flexDirection: 'row',
+                        position: 'absolute',
+                        right: '25px',
+                    }}
                 >
                     <Button
                         variant={historyIsClicked ? 'contained' : 'outlined'}
@@ -111,7 +131,10 @@ export const ProfilePage = () => {
                     </Button>
                 </Box>
             </Box>
-            <Box className="DataContainer" sx={{ display: 'flex', margin: '2rem', height: '100%' }}>
+            <Box
+                className="DataContainer"
+                sx={{ display: 'flex', marginX: '2rem', marginTop: '15px', height: '100%' }}
+            >
                 <ProfileCard
                     canEdit={canEdit}
                     Username={userProfileData.username}
@@ -127,26 +150,96 @@ export const ProfilePage = () => {
                     className="AuctionLists"
                     sx={{
                         display: 'flex',
-                        flexDirection: 'column-reverse',
+                        flexDirection: 'column',
                         paddingLeft: '5%',
                         height: '100%',
                         width: '60%',
                     }}
                 >
                     <Box
-                        className="PublishedAuctions"
+                        className="BiddedAuctions"
                         sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
                     >
+                        <Typography
+                            sx={{
+                                color: 'black',
+                                fontSize: theme.typography.Medium.fontSize,
+                                paddingLeft: '2.5%',
+                                fontWeight: 500,
+                            }}
+                        >
+                            Bids made
+                        </Typography>
+                        {biddedAuctionsData.length === 0 ? (
+                            canEdit ? (
+                                <>
+                                    <Typography
+                                        sx={{
+                                            color: 'black',
+                                            fontSize: theme.typography.Small.fontSize,
+                                            paddingLeft: '2.5%',
+                                            paddingBottom: '5%',
+                                            fontWeight: 500,
+                                            alignSelf: 'center',
+                                            marginTop: '5%',
+                                        }}
+                                    >
+                                        You have not bid in any auctions
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography
+                                    sx={{
+                                        color: 'black',
+                                        fontSize: theme.typography.Small.fontSize,
+                                        paddingLeft: '2.5%',
+                                        fontWeight: 500,
+                                        alignSelf: 'center',
+                                        marginTop: '5%',
+                                    }}
+                                >
+                                    This user has not bid in any auctions yet
+                                </Typography>
+                            )
+                        ) : (
+                            <>
+                                <AuctionHorizontalCardList
+                                    auctionList={biddedAuctionsData}
+                                ></AuctionHorizontalCardList>
+                            </>
+                        )}
+                    </Box>
+                    <Box
+                        className="PublishedAuctions"
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '50%',
+                            marginTop: '130px',
+                        }}
+                    >
+                        <Typography
+                            sx={{
+                                color: 'black',
+                                fontSize: theme.typography.Medium.fontSize,
+                                paddingLeft: '2.5%',
+                                fontWeight: 500,
+                            }}
+                        >
+                            Published auctions
+                        </Typography>
                         {userAuctionsData.length === 0 ? (
                             canEdit ? (
                                 <>
                                     <Typography
                                         sx={{
                                             color: 'black',
-                                            fontSize: theme.typography.Medium.fontSize,
+                                            fontSize: theme.typography.Small.fontSize,
                                             paddingLeft: '2.5%',
                                             paddingBottom: '5%',
                                             fontWeight: 500,
+                                            alignSelf: 'center',
+                                            marginTop: '5%',
                                         }}
                                     >
                                         You have not created any auctions
@@ -160,26 +253,25 @@ export const ProfilePage = () => {
                                             width: 'fit-content',
                                             height: 'fit-content',
                                             marginLeft: '2.5%',
+                                            fontSize: theme.typography.Small.fontSize,
+                                            fontWeight: 500,
+                                            alignSelf: 'center',
+                                            marginTop: '5%',
                                         }}
                                         onClick={handleCreateAuctionClick}
                                     >
-                                        <Typography
-                                            sx={{
-                                                fontSize: theme.typography.Small.fontSize,
-                                                fontWeight: 500,
-                                            }}
-                                        >
-                                            Create new auction
-                                        </Typography>
+                                        Create new auction
                                     </Button>
                                 </>
                             ) : (
                                 <Typography
                                     sx={{
                                         color: 'black',
-                                        fontSize: theme.typography.Medium.fontSize,
+                                        fontSize: theme.typography.Small.fontSize,
                                         paddingLeft: '2.5%',
                                         fontWeight: 500,
+                                        alignSelf: 'center',
+                                        marginTop: '5%',
                                     }}
                                 >
                                     This user has not created any auctions yet
@@ -187,16 +279,6 @@ export const ProfilePage = () => {
                             )
                         ) : (
                             <>
-                                <Typography
-                                    sx={{
-                                        color: 'black',
-                                        fontSize: theme.typography.Medium.fontSize,
-                                        paddingLeft: '2.5%',
-                                        fontWeight: 500,
-                                    }}
-                                >
-                                    Published auctions
-                                </Typography>
                                 <AuctionHorizontalCardList
                                     auctionList={userAuctionsData}
                                 ></AuctionHorizontalCardList>
