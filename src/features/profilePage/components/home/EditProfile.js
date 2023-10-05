@@ -95,7 +95,7 @@ export function EditProfileModal({
                         <Box display="flex" flexDirection="column" alignItems="center">
                             {uploadImage({ imgUrl, refetchUserData, onClose })}
                         </Box>
-                        {formToComplete({ userInfo, setUserInfo, userId })}
+                        {formToComplete({ userInfo, setUserInfo, userId, onClose })}
                     </Box>
                 </Box>
             </Modal>
