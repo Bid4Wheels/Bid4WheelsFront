@@ -1,6 +1,7 @@
-import React from 'react';
-import { Avatar, Typography, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Avatar, Typography, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
+import { ReplyInput } from './ReplyInput';
 
 export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
     const questioner = question.questionerDTO;
@@ -9,6 +10,16 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
     const date = question.date;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
+    const [ownerReply, setOwnerReply] = useState('');
+    const [isReplying, setIsReplying] = useState(false);
+
+    const handleReply = () => {
+        setIsReplying(true);
+    };
+
+    const handleSendReply = () => {
+        setIsReplying(false);
+    };
 
     return (
         <div
@@ -93,20 +104,8 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 )}
                             </div>
                         )}
-                        {isOwner && !reply && (
-                            <Button
-                                variant="contained"
-                                style={{
-                                    backgroundColor: colors.water_green,
-                                    color: 'white',
-                                    marginTop: '10px',
-                                    marginRight: '10px',
-                                    width: '80px',
-                                    padding: '5px',
-                                }}
-                            >
-                                Reply
-                            </Button>
+                        {isOwner && !reply && !isReplying && (
+                            <ReplyInput authenticatedUserId={authenticatedUserId} />
                         )}
                         {isQuestioner && !reply && (
                             <Button
