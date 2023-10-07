@@ -154,7 +154,7 @@ export const ProfileCard = ({
                         style={{
                             height: '50px',
                             backgroundColor: '#FC4141',
-                            marginTop: '5%',
+                            marginTop: '1%',
                         }}
                         onClick={handleOpenDeleteModal}
                     >
