@@ -1,13 +1,27 @@
 import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
+import { usePostQuestionMutation } from '../../store/QandA/QandAApi';
 
 export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
+    const [makeQuestion, { data, isError, error }] = usePostQuestionMutation();
 
     if (authenticatedUserId === ownerId) {
         return null;
     }
+
+    const handleSendQuestion = () => {
+        const body = {
+            question: question,
+            auctionId: auctionId,
+        };
+        makeQuestion(body);
+
+        if (isError) {
+            console.log(error);
+        }
+    };
 
     return (
         <div
@@ -41,7 +55,7 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                     marginTop: '15px',
                 }}
                 onClick={() => {
-                    setQuestion('');
+                    handleSendQuestion();
                 }}
             >
                 Send
