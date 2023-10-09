@@ -4,10 +4,10 @@ import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 
 export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
-    const questioner = question.questionerDTO;
+    const questioner = question.user;
     const reply = question.answer;
     const questionText = question.question;
-    const date = question.date;
+    const date = question.questionDate;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
     const [ownerReply, setOwnerReply] = useState('');
