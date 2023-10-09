@@ -31,7 +31,8 @@ export function SignUp() {
     const [password, setPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword1, setShowPassword1] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
     const navigate = useNavigate();
@@ -130,7 +131,7 @@ export function SignUp() {
                         />
                         <TextField
                             label="Password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword1 ? 'text' : 'password'}
                             variant="standard"
                             sx={{ marginBottom: '20px' }}
                             onChange={(e) => setPassword(e.target.value)}
@@ -157,11 +158,11 @@ export function SignUp() {
                                         >
                                             <IconButton
                                                 aria-label="toggle password visibility"
-                                                onClick={() => setShowPassword(!showPassword)}
+                                                onClick={() => setShowPassword1(!showPassword1)}
                                                 onMouseDown={(event) => event.preventDefault()}
                                                 edge="end"
                                             >
-                                                {showPassword ? (
+                                                {showPassword1 ? (
                                                     <VisibilityOffOutlinedIcon />
                                                 ) : (
                                                     <VisibilityOutlinedIcon />
@@ -174,7 +175,7 @@ export function SignUp() {
                         />
                         <TextField
                             label="Verify Password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword2 ? 'text' : 'password'}
                             variant="standard"
                             sx={{ marginBottom: '20px' }}
                             onChange={(e) => setVerifyPassword(e.target.value)}
@@ -183,11 +184,11 @@ export function SignUp() {
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(!showPassword)}
+                                            onClick={() => setShowPassword2(!showPassword2)}
                                             onMouseDown={(event) => event.preventDefault()}
                                             edge="end"
                                         >
-                                            {showPassword ? (
+                                            {showPassword2 ? (
                                                 <VisibilityOffOutlinedIcon />
                                             ) : (
                                                 <VisibilityOutlinedIcon />
