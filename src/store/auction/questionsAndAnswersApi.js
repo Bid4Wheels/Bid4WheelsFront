@@ -11,6 +11,7 @@ export const questionsAndAnswersApi = createApi({
                 url: `/${auctionId}`,
                 method: 'GET',
             }),
+            providesTags: ['questionsAndAnswers'],
         }),
     }),
 });

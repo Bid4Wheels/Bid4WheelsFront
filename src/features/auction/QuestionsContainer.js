@@ -1,16 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { QuestionInput } from './QuestionInput';
 import { QuestionBox } from './QuestionBox';
-import car1 from '../commons/temp/car1.jpeg';
 import { useGetQuestionsAndAnswersByAuctionIdQuery } from '../../store/auction/questionsAndAnswersApi';
 import { CircularProgress, Grid } from '@mui/material';
 
 export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) {
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
-    const allQuestions = data;
     const [shownQuestions, setShownQuestions] = useState([]);
 
-    console.log(allQuestions);
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const clientHeight = window.innerHeight;
+
+            if (data && scrollHeight - (scrollTop + clientHeight) < 10) {
+                const startIndex = shownQuestions.length;
+                const endIndex = startIndex + 2;
+                setShownQuestions([...shownQuestions, ...data.slice(startIndex, endIndex)]);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [shownQuestions, data]);
 
     if (isLoading) {
         return (
