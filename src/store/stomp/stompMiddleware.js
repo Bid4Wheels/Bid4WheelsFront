@@ -10,10 +10,9 @@ export const stompMiddleware = ({ dispatch }) => {
         reconnectDelay: 300000,
         heartbeatIncoming: 1000,
         heartbeatOutgoing: 1000,
-        beforeConnect: function () {
-            console.log('Trying to connect');
-            client.connectHeaders['Authorization'] =
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySUQiOjEsInN1YiI6ImFkc2Rhc2Rhc2RhQGdtYWlsLmNvbSIsImlhdCI6MTY5Njk2MDcwMywiZXhwIjoxNjk3NTY1NTAzfQ.3LuLUABT-3znmXXObtYKfG3QEs1FqYVV_7sZhKVleRk';
+        connectHeaders: {
+            Authorization:
+                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySUQiOjEsInN1YiI6ImFkc2Rhc2Rhc2RhQGdtYWlsLmNvbSIsImlhdCI6MTY5Njk2MDcwMywiZXhwIjoxNjk3NTY1NTAzfQ.3LuLUABT-3znmXXObtYKfG3QEs1FqYVV_7sZhKVleRk',
         },
     });
 
