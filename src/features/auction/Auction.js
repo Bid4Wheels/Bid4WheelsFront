@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Grid,
     Typography,
@@ -25,22 +25,20 @@ import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
 import { QuestionsContainer } from './QuestionsContainer';
+import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
+import { useDispatch } from 'react-redux';
 
 export function Auction() {
     const auctionId = useParams().auctionId;
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
-
     const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
-
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
-
     const title = data?.title || '';
     const description = data?.description || '';
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
     const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
-
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
     const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
@@ -56,6 +54,14 @@ export function Auction() {
             timerColor = colors.red;
         }
     }
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(connectStomp());
+        return () => {
+            dispatch(disconnectStomp());
+        };
+    }, [dispatch]);
 
     if (isLoading) {
         return (
