@@ -1,17 +1,19 @@
 import { Grid, Box, Typography, Button, Input, FormHelperText } from '@mui/material';
 import B4W_logo from '../commons/B4W_logo.svg';
-import React from 'react';
+import React, { useEffect } from 'react';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
-import { useSelector } from 'react-redux';
-import { userSelector } from '../../store/user/UserSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addValidatedCode, userSelector } from '../../store/user/UserSlice';
 import { useGetValidationCodeMutation } from '../../store/user/UserApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { Navigate } from 'react-router-dom';
 
 function ValidateIdentity() {
     const [validationCode, setValidationCode] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const userData = useSelector(userSelector);
     const [error, setError] = useState(false);
 
@@ -38,6 +40,7 @@ function ValidateIdentity() {
                 .unwrap()
                 .then(
                     () => {
+                        dispatch(addValidatedCode({ code: true }));
                         navigate('/changePassword');
                     },
                     () => {
@@ -50,7 +53,9 @@ function ValidateIdentity() {
             setValidationCode('');
         }
     };
-
+    if (userData.userEmail === null) {
+        return <Navigate to={'/login'} replace />;
+    }
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>

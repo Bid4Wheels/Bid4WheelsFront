@@ -19,7 +19,7 @@ import { validatePassword } from '../../utils/validationFunctions';
 import { useChangePasswordMutation } from '../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/UserSlice';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { removeUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
@@ -78,7 +78,9 @@ function ChangePassword() {
             console.error(err);
         }
     };
-
+    if (userData.validatedCode === false) {
+        return <Navigate to={'/login'} replace />;
+    }
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>

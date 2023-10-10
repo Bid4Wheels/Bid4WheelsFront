@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import {
@@ -16,7 +16,10 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import colors from '../../utils/desgin/Colors';
 import { useLogInMutation } from '../../store/auth/AuthApi';
-import { setUser } from '../../store/user/UserSlice';
+import { removeUser, setUser } from '../../store/user/UserSlice';
+import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
+import { auctionApi } from '../../store/auction/auctionApi';
+import { tagsApiSlice } from '../../store/auction/tagsApi';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -26,6 +29,12 @@ export function LogIn() {
     const [password, setPassword] = useState('');
     const [logIn, { isLoading, isError }] = useLogInMutation();
 
+    useEffect(() => {
+        dispatch(removeUser());
+        dispatch(authenticatedUserApi.util.resetApiState());
+        dispatch(auctionApi.util.resetApiState());
+        dispatch(tagsApiSlice.util.resetApiState());
+    }, []);
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
