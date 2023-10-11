@@ -34,6 +34,7 @@ export function Auction() {
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
     const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
+    const creationDate = data?.createdAt || '';
 
     if (isLoading) {
         return (
@@ -121,7 +122,7 @@ export function Auction() {
                         paddingTop: '0.5rem',
                     }}
                 >
-                    <TimeBar deadline={deadline} />
+                    <TimeBar creationDate={creationDate} deadline={deadline} />
                 </Box>
                 <Grid
                     container

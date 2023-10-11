@@ -3,14 +3,16 @@ import React from 'react';
 import colors from '../../utils/desgin/Colors';
 import { differenceInSeconds } from 'date-fns';
 
-export function TimeBar({ deadline, isSmall = false, latestBid = null }) {
+export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = null }) {
     const now = new Date();
     const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
     const days = Math.floor(timeDifferenceInSeconds / (60 * 60 * 24));
     const hours = Math.floor((timeDifferenceInSeconds % (60 * 60 * 24)) / (60 * 60));
     const minutes = Math.floor((timeDifferenceInSeconds % (60 * 60)) / 60);
     const seconds = timeDifferenceInSeconds % 60;
-    const percentage = Math.round(100 - (timeDifferenceInSeconds / (24 * 60 * 60)) * 100);
+    const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
+    const totalSeconds = differenceInSeconds(new Date(deadline), new Date(creationDate));
+    const percentage = Math.floor((timeElapsedInSeconds / totalSeconds) * 100);
     const size = isSmall ? 'small' : '18px';
 
     let color = colors.green;
@@ -31,6 +33,7 @@ export function TimeBar({ deadline, isSmall = false, latestBid = null }) {
                 height: '100%',
                 borderRadius: '20px',
                 backgroundColor: colors.grey,
+                position: 'relative', // Add this line for absolute positioning
             }}
         >
             <Box
@@ -40,21 +43,35 @@ export function TimeBar({ deadline, isSmall = false, latestBid = null }) {
                     backgroundColor: color,
                     borderRadius: '20px',
                     display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
+                }}
+            ></Box>
+            <Typography
+                sx={{
+                    position: 'absolute',
+                    left: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontWeight: 400,
+                    fontSize: size,
                 }}
             >
-                <Typography sx={{ fontWeight: 400, fontSize: size, marginLeft: '10px' }}>
-                    {`${days > 0 ? `${days} d, ` : ''}${hours} hr, ${minutes}:${
-                        seconds < 10 ? `0${seconds}` : seconds
-                    } min left`}
+                {`${days > 0 ? `${days} d, ` : ''}${hours} hr, ${minutes}:${
+                    seconds < 10 ? `0${seconds}` : seconds
+                } min left`}
+            </Typography>
+            {latestBid && (
+                <Typography
+                    sx={{
+                        position: 'absolute',
+                        right: '10px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        fontSize: size,
+                    }}
+                >
+                    Latest: <b>${latestBid}</b>
                 </Typography>
-                {latestBid && (
-                    <Typography sx={{ fontSize: size, marginRight: '10px' }}>
-                        Latest: <b>${latestBid}</b>
-                    </Typography>
-                )}
-            </Box>
+            )}
         </Box>
     );
 }

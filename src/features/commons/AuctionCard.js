@@ -5,7 +5,7 @@ import { differenceInHours, differenceInDays } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 import { TimeBar } from './TimeBar';
 
-const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
+const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(endDate), now);
     const timeDifferenceInDays = differenceInDays(new Date(endDate), now);
@@ -67,7 +67,12 @@ const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
                                 height: '30px',
                             }}
                         >
-                            <TimeBar deadline={endDate} isSmall latestBid={highestBid} />
+                            <TimeBar
+                                creationDate={creationDate}
+                                deadline={endDate}
+                                isSmall
+                                latestBid={highestBid}
+                            />
                         </Box>
 
                         <Box display="flex" gap="3px">
