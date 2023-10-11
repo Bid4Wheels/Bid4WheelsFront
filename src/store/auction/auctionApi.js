@@ -86,7 +86,7 @@ export const auctionApi = createApi({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['AuctionList', 'tags'],
+            invalidatesTags: ['AuctionList', 'tags', 'userAuctions'],
         }),
         getImageLinks: builder.mutation({
             query: (auctionId) => ({
@@ -94,9 +94,12 @@ export const auctionApi = createApi({
                 method: 'POST',
             }),
         }),
-        //get auction list of user
         getAuctionsByUserId: builder.query({
             query: (userId) => `/user/${userId}`,
+            providesTags: ['userAuctions'],
+        }),
+        getAuctionsByBidderId: builder.query({
+            query: (userId) => `/bidder/${userId}`,
             providesTags: ['userAuctions'],
         }),
         deleteAuction: builder.mutation({
@@ -104,7 +107,7 @@ export const auctionApi = createApi({
                 url: `/${id}`,
                 method: 'DELETE',
             }),
-            invalidatesTags: ['AuctionList'],
+            invalidatesTags: ['AuctionList', 'userAuctions'],
         }),
     }),
 });
@@ -119,4 +122,5 @@ export const {
     useDeleteAuctionMutation,
     useGetNewAuctionListQuery,
     useGetEndingAuctionListQuery,
+    useGetAuctionsByBidderIdQuery,
 } = auctionApi;

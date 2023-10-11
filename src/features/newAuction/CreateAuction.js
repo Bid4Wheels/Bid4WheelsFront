@@ -169,8 +169,8 @@ const CreateAuction = () => {
             <Typography
                 gutterBottom
                 component={'p'}
-                variant="XxLarge"
-                sx={{ marginLeft: '35px', marginTop: '50px', marginBottom: '50px' }}
+                variant="Large"
+                sx={{ marginLeft: '35px', marginTop: '20px' }}
             >
                 {'New Auction'}
             </Typography>
@@ -179,7 +179,7 @@ const CreateAuction = () => {
                     display: 'flex',
                     borderBottomColor: colors.grey,
                     borderBottom: 'solid 1px',
-                    padding: '10px',
+                    padding: '10px 5px 5px 5px',
                     justifyContent: 'space-between',
                     marginLeft: '35px',
                     marginRight: '20px',
@@ -190,8 +190,8 @@ const CreateAuction = () => {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        width="36px"
-                        height="36px"
+                        width="30px"
+                        height="30px"
                         borderRadius="50%"
                         backgroundColor={showAuctionInformation ? colors.grey : colors.water_green}
                         color="white"
@@ -201,13 +201,13 @@ const CreateAuction = () => {
                     >
                         <Typography variant="SemiSmall">1</Typography>
                     </Box>
-                    <Typography variant="SemiSmall">Technical Information</Typography>
+                    <Typography variant="Small">Technical Information</Typography>
                     <Box
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        width="36px"
-                        height="36px"
+                        width="30px"
+                        height="30px"
                         borderRadius="50%"
                         backgroundColor={showAuctionInformation ? colors.water_green : colors.grey}
                         color="white"
@@ -215,9 +215,9 @@ const CreateAuction = () => {
                         marginRight="10px"
                         marginLeft="20px"
                     >
-                        <Typography variant="SemiSmall">2</Typography>
+                        <Typography variant="Small">2</Typography>
                     </Box>
-                    <Typography variant="SemiSmall">Auction Information</Typography>
+                    <Typography variant="Small">Auction Information</Typography>
                 </Box>
                 <Box
                     sx={{

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { differenceInHours, differenceInDays } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 import { TimeBar } from './TimeBar';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
@@ -87,7 +88,7 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                                     }}
                                 >
                                     <Typography gutterBottom variant="XSmall" component="div">
-                                        {tag}
+                                        {capitalizeFirstLetter(tag)}
                                     </Typography>
                                 </Box>
                             ))}
