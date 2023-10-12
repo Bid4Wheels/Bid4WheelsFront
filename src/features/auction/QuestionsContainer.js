@@ -1,53 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { QuestionInput } from './QuestionInput';
 import { QuestionBox } from './QuestionBox';
-import car1 from '../commons/temp/car1.jpeg';
+import { useGetQuestionsAndAnswersByAuctionIdQuery } from '../../store/auction/questionsAndAnswersApi';
+import { CircularProgress, Grid } from '@mui/material';
 
 export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) {
-    const questions = [
-        {
-            questionerDTO: {
-                username: 'user1',
-                picture: 'default',
-                id: 1,
-            },
-            date: '2021-10-10',
-            question:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non posuere ligula. Morbi et tortor ut leo pulvinar posuere. Vivamus lorem eros, placerat eu ex eget, maximus ultrices massa.',
-            answer: 'Maecenas at nisi scelerisque libero posuere efficitur et rhoncus velit. Donec eu leo accumsan, dapibus turpis at, convallis tortor.',
-        },
-        {
-            questionerDTO: {
-                username: 'username1',
-                picture: car1,
-                id: 3,
-            },
-            date: '2021-10-10',
-            question:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non posuere ligula. Morbi et tortor ut leo pulvinar posuere. Vivamus lorem eros, placerat eu ex eget, maximus ultrices massa.',
-            answer: 'Maecenas at nisi scelerisque libero posuere efficitur et rhoncus velit. Donec eu leo accumsan, dapibus turpis at, convallis tortor.',
-        },
-        {
-            questionerDTO: {
-                username: 'username2',
-                picture: car1,
-                id: 9,
-            },
-            date: '2021-10-10',
-            question:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non posuere ligula. Morbi et tortor ut leo pulvinar posuere. Vivamus lorem eros, placerat eu ex eget, maximus ultrices massa.',
-        },
-        {
-            questionerDTO: {
-                username: 'username3',
-                picture: car1,
-                id: 5,
-            },
-            date: '2021-10-10',
-            question:
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus non posuere ligula. Morbi et tortor ut leo pulvinar posuere. Vivamus lorem eros, placerat eu ex eget, maximus ultrices massa.',
-        },
-    ];
+    const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
+    const [shownQuestions, setShownQuestions] = useState([]);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollHeight = document.documentElement.scrollHeight;
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const clientHeight = window.innerHeight;
+
+            if (data && scrollHeight - (scrollTop + clientHeight) < 10) {
+                const startIndex = shownQuestions.length;
+                const endIndex = startIndex + 2;
+                setShownQuestions([...shownQuestions, ...data.slice(startIndex, endIndex)]);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [shownQuestions, data]);
+
+    if (isLoading) {
+        return (
+            <Grid container justifyContent="center" alignItems="center" marginTop={2}>
+                <CircularProgress />
+            </Grid>
+        );
+    }
 
     return (
         <div
@@ -64,7 +51,7 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) 
                 ownerId={ownerId}
             />
 
-            {questions.map((question, index) => (
+            {shownQuestions.map((question, index) => (
                 <QuestionBox
                     key={index}
                     question={question}
