@@ -1,14 +1,13 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createBaseQuery } from '../baseQuery';
-import { baseUrl } from '../../features/commons/Constants';
+import { authenticatedApi } from '../mainApis/authenticatedApi';
 
-export const questionsAndAnswersApi = createApi({
+const baseUrl = '/QandA';
+
+export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
     reducerPath: 'questionsAndAnswersApi',
-    baseQuery: createBaseQuery(`${baseUrl}/QandA`),
     endpoints: (builder) => ({
         getQuestionsAndAnswersByAuctionId: builder.query({
             query: (auctionId) => ({
-                url: `/${auctionId}`,
+                url: `${baseUrl}/${auctionId}`,
                 method: 'GET',
             }),
             providesTags: ['questionsAndAnswers'],
