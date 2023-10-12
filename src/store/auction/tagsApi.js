@@ -1,15 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from '../../features/commons/Constants';
-import { createBaseQuery } from '../baseQuery';
+import { authenticatedApi } from '../mainApis/authenticatedApi';
 
-export const tagsApiSlice = createApi({
-    baseQuery: createBaseQuery(`${baseUrl}/tag`),
+const baseUrl = '/tag';
+
+export const tagsApiSlice = authenticatedApi.injectEndpoints({
     endpoints: (builder) => ({
         getAllTags: builder.query({
-            query: () => ({ url: '/all', method: 'GET' }),
+            query: () => ({ url: `${baseUrl}/all`, method: 'GET' }),
             providesTags: ['tags'],
         }),
     }),
+    overrideExisting: false,
 });
 
 export const { useGetAllTagsQuery } = tagsApiSlice;

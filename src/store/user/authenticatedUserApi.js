@@ -1,15 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createBaseQuery } from '../baseQuery';
+import { authenticatedApi } from '../mainApis/authenticatedApi';
 
-export const authenticatedUserApi = createApi({
+const baseUrl = '/user';
+
+export const authenticatedUserApi = authenticatedApi.injectEndpoints({
     reducerPath: 'authenticatedUserApi',
-    baseQuery: createBaseQuery('https://api.bid4wheels.com/user'),
     endpoints: (builder) => ({
         updateUser: builder.mutation({
             query(payload) {
                 const { id: userId, userInfo } = payload;
                 return {
-                    url: `/${userId}`,
+                    url: `${baseUrl}/${userId}`,
                     method: 'PATCH',
                     body: userInfo,
                 };
@@ -19,6 +19,7 @@ export const authenticatedUserApi = createApi({
         deleteUser: builder.mutation({
             query(id) {
                 return {
+                    url: `${baseUrl}`,
                     method: 'DELETE',
                     body: '',
                 };
@@ -26,20 +27,21 @@ export const authenticatedUserApi = createApi({
         }),
         getUserById: builder.query({
             query: (id) => ({
-                url: `/${id}`,
+                url: `${baseUrl}/${id}`,
                 method: 'GET',
             }),
             providesTags: ['userData'],
         }),
         getUploadImageUrl: builder.query({
             query: () => ({
-                url: `/image-url`,
+                url: `${baseUrl}/image-url`,
                 method: 'POST',
                 responseHandler: (response) => response.text(),
             }),
             providesTags: ['userImageUrl'],
         }),
     }),
+    overrideExisting: false,
 });
 
 export const {
