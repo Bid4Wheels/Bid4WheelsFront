@@ -55,7 +55,7 @@ const AuctionInformation = ({
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'flex-start',
-                    marginTop: '50px',
+                    marginTop: '20px',
                     marginLeft: '80px',
                     flexWrap: 'wrap',
                     width: '100%',
@@ -94,8 +94,8 @@ const AuctionInformation = ({
                     />
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DateTimePicker
-                            label="Date & Time"
-                            sx={{ marginTop: '95px' }}
+                            label="Ending Date"
+                            sx={{ marginTop: '55px' }}
                             onChange={handleDateChange}
                             slotProps={{ textField: { variant: 'standard' } }}
                             value={selectedDate}
@@ -112,7 +112,7 @@ const AuctionInformation = ({
                         minHeight: '150px',
                         marginRight: '120px',
                         width: 574,
-                        height: 496,
+                        height: 400,
                         alignItems: 'center',
                         justifyContent: 'center', // Center content vertically
                         textAlign: 'center', // Center text horizontally
@@ -130,7 +130,6 @@ const AuctionInformation = ({
                             <p>
                                 Drop your car image here or{' '}
                                 <label
-                                    htmlFor="fileInput"
                                     onClick={handleSelectClick}
                                     style={{
                                         cursor: 'pointer',
@@ -200,7 +199,7 @@ const AuctionInformation = ({
                     justifyContent: 'center',
                     alignItems: 'center',
                     marginBottom: '96px',
-                    marginTop: '114px',
+                    marginTop: '45px',
                     gap: '30px',
                 }}
             >
