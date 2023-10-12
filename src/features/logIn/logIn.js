@@ -52,7 +52,7 @@ export function LogIn() {
         try {
             const response = await logIn(payload).unwrap();
             const { token, id } = response;
-            dispatch(setUser({ token, id }));
+            dispatch(setUser({ token, id, email }));
             nav('/');
         } catch (err) {
             console.error(err);

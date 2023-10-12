@@ -53,9 +53,6 @@ function ValidateIdentity() {
             setValidationCode('');
         }
     };
-    if (userData.token) {
-        return <Navigate to={'/'} replace />;
-    }
     if (userData.userEmail === null && userData.validatedCode === false) {
         return <Navigate to={'/login'} replace />;
     }
