@@ -12,7 +12,12 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             }),
             providesTags: ['questionsAndAnswers'],
         }),
+        postQuestion: builder.mutation({
+            query: (body) => ({ url: `${baseUrl}/question`, method: 'POST', body: body }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
     }),
 });
 
-export const { useGetQuestionsAndAnswersByAuctionIdQuery } = questionsAndAnswersApi;
+export const { useGetQuestionsAndAnswersByAuctionIdQuery, usePostQuestionMutation } =
+    questionsAndAnswersApi;

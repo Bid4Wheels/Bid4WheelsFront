@@ -1,7 +1,7 @@
 import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
-import { usePostQuestionMutation } from '../../store/QandA/QandAApi';
+import { usePostQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 
 export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
