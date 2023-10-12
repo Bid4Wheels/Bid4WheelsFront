@@ -102,7 +102,13 @@ export function SignUp() {
                             label="Email"
                             type="email"
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
+                            error={!validateEmail(email) && email !== ''}
+                            helperText={
+                                !validateEmail(email) && email !== ''
+                                    ? 'Email should have the following format: "yourmail@mail.com"'
+                                    : ''
+                            }
                             onChange={(e) => setEmail(e.target.value)}
                         />
 
@@ -126,17 +132,35 @@ export function SignUp() {
                         <TextField
                             label="Phone Number"
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
+                            error={!validatePhoneNumber(phoneNumber) && phoneNumber !== ''}
+                            helperText={
+                                !validatePhoneNumber(phoneNumber) && phoneNumber !== ''
+                                    ? 'Phone number must have at least 15 digits'
+                                    : ''
+                            }
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                         <TextField
                             label="Password"
                             type={showPassword1 ? 'text' : 'password'}
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{
+                                marginBottom:
+                                    !validatePassword(password) && password !== ''
+                                        ? '40px'
+                                        : '20px',
+                                height: '47px',
+                            }}
                             onChange={(e) => setPassword(e.target.value)}
                             onFocus={() => setPasswordTooltipOpen(true)}
                             onBlur={() => setPasswordTooltipOpen(false)}
+                            error={!validatePassword(password) && password !== ''}
+                            helperText={
+                                !validatePassword(password) && password !== ''
+                                    ? 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number'
+                                    : ''
+                            }
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -177,8 +201,14 @@ export function SignUp() {
                             label="Verify Password"
                             type={showPassword2 ? 'text' : 'password'}
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
                             onChange={(e) => setVerifyPassword(e.target.value)}
+                            error={password !== verifyPassword && verifyPassword !== ''}
+                            helperText={
+                                password !== verifyPassword && verifyPassword !== ''
+                                    ? 'Passwords do not match'
+                                    : ''
+                            }
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
