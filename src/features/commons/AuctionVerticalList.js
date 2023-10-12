@@ -28,6 +28,7 @@ const AuctionVerticalList = ({ loaderRef, data, isFetching, error, last }) => {
                             <AuctionCard
                                 key={auction}
                                 id={auction.id}
+                                creationDate={auction.createdAt}
                                 endDate={auction.deadline}
                                 image={auction.firstImageUrl}
                                 carName={auction.title}

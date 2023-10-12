@@ -1,22 +1,14 @@
 import React from 'react';
 import { Card, Box, CardActionArea, CardMedia, Typography, CardContent } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import {
-    formatDistanceToNow,
-    isWithinInterval,
-    differenceInHours,
-    differenceInDays,
-    differenceInMinutes,
-    differenceInSeconds,
-} from 'date-fns';
+import { differenceInHours, differenceInDays } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
+import { TimeBar } from './TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
-const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
+const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
     const timeDifferenceInHours = differenceInHours(new Date(endDate), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date(endDate), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(endDate), now);
     const timeDifferenceInDays = differenceInDays(new Date(endDate), now);
     const nav = useNavigate();
 
@@ -68,33 +60,20 @@ const AuctionCard = ({ id, endDate, image, carName, tags, highestBid }) => {
                         </Typography>
                         <Box
                             sx={{
-                                backgroundColor: color,
-                                borderRadius: '10px',
-                                padding: '4px 2px',
+                                padding: '2px 1px',
                                 marginBottom: '14px',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'space-between',
                                 marginTop: '14px',
+                                height: '30px',
                             }}
                         >
-                            <Typography gutterBottom variant="Small">
-                                {`${timeDifferenceInDays > 0 && `${timeDifferenceInDays}:`}${
-                                    timeDifferenceInHours > 0 &&
-                                    `${timeDifferenceInHours % 24 < 10 ? '0' : ''}${
-                                        timeDifferenceInHours % 24
-                                    }:`
-                                }${
-                                    timeDifferenceInMinutes > 0
-                                        ? `${timeDifferenceInMinutes % 60 < 10 ? '0' : ''}${
-                                              timeDifferenceInMinutes % 60
-                                          }`
-                                        : 'Closed'
-                                }`}
-                            </Typography>
-                            <Typography gutterBottom variant="XSmall">
-                                Latest: <b>${highestBid}</b>
-                            </Typography>
+                            <TimeBar
+                                creationDate={creationDate}
+                                deadline={endDate}
+                                isSmall
+                                latestBid={highestBid}
+                            />
                         </Box>
 
                         <Box display="flex" gap="3px">
