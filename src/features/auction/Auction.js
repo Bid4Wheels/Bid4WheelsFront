@@ -27,7 +27,7 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
 
@@ -224,8 +224,11 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        highestBidDTO={auctionHigestBidDTO}
+                        topBids={topBids}
+                        myHighestBid={myHighestBid}
                         title={title}
+                        auctionId={auctionId}
+                        reload={refetch}
                     />
                 }
             </Grid>

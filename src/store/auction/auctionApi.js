@@ -7,6 +7,7 @@ export const auctionApi = authenticatedApi.injectEndpoints({
     endpoints: (builder) => ({
         getAuctionById: builder.query({
             query: (id) => `${baseUrl}/${id}`,
+            providesTags: ['Auction'],
         }),
         getAuctionList: builder.query({
             query: (page, size) => ({ url: `${baseUrl}/`, params: { page, size } }),
