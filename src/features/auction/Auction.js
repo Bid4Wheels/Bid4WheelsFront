@@ -35,8 +35,9 @@ export function Auction() {
     const description = data?.description || '';
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
-    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
     const creationDate = data?.createdAt || '';
+    const topBids = data?.topBids || [];
+    const myHighestBid = data?.myHighestBid || null;
 
     if (isLoading) {
         return (
