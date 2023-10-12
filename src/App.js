@@ -58,16 +58,6 @@ function App() {
                         }
                     />
                     <Route
-                        path="/auction/:auctionId"
-                        element={
-                            <PrivateRoute>
-                                <RouteWithHeader>
-                                    <Auction></Auction>
-                                </RouteWithHeader>
-                            </PrivateRoute>
-                        }
-                    />
-                    <Route
                         path="/user/:userId"
                         element={
                             <PrivateRoute>
