@@ -12,8 +12,16 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
     const seconds = timeDifferenceInSeconds % 60;
     const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
     const totalSeconds = differenceInSeconds(new Date(deadline), new Date(creationDate));
-    const percentage = Math.floor((timeElapsedInSeconds / totalSeconds) * 100);
+    const percentage = Math.floor(((totalSeconds - timeElapsedInSeconds) / totalSeconds) * 100);
     const size = isSmall ? 'small' : '18px';
+
+    console.log('percentage', percentage);
+    console.log('timeElapsedInSeconds', timeElapsedInSeconds);
+    console.log('totalSeconds', totalSeconds);
+    console.log('timeDifferenceInSeconds', timeDifferenceInSeconds);
+    console.log('creation', creationDate);
+    console.log('deadline', deadline);
+    console.log('now', now);
 
     let color = colors.green;
     if (days < 1) {
@@ -33,7 +41,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                 height: '100%',
                 borderRadius: '20px',
                 backgroundColor: colors.grey,
-                position: 'relative', // Add this line for absolute positioning
+                position: 'relative',
             }}
         >
             <Box
