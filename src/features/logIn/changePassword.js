@@ -78,6 +78,9 @@ function ChangePassword() {
             console.error(err);
         }
     };
+    if (userData.token) {
+        return <Navigate to={'/'} replace />;
+    }
     if (userData.validatedCode === false) {
         return <Navigate to={'/login'} replace />;
     }
