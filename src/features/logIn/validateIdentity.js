@@ -53,7 +53,7 @@ function ValidateIdentity() {
             setValidationCode('');
         }
     };
-    if (userData.userEmail === null) {
+    if (userData.userEmail === null && userData.validatedCode === false) {
         return <Navigate to={'/login'} replace />;
     }
     return (

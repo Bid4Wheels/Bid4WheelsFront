@@ -12,8 +12,8 @@ const userSlice = createSlice({
         setUser: (state, action) => {
             state.token = action.payload.token;
             state.userId = action.payload.id;
-            state.userEmail = action.payload.email;
-            state.validatedCode = false;
+            state.userEmail = null;
+            state.validatedCode = true;
         },
         removeUser: (state) => {
             state.token = null;
