@@ -28,6 +28,9 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) 
         };
     }, [shownQuestions, data]);
 
+    console.log(data);
+    console.log(shownQuestions);
+
     if (isLoading) {
         return (
             <Grid container justifyContent="center" alignItems="center" marginTop={2}>
