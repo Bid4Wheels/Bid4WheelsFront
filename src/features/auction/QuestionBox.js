@@ -4,7 +4,7 @@ import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 
 export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
-    const questioner = question.user;
+    const questioner = question.question.user;
     const reply = question.answer.answer;
     const questionText = question.question.question;
     const questionDate = question.question.timeOfQuestion;
