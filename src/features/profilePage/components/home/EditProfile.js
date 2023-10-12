@@ -93,7 +93,7 @@ export function EditProfileModal({
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
                         <Box display="flex" flexDirection="column" alignItems="center">
-                            {uploadImage({ imgUrl, refetchUserData })}
+                            {uploadImage({ imgUrl, refetchUserData, onClose })}
                         </Box>
                         {formToComplete({ userInfo, setUserInfo, userId })}
                     </Box>
@@ -103,7 +103,7 @@ export function EditProfileModal({
     );
 }
 
-function formToComplete({ userInfo, setUserInfo, userId }) {
+function formToComplete({ userInfo, setUserInfo, userId, onClose }) {
     const [updateUser] = useUpdateUserMutation();
     const navigate = useNavigate();
     const handleConfirmButton = async (event) => {
@@ -124,6 +124,7 @@ function formToComplete({ userInfo, setUserInfo, userId }) {
             try {
                 await updateUser(updatedUser);
                 console.log('si');
+                onClose();
             } catch (error) {
                 console.log(error);
             }
