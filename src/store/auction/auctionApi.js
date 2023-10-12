@@ -1,16 +1,15 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createBaseQuery } from '../baseQuery';
-import { baseUrl } from '../../features/commons/Constants';
+import { authenticatedApi } from '../mainApis/authenticatedApi';
 
-export const auctionApi = createApi({
+const baseUrl = '/auction';
+
+export const auctionApi = authenticatedApi.injectEndpoints({
     reducerPath: 'auctionApi',
-    baseQuery: createBaseQuery(`${baseUrl}/auction`),
     endpoints: (builder) => ({
         getAuctionById: builder.query({
-            query: (id) => `/${id}`,
+            query: (id) => `${baseUrl}/${id}`,
         }),
         getAuctionList: builder.query({
-            query: (page, size) => ({ url: '/', params: { page, size } }),
+            query: (page, size) => ({ url: `${baseUrl}/`, params: { page, size } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -22,7 +21,7 @@ export const auctionApi = createApi({
             },
         }),
         getNewAuctionList: builder.query({
-            query: (page, size) => ({ url: '/new', params: { page, size } }),
+            query: (page, size) => ({ url: `${baseUrl}/new`, params: { page, size } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -30,8 +29,6 @@ export const auctionApi = createApi({
                 return endpointName;
             },
             merge(currentCacheData, responseData) {
-                // eslint-disable-next-line no-debugger
-                debugger;
                 if (responseData.page > 0) {
                     currentCacheData.content.push(...responseData.content);
                     return currentCacheData;
@@ -44,7 +41,7 @@ export const auctionApi = createApi({
             providesTags: ['AuctionList'],
         }),
         getEndingAuctionList: builder.query({
-            query: (page, size) => ({ url: '/ending', params: { page, size } }),
+            query: (page, size) => ({ url: `${baseUrl}/ending`, params: { page, size } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -65,7 +62,7 @@ export const auctionApi = createApi({
         }),
         getFilteredAuctions: builder.mutation({
             query: ({ filter, page, size }) => ({
-                url: `/filter?page=${page}&size=${size}`,
+                url: `${baseUrl}/filter?page=${page}&size=${size}`,
                 method: 'POST',
                 body: filter,
             }),
@@ -82,7 +79,7 @@ export const auctionApi = createApi({
         }),
         createAuction: builder.mutation({
             query: (body) => ({
-                url: '',
+                url: `${baseUrl}`,
                 method: 'POST',
                 body: body,
             }),
@@ -90,26 +87,27 @@ export const auctionApi = createApi({
         }),
         getImageLinks: builder.mutation({
             query: (auctionId) => ({
-                url: `/image-url/${auctionId}`,
+                url: `${baseUrl}/image-url/${auctionId}`,
                 method: 'POST',
             }),
         }),
         getAuctionsByUserId: builder.query({
-            query: (userId) => `/user/${userId}`,
+            query: (userId) => `${baseUrl}/user/${userId}`,
             providesTags: ['userAuctions'],
         }),
         getAuctionsByBidderId: builder.query({
-            query: (userId) => `/bidder/${userId}`,
+            query: (userId) => `${baseUrl}/bidder/${userId}`,
             providesTags: ['userAuctions'],
         }),
         deleteAuction: builder.mutation({
             query: (id) => ({
-                url: `/${id}`,
+                url: `${baseUrl}/${id}`,
                 method: 'DELETE',
             }),
             invalidatesTags: ['AuctionList', 'userAuctions'],
         }),
     }),
+    overrideExisting: false,
 });
 
 export const {
