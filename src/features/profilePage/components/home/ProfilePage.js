@@ -85,6 +85,7 @@ export const ProfilePage = () => {
                     display: 'flex',
                     justifyContent: 'flex-end',
                     width: '100%',
+                    height: '5%',
                 }}
             >
                 <Box
