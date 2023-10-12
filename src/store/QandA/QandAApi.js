@@ -14,7 +14,12 @@ export const qAndAAPi = createApi({
             query: (body) => ({ url: '/question', method: 'POST', body: body }),
             invalidatesTags: ['questions'],
         }),
+        answerQuestion: builder.mutation({
+            query: (id, body) => ({ url: `/answer/${id}`, method: 'PATCH', body: body }),
+            invalidatesTags: ['questions'],
+        }),
     }),
 });
 
-export const { useGetQuestionsQuery, usePostQuestionMutation } = qAndAAPi;
+export const { useGetQuestionsQuery, usePostQuestionMutation, useAnswerQuestionMutation } =
+    qAndAAPi;
