@@ -24,6 +24,7 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 
 export function Auction() {
@@ -165,7 +166,7 @@ export function Auction() {
                     {data.tags.map((tag) => (
                         <Grid item key={tag.tagName}>
                             <Chip
-                                label={tag.tagName}
+                                label={capitalizeFirstLetter(tag.tagName)}
                                 size="medium"
                                 sx={{
                                     backgroundColor: colors.water_green,
