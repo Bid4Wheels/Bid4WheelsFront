@@ -1,10 +1,7 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { createBaseQuery } from '../baseQuery';
-import { baseUrl } from '../../features/commons/Constants';
+import { authenticatedApi } from '../mainApis/authenticatedApi';
 
-export const bidApi = createApi({
+export const bidApi = authenticatedApi.injectEndpoints({
     reducerPath: 'bidApi',
-    baseQuery: createBaseQuery(`${baseUrl}`),
     endpoints: (builder) => ({
         bid: builder.mutation({
             query: ({ amount, userId, auctionId }) => ({
