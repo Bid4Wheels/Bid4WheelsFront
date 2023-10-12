@@ -144,14 +144,20 @@ export function SignUp() {
                             label="Password"
                             type={showPassword ? 'text' : 'password'}
                             variant="standard"
-                            sx={{ marginBottom: '20px', height: '47px' }}
+                            sx={{
+                                marginBottom:
+                                    !validatePassword(password) && password !== ''
+                                        ? '40px'
+                                        : '20px',
+                                height: '47px',
+                            }}
                             onChange={(e) => setPassword(e.target.value)}
                             onFocus={() => setPasswordTooltipOpen(true)}
                             onBlur={() => setPasswordTooltipOpen(false)}
                             error={!validatePassword(password) && password !== ''}
                             helperText={
                                 !validatePassword(password) && password !== ''
-                                    ? 'Password must contain: 8 characters minimum, 1 uppercase letter, 1 lowercase letter, 1 number'
+                                    ? 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number'
                                     : ''
                             }
                             InputProps={{
