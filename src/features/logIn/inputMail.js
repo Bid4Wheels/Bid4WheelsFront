@@ -105,22 +105,40 @@ export function inputMail() {
                             helperText={emailError}
                         />
                     </Box>
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        sx={{
-                            width: '130px',
-                            height: '40px',
-                            backgroundColor: colors.water_green,
-                            '&:hover': { backgroundColor: colors.on_stand_water_green },
-                            fontFamily: theme.typography.fontFamily,
-                            fontSize: theme.typography.ButtonTypography.fontSize,
-                        }}
-                        disabled={isButtonDisabled}
-                        onClick={handleContinueClick}
-                    >
-                        CONTINUE
-                    </Button>
+                    <Box>
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            sx={{
+                                width: '130px',
+                                height: '40px',
+                                marginRight: '4%',
+                                backgroundColor: colors.water_green,
+                                '&:hover': { backgroundColor: colors.on_stand_water_green },
+                                fontFamily: theme.typography.fontFamily,
+                                fontSize: theme.typography.ButtonTypography.fontSize,
+                            }}
+                            disabled={isButtonDisabled}
+                            onClick={handleContinueClick}
+                        >
+                            CONTINUE
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            style={{
+                                width: '170px',
+                                height: '40px',
+                                borderColor: colors.water_green,
+                                color: colors.water_green,
+                                '&:hover': { backgroundColor: colors.on_stand_water_green },
+                                fontFamily: theme.typography.fontFamily,
+                                fontSize: theme.typography.ButtonTypography.fontSize,
+                            }}
+                            onClick={() => nav('/login')}
+                        >
+                            BACK TO LOGIN
+                        </Button>
+                    </Box>
                 </Box>
             </Grid>
         </Grid>

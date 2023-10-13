@@ -11,12 +11,6 @@ import {
     AlertTitle,
 } from '@mui/material';
 import { useParams } from 'react-router';
-import {
-    differenceInHours,
-    differenceInDays,
-    differenceInMinutes,
-    differenceInSeconds,
-} from 'date-fns';
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
@@ -24,6 +18,8 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
+import { TimeBar } from '../commons/TimeBar';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
 import { useDispatch } from 'react-redux';
@@ -32,28 +28,17 @@ export function Auction() {
     const auctionId = useParams().auctionId;
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
-    const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
+
+    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
+
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const title = data?.title || '';
     const description = data?.description || '';
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
-    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
-    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
-
-    let timerColor = colors.green;
-    if (timeDifferenceInDays < 0) {
-        timerColor = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        timerColor = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            timerColor = colors.red;
-        }
-    }
+    const creationDate = data?.createdAt || '';
+    const topBids = data?.topBids || [];
+    const myHighestBid = data?.myHighestBid || null;
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -145,22 +130,11 @@ export function Auction() {
                 </Box>
                 <Box
                     sx={{
-                        backgroundColor: timerColor,
-                        borderRadius: '5px',
-                        padding: '6px 15px',
-                        width: '95%',
+                        height: '32.5px',
+                        paddingTop: '0.5rem',
                     }}
                 >
-                    <Typography sx={{ fontWeight: 400, fontSize: '18px' }}>
-                        Time Left: {timeDifferenceInHours}:
-                        {timeDifferenceInMinutes < 10
-                            ? `0${timeDifferenceInMinutes}`
-                            : `${timeDifferenceInMinutes % 60}`}
-                        :
-                        {timeDifferenceInSeconds < 10
-                            ? `0${timeDifferenceInSeconds % 60}`
-                            : `${timeDifferenceInSeconds % 60}`}
-                    </Typography>
+                    <TimeBar creationDate={creationDate} deadline={deadline} />
                 </Box>
                 <Grid
                     container
@@ -171,7 +145,7 @@ export function Auction() {
                     {data.tags.map((tag) => (
                         <Grid item key={tag.tagName}>
                             <Chip
-                                label={tag.tagName}
+                                label={capitalizeFirstLetter(tag.tagName)}
                                 size="medium"
                                 sx={{
                                     backgroundColor: colors.water_green,
@@ -260,8 +234,11 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        highestBidDTO={auctionHigestBidDTO}
+                        topBids={topBids}
+                        myHighestBid={myHighestBid}
                         title={title}
+                        auctionId={auctionId}
+                        reload={refetch}
                     />
                 }
             </Grid>

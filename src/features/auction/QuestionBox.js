@@ -1,14 +1,26 @@
-import React from 'react';
-import { Avatar, Typography, Button } from '@mui/material';
+import React, { useState } from 'react';
+import { Avatar, Typography, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
+import { ReplyInput } from './ReplyInput';
 
 export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
-    const questioner = question.questionerDTO;
+    const questioner = question.user;
     const reply = question.answer;
     const questionText = question.question;
-    const date = question.date;
+    const questionDate = question.questionDate;
+    const answerDate = question.answerDate;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
+    const [ownerReply, setOwnerReply] = useState('');
+    const [isReplying, setIsReplying] = useState(false);
+
+    const handleReply = () => {
+        setIsReplying(true);
+    };
+
+    const handleSendReply = () => {
+        setIsReplying(false);
+    };
 
     return (
         <div
@@ -22,13 +34,13 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ display: 'flex' }}>
                     <Avatar
-                        src={questioner.picture === 'default' ? null : questioner.picture}
+                        src={questioner.imgURL === 'default' ? null : questioner.imgURL}
                         sx={{ width: 65, height: 65, mr: '10px', mt: '10px' }}
                     ></Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
-                                {questioner.username}
+                                {questioner.name + ' ' + questioner.lastName}
                             </Typography>
 
                             {isQuestioner && (
@@ -44,7 +56,9 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 </Typography>
                             )}
                         </div>
-                        <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>{date}</Typography>
+                        <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
+                            {questionDate}
+                        </Typography>
 
                         <Typography sx={{}}>{questionText}</Typography>
                         {reply && (
@@ -58,6 +72,9 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                             >
                                 <Typography sx={{ color: colors.water_green, fontWeight: 650 }}>
                                     Reply from owner:
+                                </Typography>
+                                <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
+                                    {answerDate}
                                 </Typography>
                                 <Typography sx={{ fontSize: '14px', color: '#8c8c8c' }}>
                                     {reply}
@@ -93,20 +110,8 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 )}
                             </div>
                         )}
-                        {isOwner && !reply && (
-                            <Button
-                                variant="contained"
-                                style={{
-                                    backgroundColor: colors.water_green,
-                                    color: 'white',
-                                    marginTop: '10px',
-                                    marginRight: '10px',
-                                    width: '80px',
-                                    padding: '5px',
-                                }}
-                            >
-                                Reply
-                            </Button>
+                        {isOwner && !reply && !isReplying && (
+                            <ReplyInput authenticatedUserId={authenticatedUserId} />
                         )}
                         {isQuestioner && !reply && (
                             <Button

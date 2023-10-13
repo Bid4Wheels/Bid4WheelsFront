@@ -7,6 +7,10 @@ import { authenticatedUserApi } from './user/authenticatedUserApi';
 import { auctionApi } from './auction/auctionApi';
 import storage from 'redux-persist/lib/storage';
 import { tagsApiSlice } from './auction/tagsApi';
+import { bidApi } from './auction/bidApi';
+import { authenticatedApi } from './mainApis/authenticatedApi';
+import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
+import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
 
@@ -37,6 +41,9 @@ export const store = configureStore({
             authenticatedUserApi.middleware,
             tagsApiSlice.middleware,
             auctionApi.middleware,
-            stompMiddleware,
+            bidApi.middleware,
+            authenticatedApi.middleware,
+            unauthenticatedApi.middleware,
+            questionsAndAnswersApi.middleware,
         ),
 });

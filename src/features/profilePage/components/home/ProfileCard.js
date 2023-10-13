@@ -6,6 +6,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
 import { EditProfileModal } from './EditProfile';
+import { DeleteAccountModal } from './DeleteProfile';
 
 export const ProfileCard = ({
     canEdit,
@@ -21,13 +22,15 @@ export const ProfileCard = ({
     const [openEditModal, setOpenEditModal] = useState(false);
     const handleOpenEditModal = () => setOpenEditModal(true);
     const handleCloseEditModal = () => setOpenEditModal(false);
+    const [openDeleteModal, setOpenDeleteModal] = useState(false);
+    const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+    const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
     return (
         <Box
             sx={{
                 paddingLeft: '50px',
                 paddingRight: '50px',
-                height: '525px',
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 12,
@@ -143,6 +146,23 @@ export const ProfileCard = ({
                         lastName={Surname}
                         email={Email}
                         phone={Phone}
+                        userId={UserId}
+                    />
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        style={{
+                            height: '50px',
+                            backgroundColor: '#FC4141',
+                            marginTop: '5%',
+                        }}
+                        onClick={handleOpenDeleteModal}
+                    >
+                        DELETE ACCOUNT
+                    </Button>
+                    <DeleteAccountModal
+                        open={openDeleteModal}
+                        onClose={handleCloseDeleteModal}
                         userId={UserId}
                     />
                 </>

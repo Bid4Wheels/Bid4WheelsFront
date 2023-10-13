@@ -140,12 +140,7 @@ export function LogIn() {
                                 Forgot Your Password?
                             </Link>
                         </Box>
-                        <Box
-                            display="flex"
-                            justifyContent="space-between"
-                            width="100%"
-                            margin="15px"
-                        >
+                        <Box display="flex" justifyContent="space-between" width="100%">
                             <Button
                                 variant="contained"
                                 style={{

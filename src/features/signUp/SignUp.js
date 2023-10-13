@@ -31,7 +31,8 @@ export function SignUp() {
     const [password, setPassword] = useState('');
     const [verifyPassword, setVerifyPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword1, setShowPassword1] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
     const navigate = useNavigate();
@@ -101,7 +102,13 @@ export function SignUp() {
                             label="Email"
                             type="email"
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
+                            error={!validateEmail(email) && email !== ''}
+                            helperText={
+                                !validateEmail(email) && email !== ''
+                                    ? 'Email should have the following format: "yourmail@mail.com"'
+                                    : ''
+                            }
                             onChange={(e) => setEmail(e.target.value)}
                         />
 
@@ -125,17 +132,35 @@ export function SignUp() {
                         <TextField
                             label="Phone Number"
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
+                            error={!validatePhoneNumber(phoneNumber) && phoneNumber !== ''}
+                            helperText={
+                                !validatePhoneNumber(phoneNumber) && phoneNumber !== ''
+                                    ? 'Phone number must have at least 15 digits'
+                                    : ''
+                            }
                             onChange={(e) => setPhoneNumber(e.target.value)}
                         />
                         <TextField
                             label="Password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword1 ? 'text' : 'password'}
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{
+                                marginBottom:
+                                    !validatePassword(password) && password !== ''
+                                        ? '40px'
+                                        : '20px',
+                                height: '47px',
+                            }}
                             onChange={(e) => setPassword(e.target.value)}
                             onFocus={() => setPasswordTooltipOpen(true)}
                             onBlur={() => setPasswordTooltipOpen(false)}
+                            error={!validatePassword(password) && password !== ''}
+                            helperText={
+                                !validatePassword(password) && password !== ''
+                                    ? 'Password must contain at least 8 characters, 1 uppercase, 1 lowercase and 1 number'
+                                    : ''
+                            }
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
@@ -157,11 +182,11 @@ export function SignUp() {
                                         >
                                             <IconButton
                                                 aria-label="toggle password visibility"
-                                                onClick={() => setShowPassword(!showPassword)}
+                                                onClick={() => setShowPassword1(!showPassword1)}
                                                 onMouseDown={(event) => event.preventDefault()}
                                                 edge="end"
                                             >
-                                                {showPassword ? (
+                                                {showPassword1 ? (
                                                     <VisibilityOffOutlinedIcon />
                                                 ) : (
                                                     <VisibilityOutlinedIcon />
@@ -174,20 +199,26 @@ export function SignUp() {
                         />
                         <TextField
                             label="Verify Password"
-                            type={showPassword ? 'text' : 'password'}
+                            type={showPassword2 ? 'text' : 'password'}
                             variant="standard"
-                            sx={{ marginBottom: '20px' }}
+                            sx={{ marginBottom: '20px', height: '47px' }}
                             onChange={(e) => setVerifyPassword(e.target.value)}
+                            error={password !== verifyPassword && verifyPassword !== ''}
+                            helperText={
+                                password !== verifyPassword && verifyPassword !== ''
+                                    ? 'Passwords do not match'
+                                    : ''
+                            }
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton
                                             aria-label="toggle password visibility"
-                                            onClick={() => setShowPassword(!showPassword)}
+                                            onClick={() => setShowPassword2(!showPassword2)}
                                             onMouseDown={(event) => event.preventDefault()}
                                             edge="end"
                                         >
-                                            {showPassword ? (
+                                            {showPassword2 ? (
                                                 <VisibilityOffOutlinedIcon />
                                             ) : (
                                                 <VisibilityOutlinedIcon />
