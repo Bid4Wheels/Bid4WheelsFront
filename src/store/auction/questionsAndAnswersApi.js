@@ -17,11 +17,18 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             invalidatesTags: ['questionsAndAnswers'],
         }),
         answerQuestion: builder.mutation({
-            query: (id, body) => ({ url: `${baseUrl}/answer/${id}`, method: 'PATCH', body: body }),
-            invalidatesTags: ['questionsAndAnswers'],
+            query: (body) => ({
+                url: `${baseUrl}/answer/${body.id}`,
+                method: 'PATCH',
+                body: body.answer,
+            }),
+            invalidatesTags: ['questionsAndAnswers'], // Add this line
         }),
     }),
 });
 
-export const { useGetQuestionsAndAnswersByAuctionIdQuery, usePostQuestionMutation } =
-    questionsAndAnswersApi;
+export const {
+    useGetQuestionsAndAnswersByAuctionIdQuery,
+    usePostQuestionMutation,
+    useAnswerQuestionMutation,
+} = questionsAndAnswersApi;
