@@ -12,7 +12,15 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             }),
             providesTags: ['questionsAndAnswers'],
         }),
+        deleteResponse: builder.mutation({
+            query: (questionId) => ({
+                url: `${baseUrl}/answer/${questionId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
     }),
 });
 
-export const { useGetQuestionsAndAnswersByAuctionIdQuery } = questionsAndAnswersApi;
+export const { useGetQuestionsAndAnswersByAuctionIdQuery, useDeleteResponseMutation } =
+    questionsAndAnswersApi;
