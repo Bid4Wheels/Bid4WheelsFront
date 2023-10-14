@@ -16,6 +16,10 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             query: (body) => ({ url: `${baseUrl}/question`, method: 'POST', body: body }),
             invalidatesTags: ['questionsAndAnswers'],
         }),
+        answerQuestion: builder.mutation({
+            query: (id, body) => ({ url: `${baseUrl}/answer/${id}`, method: 'PATCH', body: body }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
     }),
 });
 
