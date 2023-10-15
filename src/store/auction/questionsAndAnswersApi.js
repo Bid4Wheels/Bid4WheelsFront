@@ -22,7 +22,7 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
                 method: 'PATCH',
                 body: body.answer,
             }),
-            invalidatesTags: ['questionsAndAnswers'], // Add this line
+            invalidatesTags: ['questionsAndAnswers'],
         }),
     }),
 });
