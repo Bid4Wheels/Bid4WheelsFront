@@ -43,10 +43,17 @@ export function Auction() {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(connectStomp());
+
         return () => {
             dispatch(disconnectStomp());
         };
     }, [dispatch]);
+
+    const bids = useSelector((state) => state.stomp.messages);
+
+    const subscribe = () => {
+        dispatch({ type: 'subscribe', payload: { auctionId: auctionId } });
+    };
 
     if (isLoading) {
         return (
@@ -241,6 +248,27 @@ export function Auction() {
                         reload={refetch}
                     />
                 }
+                {bids.map((bid) => (
+                    <Alert key={bid} severity="success" sx={{ marginTop: '10px' }}>
+                        <AlertTitle>New Bid</AlertTitle>
+                        {bid}
+                    </Alert>
+                ))}
+                <Button
+                    variant="contained"
+                    sx={{
+                        marginTop: '10px',
+                        backgroundColor: colors.water_green,
+                        color: 'white',
+                        '&:hover': {
+                            backgroundColor: colors.water_green,
+                            color: 'white',
+                        },
+                    }}
+                    onClick={subscribe}
+                >
+                    Subscribe
+                </Button>
             </Grid>
         </Grid>
     );

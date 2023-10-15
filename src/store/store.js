@@ -45,5 +45,6 @@ export const store = configureStore({
             authenticatedApi.middleware,
             unauthenticatedApi.middleware,
             questionsAndAnswersApi.middleware,
+            stompMiddleware,
         ),
 });
