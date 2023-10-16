@@ -1,16 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from '../../features/commons/Constants';
+import { unauthenticatedApi } from '../mainApis/unauthenticatedApi';
 
-export const userApi = createApi({
+const baseUrl = '/user';
+
+export const userApi = unauthenticatedApi.injectEndpoints({
     reducerPath: 'userApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}/user`,
-    }),
 
     endpoints: (builder) => ({
         signUp: builder.mutation({
             query: (payload) => ({
-                url: '',
+                url: `${baseUrl}`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -20,26 +18,27 @@ export const userApi = createApi({
         }),
         changePassword: builder.mutation({
             query: (payload) => ({
-                url: '/password',
+                url: `${baseUrl}/password`,
                 method: 'PATCH',
                 body: payload,
             }),
         }),
         sendValidationCode: builder.mutation({
             query: (payload) => ({
-                url: '',
+                url: `${baseUrl}`,
                 method: 'PATCH',
                 body: payload,
             }),
         }),
         getValidationCode: builder.mutation({
             query: (payload) => ({
-                url: '/password',
+                url: `${baseUrl}/password`,
                 method: 'POST',
                 body: payload,
             }),
         }),
     }),
+    overrideExisting: false,
 });
 
 export const {

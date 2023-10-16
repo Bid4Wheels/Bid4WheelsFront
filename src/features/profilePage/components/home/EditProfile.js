@@ -55,6 +55,8 @@ export function EditProfileModal({
         phone: phone || '',
     };
 
+    const [localImage, setLocalImage] = useState(null);
+
     const [userInfo, setUserInfo] = useState(initialState);
     useEffect(() => {
         setUserInfo({
@@ -66,6 +68,7 @@ export function EditProfileModal({
     }, [userName, lastName, email, phone]);
     const handleCloseModal = () => {
         setUserInfo(initialState);
+        setLocalImage(null);
         onClose();
     };
 
@@ -93,9 +96,51 @@ export function EditProfileModal({
                     </Box>
                     <Box display="flex" marginTop={'30px'} marginBottom={'30px'} marginRight={5}>
                         <Box display="flex" flexDirection="column" alignItems="center">
-                            {uploadImage({ imgUrl, refetchUserData, onClose })}
+                            <Box
+                                marginRight={5}
+                                marginLeft={6}
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                            >
+                                <Avatar
+                                    src={
+                                        localImage
+                                            ? URL.createObjectURL(localImage)
+                                            : imgUrl === 'default'
+                                            ? null
+                                            : imgUrl
+                                    }
+                                    sx={{ width: 150, height: 150, marginBottom: 2 }}
+                                ></Avatar>
+                                <Button
+                                    variant="contained"
+                                    component="label"
+                                    sx={{
+                                        backgroundColor: colors.water_green,
+                                        '&:hover': { backgroundColor: colors.on_stand_water_green },
+                                    }}
+                                >
+                                    Upload Image
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        hidden
+                                        onChange={(e) => {
+                                            setLocalImage(e.target.files[0]);
+                                        }}
+                                    />
+                                </Button>
+                            </Box>
                         </Box>
-                        {formToComplete({ userInfo, setUserInfo, userId, onClose })}
+                        {formToComplete({
+                            userInfo,
+                            setUserInfo,
+                            userId,
+                            onClose,
+                            localImage,
+                            refetchUserData,
+                        })}
                     </Box>
                 </Box>
             </Modal>
@@ -103,9 +148,15 @@ export function EditProfileModal({
     );
 }
 
-function formToComplete({ userInfo, setUserInfo, userId, onClose }) {
+function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, refetchUserData }) {
     const [updateUser] = useUpdateUserMutation();
     const navigate = useNavigate();
+    const { data: uploadUrl } = useGetUploadImageUrlQuery();
+
+    function handleUploadImage(image, url) {
+        return resizeFile(image, 500, 500).then((result) => pushImage(url, result));
+    }
+
     const handleConfirmButton = async (event) => {
         event.preventDefault();
         if (
@@ -123,6 +174,10 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose }) {
             };
             try {
                 await updateUser(updatedUser);
+                if (localImage) {
+                    await handleUploadImage(localImage, uploadUrl);
+                    refetchUserData();
+                }
                 console.log('si');
                 onClose();
             } catch (error) {
@@ -273,46 +328,4 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose }) {
             </form>
         </Box>
     );
-}
-
-function uploadImage({ imgUrl, refetchUserData }) {
-    const { data: uploadUrl } = useGetUploadImageUrlQuery();
-    return (
-        <Box
-            marginRight={5}
-            marginLeft={6}
-            display="flex"
-            flexDirection="column"
-            alignItems="center"
-        >
-            <Avatar
-                src={imgUrl === 'default' ? null : imgUrl}
-                sx={{ width: 150, height: 150, marginBottom: 2 }}
-            ></Avatar>
-            <Button
-                variant="contained"
-                component="label"
-                sx={{
-                    backgroundColor: colors.water_green,
-                    '&:hover': { backgroundColor: colors.on_stand_water_green },
-                }}
-            >
-                Upload Image
-                <input
-                    type="file"
-                    accept="image/*"
-                    hidden
-                    onChange={(e) =>
-                        handleUploadImage(e, uploadUrl).then(() => {
-                            refetchUserData();
-                        })
-                    }
-                />
-            </Button>
-        </Box>
-    );
-}
-function handleUploadImage(event, url) {
-    const image = event.target.files[0];
-    return resizeFile(image, 500, 500).then((result) => pushImage(url, result));
 }

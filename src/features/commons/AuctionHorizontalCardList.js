@@ -43,6 +43,7 @@ const AuctionHorizontalCardList = ({ auctionList }) => {
                         <AuctionCard
                             key={index}
                             id={auction.id}
+                            creationDate={new Date(auction.createdAt)}
                             endDate={new Date(auction.deadline)}
                             image={auction.firstImageUrl}
                             carName={auction.title}
