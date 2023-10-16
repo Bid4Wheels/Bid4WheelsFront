@@ -49,6 +49,7 @@ export const ProfileCard = ({
                     fontSize: theme.typography.XxLarge.fontSize,
                     fontWeight: 500,
                     letterSpacing: 0.46,
+                    textAlign: 'center',
                     marginTop: 2,
                     marginBottom: 2,
                 }}
