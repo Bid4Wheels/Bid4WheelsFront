@@ -12,6 +12,7 @@ export function QuestionBox({
     isAuctionClosed,
 }) {
     const questioner = question.question.user;
+    const id = question.question.id;
     const reply = question.answer.answer;
     const questionText = question.question.question;
     const questionDate = question.question.timeOfQuestion;
@@ -132,7 +133,7 @@ export function QuestionBox({
                             </div>
                         )}
                         {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} />
+                            <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
                         )}
                         {!isAuctionClosed && isQuestioner && !reply && (
                             <Button
