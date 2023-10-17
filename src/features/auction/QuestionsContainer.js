@@ -6,7 +6,6 @@ import { CircularProgress, Grid } from '@mui/material';
 
 export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) {
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
-    const [shownQuestions, setShownQuestions] = useState([]);
 
     if (isLoading) {
         return (
