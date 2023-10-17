@@ -38,6 +38,7 @@ export function Auction() {
     const creationDate = data?.createdAt || '';
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
+    const isAuctionOver = deadline - Date.now() < 0;
 
     if (isLoading) {
         return (
@@ -207,6 +208,7 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
+                                isAuctionOver={isAuctionOver}
                             />
                         ) : (
                             <></>

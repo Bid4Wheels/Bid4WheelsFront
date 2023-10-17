@@ -9,6 +9,7 @@ import { removeUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { questionsAndAnswersApi } from '../../store/auction/questionsAndAnswersApi';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -25,6 +26,7 @@ const Header = () => {
         dispatch(authenticatedUserApi.util.resetApiState());
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
+        dispatch(questionsAndAnswersApi.util.resetApiState());
         navigate('/login');
     };
 
