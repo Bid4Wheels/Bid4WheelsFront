@@ -3,6 +3,7 @@ import { Avatar, Typography, Button, TextField, Modal, Box } from '@mui/material
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 import CloseIcon from '@mui/icons-material/Close';
+import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 
 export function QuestionBox({
     question,
@@ -16,11 +17,13 @@ export function QuestionBox({
     const questionText = question.question.question;
     const questionDate = question.question.timeOfQuestion;
     const answerDate = question.answer.timeOfAnswer;
+    const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
     const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteQuestion, { isSuccess }] = useDeleteQuestionMutation();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -31,7 +34,7 @@ export function QuestionBox({
     };
 
     const handleDelete = () => {
-        //delete question
+        deleteQuestion(questionId);
         handleModalClose();
     };
 
