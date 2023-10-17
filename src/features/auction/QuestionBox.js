@@ -4,7 +4,15 @@ import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 import { EditAnswerInput } from './EditAnswerInput';
 
-export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId, isAuctionOver }) {
+export function QuestionBox({
+    question,
+    authenticatedUserId,
+    ownerId,
+    auctionId,
+    isAuctionOver,
+    refetch,
+}) {
+    const questionId = question.question.id;
     const questioner = question.question.user;
     const reply = question.answer.answer;
     const questionText = question.question.question;
@@ -122,6 +130,8 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId,
                             <EditAnswerInput
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
+                                questionId={questionId}
+                                refetch={refetch}
                             />
                         )}
                         {isOwner && !reply && !isReplying && (

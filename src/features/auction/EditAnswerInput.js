@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
-export const EditAnswerInput = ({ answerText, handleClose }) => {
+import { useAnswerQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+export const EditAnswerInput = ({ answerText, handleClose, questionId, refetch }) => {
     const initialState = {
         answer: answerText || '',
     };
     const [answer, setAnswer] = useState(initialState);
     const [isConfirmButtonEnabled, setIsConfirmButtonEnabled] = useState(false);
+    const [updateAnswer] = useAnswerQuestionMutation();
     useEffect(() => {
         setAnswer(answerText);
     }, [answerText]);
@@ -22,7 +24,20 @@ export const EditAnswerInput = ({ answerText, handleClose }) => {
     }
 
     //integration with backend
-    function handleSend() {
+    async function handleSend() {
+        try {
+            const body = {
+                id: questionId,
+                answer: {
+                    answer: answer,
+                },
+            };
+            await updateAnswer(body);
+            console.log('answer updated');
+            refetch();
+        } catch (error) {
+            console.log('error:' + error);
+        }
         handleCloseEdit();
     }
     return (

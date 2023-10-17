@@ -29,7 +29,7 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch: refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
 
@@ -212,6 +212,7 @@ export function Auction() {
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
                                 isAuctionOver={isAuctionOver}
+                                refetch={refetch}
                             />
                         ) : (
                             <></>
