@@ -16,6 +16,14 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             query: (body) => ({ url: `${baseUrl}/question`, method: 'POST', body: body }),
             invalidatesTags: ['questionsAndAnswers'],
         }),
+        answerQuestion: builder.mutation({
+            query: (body) => ({
+                url: `${baseUrl}/answer/${body.id}`,
+                method: 'PATCH',
+                body: body.answer,
+            }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
         deleteQuestion: builder.mutation({
             query: (questionId) => ({ url: `${baseUrl}/question/${questionId}`, method: 'DELETE' }),
             invalidatesTags: ['questionsAndAnswers'],
@@ -26,5 +34,6 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
 export const {
     useGetQuestionsAndAnswersByAuctionIdQuery,
     usePostQuestionMutation,
+    useAnswerQuestionMutation,
     useDeleteQuestionMutation,
 } = questionsAndAnswersApi;
