@@ -8,26 +8,6 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) 
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
     const [shownQuestions, setShownQuestions] = useState([]);
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const scrollHeight = document.documentElement.scrollHeight;
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const clientHeight = window.innerHeight;
-
-            if (data && scrollHeight - (scrollTop + clientHeight) < 10) {
-                const startIndex = shownQuestions.length;
-                const endIndex = startIndex + 2;
-                setShownQuestions([...shownQuestions, ...data.slice(startIndex, endIndex)]);
-            }
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [shownQuestions, data]);
-
     if (isLoading) {
         return (
             <Grid container justifyContent="center" alignItems="center" marginTop={2}>
@@ -51,7 +31,7 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId }) 
                 ownerId={ownerId}
             />
 
-            {shownQuestions.map((question, index) => (
+            {data.map((question, index) => (
                 <QuestionBox
                     key={index}
                     question={question}
