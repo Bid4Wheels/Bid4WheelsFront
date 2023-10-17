@@ -21,6 +21,7 @@ export const EditAnswerInput = ({ answerText, handleClose }) => {
         handleClose();
     }
 
+    //integration with backend
     function handleSend() {
         handleCloseEdit();
     }
