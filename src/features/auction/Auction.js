@@ -40,20 +40,23 @@ export function Auction() {
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
 
+    const newBids = useSelector((state) => state.stomp.messages);
+    const parsedBids = newBids.map((bid) => {
+        const amount = JSON.parse(bid).amount;
+        const userName = `${JSON.parse(bid).firstName} ${JSON.parse(bid).lastName}`;
+        return { amount, userName };
+    });
+
+    const mergedBids = [...parsedBids, ...topBids];
+
     const dispatch = useDispatch();
     useEffect(() => {
-        dispatch(connectStomp());
+        dispatch(connectStomp(auctionId));
 
         return () => {
             dispatch(disconnectStomp());
         };
     }, [dispatch]);
-
-    const bids = useSelector((state) => state.stomp.messages);
-
-    const subscribe = () => {
-        dispatch({ type: 'subscribe', payload: { auctionId: auctionId } });
-    };
 
     if (isLoading) {
         return (
@@ -241,34 +244,13 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        topBids={topBids}
+                        topBids={mergedBids}
                         myHighestBid={myHighestBid}
                         title={title}
                         auctionId={auctionId}
                         reload={refetch}
                     />
                 }
-                {bids.map((bid) => (
-                    <Alert key={bid} severity="success" sx={{ marginTop: '10px' }}>
-                        <AlertTitle>New Bid</AlertTitle>
-                        {bid}
-                    </Alert>
-                ))}
-                <Button
-                    variant="contained"
-                    sx={{
-                        marginTop: '10px',
-                        backgroundColor: colors.water_green,
-                        color: 'white',
-                        '&:hover': {
-                            backgroundColor: colors.water_green,
-                            color: 'white',
-                        },
-                    }}
-                    onClick={subscribe}
-                >
-                    Subscribe
-                </Button>
             </Grid>
         </Grid>
     );
