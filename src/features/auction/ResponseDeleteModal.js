@@ -2,15 +2,22 @@ import { Box, Button, Modal, Typography } from '@mui/material';
 import React from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import theme from '../../utils/desgin/Theme';
+import { useDeleteResponseMutation } from '../../store/auction/questionsAndAnswersApi';
 
 export function ResponseDeleteModal({ open, onClose, questionId }) {
+    const [deleteResponse] = useDeleteResponseMutation();
+
     const handleModalClose = () => {
         onClose();
     };
 
     const handleDelete = () => {
-        // deleteResponse(questionId);
-        onClose();
+        try {
+            deleteResponse(questionId);
+            onClose();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
