@@ -3,7 +3,7 @@ import { addBid, clearBids } from './stompSlice';
 
 export const stompMiddleware = ({ dispatch }) => {
     const client = new Client({
-        brokerURL: 'ws://localhost:8080/ws',
+        brokerURL: `ws://api.bid4wheels.com/ws`,
         debug: function (str) {
             console.log(str);
         },
