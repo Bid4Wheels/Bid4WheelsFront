@@ -23,7 +23,6 @@ export const EditAnswerInput = ({ answerText, handleClose, questionId, refetch }
         handleClose();
     }
 
-    //integration with backend
     async function handleSend() {
         try {
             const body = {
