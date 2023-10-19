@@ -22,6 +22,7 @@ import { TimeBar } from '../commons/TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 import { useNavigate } from 'react-router-dom';
+import { differenceInSeconds } from 'date-fns';
 
 export function Auction() {
     const nav = useNavigate();
@@ -40,6 +41,8 @@ export function Auction() {
     const creationDate = data?.createdAt || '';
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
+
+    const isAuctionClosed = differenceInSeconds(new Date(deadline), new Date()) < 0;
 
     if (isLoading) {
         return (
@@ -210,6 +213,7 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
+                                isAuctionClosed={isAuctionClosed}
                             />
                         ) : (
                             <></>
