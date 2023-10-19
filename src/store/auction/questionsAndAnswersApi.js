@@ -24,11 +24,24 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
             }),
             invalidatesTags: ['questionsAndAnswers'],
         }),
+        deleteResponse: builder.mutation({
+            query: (questionId) => ({
+                url: `${baseUrl}/answer/${questionId}`,
+                method: 'DELETE',
+            }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
+        deleteQuestion: builder.mutation({
+            query: (questionId) => ({ url: `${baseUrl}/question/${questionId}`, method: 'DELETE' }),
+            invalidatesTags: ['questionsAndAnswers'],
+        }),
     }),
 });
 
 export const {
     useGetQuestionsAndAnswersByAuctionIdQuery,
+    useDeleteResponseMutation,
     usePostQuestionMutation,
     useAnswerQuestionMutation,
+    useDeleteQuestionMutation,
 } = questionsAndAnswersApi;
