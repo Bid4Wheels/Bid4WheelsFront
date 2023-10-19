@@ -10,6 +10,8 @@ import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { questionsAndAnswersApi } from '../../store/auction/questionsAndAnswersApi';
+import { authenticatedApi } from '../../store/mainApis/authenticatedApi';
+import { unauthenticatedApi } from '../../store/mainApis/unauthenticatedApi';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -23,10 +25,8 @@ const Header = () => {
 
     const handleLogoutClick = () => {
         dispatch(removeUser());
-        dispatch(authenticatedUserApi.util.resetApiState());
-        dispatch(auctionApi.util.resetApiState());
-        dispatch(tagsApiSlice.util.resetApiState());
-        dispatch(questionsAndAnswersApi.util.resetApiState());
+        dispatch(authenticatedApi.util.resetApiState());
+        dispatch(unauthenticatedApi.util.resetApiState());
         navigate('/login');
     };
 

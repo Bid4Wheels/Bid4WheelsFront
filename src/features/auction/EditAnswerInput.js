@@ -24,19 +24,14 @@ export const EditAnswerInput = ({ answerText, handleClose, questionId, refetch }
     }
 
     async function handleSend() {
-        try {
-            const body = {
-                id: questionId,
-                answer: {
-                    answer: answer,
-                },
-            };
-            await updateAnswer(body);
-            console.log('answer updated');
-            refetch();
-        } catch (error) {
-            console.log('error:' + error);
-        }
+        const body = {
+            id: questionId,
+            answer: {
+                answer: answer,
+            },
+        };
+        await updateAnswer(body);
+        refetch();
         handleCloseEdit();
     }
     return (

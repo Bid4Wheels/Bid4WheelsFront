@@ -154,7 +154,7 @@ export function QuestionBox({
                                 )}
                             </div>
                         )}
-                        {isOwner && isEditingAnswer && !isAuctionOver && (
+                        {isOwner && isEditingAnswer && !isAuctionClosed && (
                             <EditAnswerInput
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
