@@ -3,7 +3,13 @@ import { Avatar, Typography, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 
-export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
+export function QuestionBox({
+    question,
+    authenticatedUserId,
+    ownerId,
+    auctionId,
+    isDeadlineFinished,
+}) {
     const questioner = question.question.user;
     const id = question.question.id;
     const reply = question.answer.answer;
@@ -80,7 +86,7 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 <Typography sx={{ fontSize: '14px', color: '#8c8c8c' }}>
                                     {reply}
                                 </Typography>
-                                {isOwner && (
+                                {isOwner && isDeadlineFinished && (
                                     <div>
                                         <Button
                                             variant="contained"
@@ -112,9 +118,13 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                             </div>
                         )}
                         {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
+                            <ReplyInput
+                                authenticatedUserId={authenticatedUserId}
+                                id={id}
+                                isDeadlineFinished={isDeadlineFinished}
+                            />
                         )}
-                        {isQuestioner && !reply && (
+                        {isQuestioner && !reply && isDeadlineFinished && (
                             <Button
                                 variant="contained"
                                 sx={{

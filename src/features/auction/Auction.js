@@ -40,6 +40,7 @@ export function Auction() {
     const creationDate = data?.createdAt || '';
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
+    const isDeadlineFinished = new Date(deadline) > new Date();
 
     if (isLoading) {
         return (
@@ -210,6 +211,7 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
+                                isDeadlineFinished={isDeadlineFinished}
                             />
                         ) : (
                             <></>
@@ -218,7 +220,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {authenticatedUserId === auctionOwnerDTO.id ? (
+                {authenticatedUserId === auctionOwnerDTO.id && isDeadlineFinished ? (
                     <DangerZone title={title} auctionId={auctionId} />
                 ) : (
                     <></>
@@ -233,6 +235,7 @@ export function Auction() {
                         title={title}
                         auctionId={auctionId}
                         reload={refetch}
+                        isDeadlineFinished={isDeadlineFinished}
                     />
                 }
             </Grid>

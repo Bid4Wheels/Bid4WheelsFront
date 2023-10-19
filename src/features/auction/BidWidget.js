@@ -23,6 +23,7 @@ export function BidWidget({
     myHighestBid,
     auctionId,
     reload,
+    isDeadlineFinished,
 }) {
     const [myBid, setMyBid] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -147,67 +148,71 @@ export function BidWidget({
                 </>
             ) : (
                 <>
-                    <Typography variant="SemiSmall" marginTop="30px" fontWeight={700}>
-                        Your Highest Bid:
-                    </Typography>
-                    <Typography variant="SemiSmall" marginBottom="30px">
-                        {myHighestBid && myHighestBid != null
-                            ? '$' + myHighestBid
-                            : "You haven't made an offer yet!"}
-                    </Typography>
-                    <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
-                        Make your offer
-                    </Typography>
-                    <TextField
-                        variant="standard"
-                        inputProps={{
-                            maxLength: 200,
-                            type: 'text',
-                            style: { textAlign: 'center' },
-                        }}
-                        width="100%"
-                        color="water_green"
-                        value={myBid}
-                        onChange={handleBidChange}
-                        placeholder={
-                            topBids.length > 0
-                                ? `Starting at $${topBids[0].amount}`
-                                : `Starting at $${auctionData.basePrice}`
-                        }
-                    />
-                    <Tooltip
-                        title={
-                            isBidValid
-                                ? ''
-                                : 'Bid amount must be greater than both starting price and highest bid'
-                        }
-                    >
-                        <Box
-                            sx={{
-                                maxWidth: '120px',
-                                width: '70%',
-                                marginY: '30px',
-                                height: '30px',
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="water_green"
-                                sx={{
-                                    maxWidth: '150px',
+                    {isDeadlineFinished ? (
+                        <>
+                            <Typography variant="SemiSmall" marginTop="30px" fontWeight={700}>
+                                Your Highest Bid:
+                            </Typography>
+                            <Typography variant="SemiSmall" marginBottom="30px">
+                                {myHighestBid && myHighestBid != null
+                                    ? '$' + myHighestBid
+                                    : "You haven't made an offer yet!"}
+                            </Typography>
+                            <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
+                                Make your offer
+                            </Typography>
+                            <TextField
+                                variant="standard"
+                                inputProps={{
+                                    maxLength: 200,
+                                    type: 'text',
+                                    style: { textAlign: 'center' },
                                 }}
-                                onClick={handleModalOpen}
-                                disabled={!isBidValid}
+                                width="100%"
+                                color="water_green"
+                                value={myBid}
+                                onChange={handleBidChange}
+                                placeholder={
+                                    topBids.length > 0
+                                        ? `Starting at $${topBids[0].amount}`
+                                        : `Starting at $${auctionData.basePrice}`
+                                }
+                            />
+                            <Tooltip
+                                title={
+                                    isBidValid
+                                        ? ''
+                                        : 'Bid amount must be greater than both starting price and highest bid'
+                                }
                             >
-                                PLACE BID
-                            </Button>
-                        </Box>
-                    </Tooltip>
-                    {error && (
-                        <Alert severity="error">
-                            There was an error while bidding. Please, try again
-                        </Alert>
-                    )}
+                                <Box
+                                    sx={{
+                                        maxWidth: '120px',
+                                        width: '70%',
+                                        marginY: '30px',
+                                        height: '30px',
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        color="water_green"
+                                        sx={{
+                                            maxWidth: '150px',
+                                        }}
+                                        onClick={handleModalOpen}
+                                        disabled={!isBidValid}
+                                    >
+                                        PLACE BID
+                                    </Button>
+                                </Box>
+                            </Tooltip>
+                            {error && (
+                                <Alert severity="error">
+                                    There was an error while bidding. Please, try again
+                                </Alert>
+                            )}
+                        </>
+                    ) : null}
                 </>
             )}
             <Modal
