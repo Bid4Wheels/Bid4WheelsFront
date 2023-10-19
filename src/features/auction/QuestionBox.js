@@ -6,7 +6,7 @@ import { ResponseDeleteModal } from './ResponseDeleteModal';
 
 export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
     const questioner = question.question.user;
-    const questionId = question.question.id;
+    const id = question.question.id;
     const reply = question.answer.answer;
     const questionText = question.question.question;
     const questionDate = question.question.timeOfQuestion;
@@ -115,14 +115,14 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                         <ResponseDeleteModal
                                             open={openDeleteResponseModal}
                                             onClose={handleCloseDeleteResponseModal}
-                                            questionId={questionId}
+                                            questionId={id}
                                         />
                                     </div>
                                 )}
                             </div>
                         )}
                         {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} />
+                            <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
                         )}
                         {isQuestioner && !reply && (
                             <div>
