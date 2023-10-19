@@ -53,6 +53,8 @@ export const ProfilePage = () => {
                 phone: userData.phoneNumber,
                 imageUrl: userData.imgURL,
             });
+        } else if (isError) {
+            nav('*');
         }
     }, [userData, isLoading, isError]);
 
