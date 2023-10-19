@@ -24,6 +24,7 @@ import { QuestionsContainer } from './QuestionsContainer';
 import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { differenceInSeconds } from 'date-fns';
 
 export function Auction() {
     const nav = useNavigate();
@@ -31,7 +32,7 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch: refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
     const title = data?.title || '';
@@ -59,6 +60,7 @@ export function Auction() {
             dispatch(disconnectStomp());
         };
     }, [dispatch]);
+    const isAuctionClosed = differenceInSeconds(new Date(deadline), new Date()) < 0;
 
     if (isLoading) {
         return (
@@ -229,6 +231,8 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
+                                isAuctionClosed={isAuctionClosed}
+                                refetch={refetch}
                             />
                         ) : (
                             <></>
