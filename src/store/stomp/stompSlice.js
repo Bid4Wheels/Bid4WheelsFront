@@ -7,10 +7,10 @@ const stompSlice = createSlice({
     },
     reducers: {
         addBid: (state, action) => {
-            state.messages.push(action.payload);
+            state.bids.push(action.payload);
         },
         clearBid: (state) => {
-            state.messages = [];
+            state.bids = [];
         },
     },
 });

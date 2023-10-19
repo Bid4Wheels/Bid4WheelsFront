@@ -23,8 +23,10 @@ import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 export function Auction() {
+    const nav = useNavigate();
     const auctionId = useParams().auctionId;
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
@@ -40,7 +42,7 @@ export function Auction() {
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
 
-    const newBids = useSelector((state) => state.stomp.messages);
+    const newBids = useSelector((state) => state.stomp.bids);
     const parsedBids = newBids.map((bid) => {
         const amount = JSON.parse(bid).amount;
         const userName = `${JSON.parse(bid).firstName} ${JSON.parse(bid).lastName}`;
@@ -108,6 +110,7 @@ export function Auction() {
                     <AlertTitle>Error</AlertTitle>
                     <strong>{error.data}</strong>
                 </Alert>
+                {nav('*')}
             </div>
         );
     }
