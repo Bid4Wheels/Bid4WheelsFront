@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Avatar, Typography, Button, TextField, Modal, Box } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
+import { EditAnswerInput } from './EditAnswerInput';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 import { ResponseDeleteModal } from './ResponseDeleteModal';
@@ -12,6 +13,7 @@ export function QuestionBox({
     ownerId,
     auctionId,
     isAuctionClosed,
+    refetch,
 }) {
     const questioner = question.question.user;
     const id = question.question.id;
@@ -24,6 +26,7 @@ export function QuestionBox({
     const isOwner = ownerId === authenticatedUserId;
     const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
+    const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
     const handleOpenDeleteResponseModal = () => setOpenDeleteResponseModal(true);
     const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
@@ -49,6 +52,12 @@ export function QuestionBox({
 
     const handleSendReply = () => {
         setIsReplying(false);
+    };
+    const handleOpenEditAnswer = () => {
+        setIsEditingAnswer(true);
+    };
+    const handleCloseEditAnswer = () => {
+        return setIsEditingAnswer(false);
     };
 
     return (
@@ -88,7 +97,6 @@ export function QuestionBox({
                         <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
                             {questionDate}
                         </Typography>
-
                         <Typography sx={{}}>{questionText}</Typography>
                         {reply && (
                             <div
@@ -120,6 +128,7 @@ export function QuestionBox({
                                                 width: '80px',
                                                 padding: '5px',
                                             }}
+                                            onClick={handleOpenEditAnswer}
                                         >
                                             Edit
                                         </Button>
@@ -144,6 +153,14 @@ export function QuestionBox({
                                     </div>
                                 )}
                             </div>
+                        )}
+                        {isOwner && isEditingAnswer && !isAuctionClosed && (
+                            <EditAnswerInput
+                                answerText={reply}
+                                handleClose={handleCloseEditAnswer}
+                                questionId={questionId}
+                                refetch={refetch}
+                            />
                         )}
                         {isOwner && !reply && !isReplying && (
                             <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
