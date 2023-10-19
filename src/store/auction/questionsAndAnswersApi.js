@@ -35,8 +35,8 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
 });
 
 export const {
-    useGetQuestionsAndAnswersByAuctionIdQuery, useDeleteResponseMutation,
+    useGetQuestionsAndAnswersByAuctionIdQuery,
+    useDeleteResponseMutation,
     usePostQuestionMutation,
     useAnswerQuestionMutation,
-} =
-    questionsAndAnswersApi;
+} = questionsAndAnswersApi;
