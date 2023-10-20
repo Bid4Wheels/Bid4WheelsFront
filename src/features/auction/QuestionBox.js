@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Avatar, Typography, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
+import { ResponseDeleteModal } from './ResponseDeleteModal';
 
 export function QuestionBox({
     question,
@@ -20,6 +21,9 @@ export function QuestionBox({
     const isOwner = ownerId === authenticatedUserId;
     const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
+    const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
+    const handleOpenDeleteResponseModal = () => setOpenDeleteResponseModal(true);
+    const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
 
     const handleReply = () => {
         setIsReplying(true);
@@ -110,9 +114,15 @@ export function QuestionBox({
                                                 marginTop: '10px',
                                                 padding: '5px',
                                             }}
+                                            onClick={handleOpenDeleteResponseModal}
                                         >
                                             Delete
                                         </Button>
+                                        <ResponseDeleteModal
+                                            open={openDeleteResponseModal}
+                                            onClose={handleCloseDeleteResponseModal}
+                                            questionId={id}
+                                        />
                                     </div>
                                 )}
                             </div>
