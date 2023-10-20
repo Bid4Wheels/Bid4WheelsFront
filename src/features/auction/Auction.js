@@ -22,6 +22,7 @@ import { TimeBar } from '../commons/TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 import { useNavigate } from 'react-router-dom';
+import { differenceInSeconds } from 'date-fns';
 
 export function Auction() {
     const nav = useNavigate();
@@ -29,7 +30,7 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch: refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
 
