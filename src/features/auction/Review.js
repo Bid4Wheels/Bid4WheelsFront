@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Typography, TextField } from '@mui/material';
+import { Box, Button, Typography, TextField, Rating } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
 import B4W_logo from '../commons/bid4wheels_logo.svg';
 import theme from '../../utils/desgin/Theme';
@@ -65,7 +65,7 @@ export function Review({ navigateToLogin, isBuyer }) {
                     alignItems: 'center',
                     width: '35%',
                     mt: '20px',
-                    mb: '20px',
+                    mb: '5px',
                 }}
             >
                 <TextField
@@ -76,6 +76,12 @@ export function Review({ navigateToLogin, isBuyer }) {
                     multiline
                     rowsMax={4}
                     inputProps={{ maxLength: 380 }}
+                />
+                <Rating
+                    name="half-rating"
+                    defaultValue={2.5}
+                    precision={0.5}
+                    sx={{ color: colors.water_green, mt: '20px', fontSize: '30px' }}
                 />
             </Box>
             <Box
