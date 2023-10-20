@@ -51,6 +51,7 @@ export function Auction() {
     });
 
     const mergedBids = [...parsedBids, ...topBids];
+    const mergedBidsSorted = mergedBids.sort((a, b) => b.amount - a.amount);
 
     const dispatch = useDispatch();
     useEffect(() => {
