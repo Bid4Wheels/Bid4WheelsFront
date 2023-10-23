@@ -37,7 +37,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                 position: 'relative',
             }}
         >
-            {isTimeBarShown && (
+            {isTimeBarShown ? (
                 <>
                     <Box
                         sx={{
@@ -63,6 +63,19 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                         } min left`}
                     </Typography>
                 </>
+            ) : (
+                <Typography
+                    sx={{
+                        position: 'absolute',
+                        left: '10px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        fontWeight: 400,
+                        fontSize: size,
+                    }}
+                >
+                    Finished
+                </Typography>
             )}
             {latestBid && (
                 <Typography
