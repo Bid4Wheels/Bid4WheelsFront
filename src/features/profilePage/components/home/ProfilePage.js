@@ -11,6 +11,7 @@ import {
     useGetAuctionsByUserIdQuery,
     useGetAuctionsByBidderIdQuery,
 } from '../../../../store/auction/auctionApi';
+import { UserReviews } from './UserReviews';
 
 export const ProfilePage = () => {
     const nav = useNavigate();
@@ -19,8 +20,21 @@ export const ProfilePage = () => {
     const currentUser = useSelector((state) => state.user);
     const userId = queryUserId || currentUser.userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
-    const handleHistoryClick = () => setHistoryIsClicked(true);
-    const handleReviewClick = () => setHistoryIsClicked(false);
+    const [reviewIsClicked, setReviewIsClicked] = useState(false);
+    const handleHistoryClick = () => {
+        setHistoryIsClicked(true);
+        setReviewIsClicked(false);
+    };
+    const handleReviewClick = () => {
+        setReviewIsClicked(true);
+        setHistoryIsClicked(false);
+    };
+    const [isFilterReviewsClicked, setIsFilterReviewsClicked] = useState(false);
+
+    const handleFilterReviewsClick = () => {
+        setIsFilterReviewsClicked(true);
+        // Add any other logic you need when the button is clicked
+    };
     const {
         data: biddedData,
         isLoading: isUserLoading,
@@ -94,44 +108,73 @@ export const ProfilePage = () => {
                     className="ButtonsContainer"
                     sx={{
                         display: 'flex',
-                        gap: 3,
-                        flexDirection: 'row',
-                        position: 'absolute',
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
                         right: '25px',
                     }}
                 >
-                    <Button
-                        variant={historyIsClicked ? 'contained' : 'outlined'}
-                        style={{
-                            backgroundColor: historyIsClicked ? colors.water_green : 'transparent',
-                            color: historyIsClicked ? 'white' : colors.water_green,
-                            borderColor: colors.water_green,
-                            boxShadow: theme.shadows[3],
-                            fontSize: theme.typography.Small.fontSize,
-                            fontWeight: 500,
-                            letterSpacing: '0.4px',
-                            textTransform: 'uppercase',
-                        }}
-                        onClick={handleHistoryClick}
-                    >
-                        History
-                    </Button>
-                    <Button
-                        variant={historyIsClicked ? 'outlined' : 'contained'}
-                        style={{
-                            backgroundColor: historyIsClicked ? 'transparent' : colors.water_green,
-                            color: historyIsClicked ? colors.water_green : 'white',
-                            borderColor: colors.water_green,
-                            boxShadow: theme.shadows[3],
-                            fontSize: theme.typography.Small.fontSize,
-                            fontWeight: 500,
-                            letterSpacing: '0.4px',
-                            textTransform: 'uppercase',
-                        }}
-                        onClick={handleReviewClick}
-                    >
-                        Review
-                    </Button>
+                    <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '10px' }}>
+                        <Button
+                            variant={historyIsClicked ? 'contained' : 'outlined'}
+                            style={{
+                                backgroundColor: historyIsClicked
+                                    ? colors.water_green
+                                    : 'transparent',
+                                color: historyIsClicked ? 'white' : colors.water_green,
+                                borderColor: colors.water_green,
+                                boxShadow: theme.shadows[3],
+                                fontSize: theme.typography.Small.fontSize,
+                                fontWeight: 500,
+                                letterSpacing: '0.4px',
+                                textTransform: 'uppercase',
+                                marginRight: '10px', // Add margin between History and Review buttons
+                            }}
+                            onClick={handleHistoryClick}
+                        >
+                            History
+                        </Button>
+                        <Button
+                            variant={reviewIsClicked ? 'contained' : 'outlined'}
+                            style={{
+                                backgroundColor: reviewIsClicked
+                                    ? colors.water_green
+                                    : 'transparent',
+                                color: reviewIsClicked ? 'white' : colors.water_green,
+                                borderColor: colors.water_green,
+                                boxShadow: theme.shadows[3],
+                                fontSize: theme.typography.Small.fontSize,
+                                fontWeight: 500,
+                                letterSpacing: '0.4px',
+                                textTransform: 'uppercase',
+                            }}
+                            onClick={handleReviewClick}
+                        >
+                            Review
+                        </Button>
+                    </div>
+                    {reviewIsClicked && (
+                        <Button
+                            variant={isFilterReviewsClicked ? 'contained' : 'outlined'} // Set variant based on isFilterReviewsClicked state
+                            style={{
+                                backgroundColor: isFilterReviewsClicked
+                                    ? colors.water_green
+                                    : 'transparent',
+                                color: isFilterReviewsClicked ? 'white' : colors.water_green,
+                                borderColor: colors.water_green,
+                                boxShadow: theme.shadows[3],
+                                fontSize: theme.typography.Small.fontSize,
+                                fontWeight: 500,
+                                letterSpacing: '0.4px',
+                                textTransform: 'uppercase',
+                                width: '100%',
+                            }}
+                            onClick={() => {
+                                setIsFilterReviewsClicked(!isFilterReviewsClicked); // Toggle the state on click
+                            }}
+                        >
+                            Filter Reviews
+                        </Button>
+                    )}
                 </Box>
             </Box>
             <Box
@@ -149,146 +192,153 @@ export const ProfilePage = () => {
                     Surname={userProfileData.surname}
                     refetchUserData={refetchUserData}
                 />
-                <Box
-                    className="AuctionLists"
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        paddingLeft: '5%',
-                        height: '100%',
-                        width: '60%',
-                    }}
-                >
-                    <Box
-                        className="BiddedAuctions"
-                        sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
-                    >
-                        <Typography
+                {historyIsClicked ? (
+                    <Box flex="1">
+                        <Box
+                            className="AuctionLists"
                             sx={{
-                                color: 'black',
-                                fontSize: theme.typography.Medium.fontSize,
-                                paddingLeft: '2.5%',
-                                fontWeight: 500,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                paddingLeft: '5%',
+                                height: '100%',
                             }}
                         >
-                            Bids made
-                        </Typography>
-                        {biddedAuctionsData.length === 0 ? (
-                            canEdit ? (
-                                <>
-                                    <Typography
-                                        sx={{
-                                            color: 'black',
-                                            fontSize: theme.typography.Small.fontSize,
-                                            paddingLeft: '2.5%',
-                                            paddingBottom: '5%',
-                                            fontWeight: 500,
-                                            alignSelf: 'center',
-                                            marginTop: '5%',
-                                        }}
-                                    >
-                                        You have not bid in any auctions
-                                    </Typography>
-                                </>
-                            ) : (
+                            <Box
+                                className="BiddedAuctions"
+                                sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
+                            >
                                 <Typography
                                     sx={{
                                         color: 'black',
-                                        fontSize: theme.typography.Small.fontSize,
+                                        fontSize: theme.typography.Medium.fontSize,
                                         paddingLeft: '2.5%',
                                         fontWeight: 500,
-                                        alignSelf: 'center',
-                                        marginTop: '5%',
                                     }}
                                 >
-                                    This user has not bid in any auctions yet
+                                    Bids made
                                 </Typography>
-                            )
-                        ) : (
-                            <>
-                                <AuctionHorizontalCardList
-                                    auctionList={biddedAuctionsData}
-                                ></AuctionHorizontalCardList>
-                            </>
-                        )}
-                    </Box>
-                    <Box
-                        className="PublishedAuctions"
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            height: '50%',
-                            marginTop: '130px',
-                        }}
-                    >
-                        <Typography
-                            sx={{
-                                color: 'black',
-                                fontSize: theme.typography.Medium.fontSize,
-                                paddingLeft: '2.5%',
-                                fontWeight: 500,
-                            }}
-                        >
-                            Published auctions
-                        </Typography>
-                        {userAuctionsData.length === 0 ? (
-                            canEdit ? (
-                                <>
-                                    <Typography
-                                        sx={{
-                                            color: 'black',
-                                            fontSize: theme.typography.Small.fontSize,
-                                            paddingLeft: '2.5%',
-                                            paddingBottom: '5%',
-                                            fontWeight: 500,
-                                            alignSelf: 'center',
-                                            marginTop: '5%',
-                                        }}
-                                    >
-                                        You have not created any auctions
-                                    </Typography>
-                                    <Button
-                                        style={{
-                                            backgroundColor: colors.water_green,
-                                            color: 'white',
-                                            textTransform: 'none',
-                                            padding: '20px',
-                                            width: 'fit-content',
-                                            height: 'fit-content',
-                                            marginLeft: '2.5%',
-                                            fontSize: theme.typography.Small.fontSize,
-                                            fontWeight: 500,
-                                            alignSelf: 'center',
-                                            marginTop: '5%',
-                                        }}
-                                        onClick={handleCreateAuctionClick}
-                                    >
-                                        Create new auction
-                                    </Button>
-                                </>
-                            ) : (
+                                {biddedAuctionsData.length === 0 ? (
+                                    canEdit ? (
+                                        <>
+                                            <Typography
+                                                sx={{
+                                                    color: 'black',
+                                                    fontSize: theme.typography.Small.fontSize,
+                                                    paddingLeft: '2.5%',
+                                                    paddingBottom: '5%',
+                                                    fontWeight: 500,
+                                                    alignSelf: 'center',
+                                                    marginTop: '5%',
+                                                }}
+                                            >
+                                                You have not bid in any auctions
+                                            </Typography>
+                                        </>
+                                    ) : (
+                                        <Typography
+                                            sx={{
+                                                color: 'black',
+                                                fontSize: theme.typography.Small.fontSize,
+                                                paddingLeft: '2.5%',
+                                                fontWeight: 500,
+                                                alignSelf: 'center',
+                                                marginTop: '5%',
+                                            }}
+                                        >
+                                            This user has not bid in any auctions yet
+                                        </Typography>
+                                    )
+                                ) : (
+                                    <>
+                                        <AuctionHorizontalCardList
+                                            auctionList={biddedAuctionsData}
+                                        ></AuctionHorizontalCardList>
+                                    </>
+                                )}
+                            </Box>
+                            <Box
+                                className="PublishedAuctions"
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    height: '50%',
+                                    marginTop: '130px',
+                                }}
+                            >
                                 <Typography
                                     sx={{
                                         color: 'black',
-                                        fontSize: theme.typography.Small.fontSize,
+                                        fontSize: theme.typography.Medium.fontSize,
                                         paddingLeft: '2.5%',
                                         fontWeight: 500,
-                                        alignSelf: 'center',
-                                        marginTop: '5%',
                                     }}
                                 >
-                                    This user has not created any auctions yet
+                                    Published auctions
                                 </Typography>
-                            )
-                        ) : (
-                            <>
-                                <AuctionHorizontalCardList
-                                    auctionList={userAuctionsData}
-                                ></AuctionHorizontalCardList>
-                            </>
-                        )}
+                                {userAuctionsData.length === 0 ? (
+                                    canEdit ? (
+                                        <>
+                                            <Typography
+                                                sx={{
+                                                    color: 'black',
+                                                    fontSize: theme.typography.Small.fontSize,
+                                                    paddingLeft: '2.5%',
+                                                    paddingBottom: '5%',
+                                                    fontWeight: 500,
+                                                    alignSelf: 'center',
+                                                    marginTop: '5%',
+                                                }}
+                                            >
+                                                You have not created any auctions
+                                            </Typography>
+                                            <Button
+                                                style={{
+                                                    backgroundColor: colors.water_green,
+                                                    color: 'white',
+                                                    textTransform: 'none',
+                                                    padding: '20px',
+                                                    width: 'fit-content',
+                                                    height: 'fit-content',
+                                                    marginLeft: '2.5%',
+                                                    fontSize: theme.typography.Small.fontSize,
+                                                    fontWeight: 500,
+                                                    alignSelf: 'center',
+                                                    marginTop: '5%',
+                                                }}
+                                                onClick={handleCreateAuctionClick}
+                                            >
+                                                Create new auction
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <Typography
+                                            sx={{
+                                                color: 'black',
+                                                fontSize: theme.typography.Small.fontSize,
+                                                paddingLeft: '2.5%',
+                                                fontWeight: 500,
+                                                alignSelf: 'center',
+                                                marginTop: '5%',
+                                            }}
+                                        >
+                                            This user has not created any auctions yet
+                                        </Typography>
+                                    )
+                                ) : (
+                                    <>
+                                        <AuctionHorizontalCardList
+                                            auctionList={userAuctionsData}
+                                        ></AuctionHorizontalCardList>
+                                    </>
+                                )}
+                            </Box>
+                        </Box>
                     </Box>
-                </Box>
+                ) : (
+                    <Box flex="1" sx={{ display: 'flex', ml: '60px', alignItems: 'center' }}>
+                        <UserReviews></UserReviews>
+                    </Box>
+                )}
             </Box>
         </Box>
     );
