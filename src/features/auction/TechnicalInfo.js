@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Typography, Box, Avatar } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 export function TechnicalInfo({ info, user }) {
     const { brand, color, gasType, basePrice, modelYear, milage, doorsAmount, gearShiftType } =
@@ -14,6 +15,15 @@ export function TechnicalInfo({ info, user }) {
         second: '2-digit',
         hour12: false,
     });
+    const navigate = useNavigate();
+
+    const handleUserPageRedirect = () => {
+        if (user) {
+            navigate(`/user/${user.id}`);
+        } else {
+            navigate(`*`);
+        }
+    };
 
     function capitalizeFirstLetter(word) {
         return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
@@ -43,7 +53,9 @@ export function TechnicalInfo({ info, user }) {
                                 sx={{
                                     width: '80px',
                                     height: '80px',
+                                    cursor: 'pointer',
                                 }}
+                                onClick={() => handleUserPageRedirect}
                             />
                         ) : (
                             <Avatar
@@ -64,7 +76,17 @@ export function TechnicalInfo({ info, user }) {
                             ml: '10px',
                         }}
                     >
-                        <Typography fontSize={'22px'} fontWeight={650}>
+                        <Typography
+                            fontSize={'22px'}
+                            fontWeight={650}
+                            sx={{
+                                cursor: 'pointer',
+                                '&:hover': {
+                                    textDecoration: 'underline',
+                                },
+                            }}
+                            onClick={() => handleUserPageRedirect}
+                        >
                             {user.name}
                         </Typography>
                         <Typography>User Rating: {user.rating}</Typography>
