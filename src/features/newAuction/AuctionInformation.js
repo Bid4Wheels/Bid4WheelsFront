@@ -66,6 +66,7 @@ const AuctionInformation = ({
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        placeholder={'Title'}
                         sx={{ width: '469px', input: { fontSize: '32px', fontWeight: 'Bold' } }}
                         defaultValue="Title"
                         variant="standard"
