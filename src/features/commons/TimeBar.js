@@ -12,16 +12,9 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
     const seconds = timeDifferenceInSeconds % 60;
     const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
     const totalSeconds = differenceInSeconds(new Date(deadline), new Date(creationDate));
+    const isTimeBarShown = timeElapsedInSeconds < totalSeconds;
     const percentage = Math.floor(((totalSeconds - timeElapsedInSeconds) / totalSeconds) * 100);
     const size = isSmall ? 'small' : '18px';
-
-    console.log('percentage', percentage);
-    console.log('timeElapsedInSeconds', timeElapsedInSeconds);
-    console.log('totalSeconds', totalSeconds);
-    console.log('timeDifferenceInSeconds', timeDifferenceInSeconds);
-    console.log('creation', creationDate);
-    console.log('deadline', deadline);
-    console.log('now', now);
 
     let color = colors.green;
     if (days < 1) {
@@ -44,29 +37,46 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                 position: 'relative',
             }}
         >
-            <Box
-                sx={{
-                    width: `${percentage}%`,
-                    height: '100%',
-                    backgroundColor: color,
-                    borderRadius: '20px',
-                    display: 'flex',
-                }}
-            ></Box>
-            <Typography
-                sx={{
-                    position: 'absolute',
-                    left: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontWeight: 400,
-                    fontSize: size,
-                }}
-            >
-                {`${days > 0 ? `${days} d, ` : ''}${hours} hr, ${minutes}:${
-                    seconds < 10 ? `0${seconds}` : seconds
-                } min left`}
-            </Typography>
+            {isTimeBarShown ? (
+                <>
+                    <Box
+                        sx={{
+                            width: `${percentage}%`,
+                            height: '100%',
+                            backgroundColor: color,
+                            borderRadius: '20px',
+                            display: 'flex',
+                        }}
+                    ></Box>
+                    <Typography
+                        sx={{
+                            position: 'absolute',
+                            left: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            fontWeight: 400,
+                            fontSize: size,
+                        }}
+                    >
+                        {`${days > 0 ? `${days} d, ` : ''}${hours} hr, ${minutes}:${
+                            seconds < 10 ? `0${seconds}` : seconds
+                        } min left`}
+                    </Typography>
+                </>
+            ) : (
+                <Typography
+                    sx={{
+                        position: 'absolute',
+                        left: '10px',
+                        top: '50%',
+                        transform: 'translateY(-50%)',
+                        fontWeight: 400,
+                        fontSize: size,
+                    }}
+                >
+                    Finished
+                </Typography>
+            )}
             {latestBid && (
                 <Typography
                     sx={{
