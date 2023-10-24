@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Grid,
     Typography,
@@ -22,7 +22,7 @@ import { TimeBar } from '../commons/TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
 import { useNavigate } from 'react-router-dom';
-import { differenceInSeconds } from 'date-fns';
+import JSConfetti from 'js-confetti';
 
 export function Auction() {
     const nav = useNavigate();
@@ -42,6 +42,14 @@ export function Auction() {
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
     const isDeadlineFinished = new Date(deadline) > new Date();
+    function showConfetti(emojis, confettiColors) {
+        const confetti = new JSConfetti();
+        confetti.addConfetti({
+            emojis: emojis,
+            confettiColors: confettiColors,
+            confettiNumber: emojis.length > 0 ? 100 : 500,
+        });
+    }
 
     if (isLoading) {
         return (
@@ -97,6 +105,19 @@ export function Auction() {
             </div>
         );
     }
+    useEffect(() => {
+        if (!isDeadlineFinished) {
+            if (auctionOwnerDTO.id === authenticatedUserId) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green, '#0000ff']);
+            } else if (myHighestBid === null) {
+                showConfetti([], ['#00ff00', '#ffffff']);
+            } else if (myHighestBid === data.topBids[0].amount) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green]);
+            } else {
+                showConfetti([], ['#000101', colors.grey, '#ffffff']);
+            }
+        }
+    }, [isDeadlineFinished]);
 
     return (
         <Grid
@@ -213,6 +234,7 @@ export function Auction() {
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
                                 isDeadlineFinished={isDeadlineFinished}
+                                refetch={refetch}
                             />
                         ) : (
                             <></>
