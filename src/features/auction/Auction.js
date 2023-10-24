@@ -61,7 +61,29 @@ export function Auction() {
         };
     }, [dispatch]);
     const isDeadlineFinished = new Date(deadline) > new Date();
+    const isAuctionOver = new Date(deadline) < new Date();
+    function showConfetti(emojis, confettiColors) {
+        const confetti = new JSConfetti();
+        confetti.addConfetti({
+            emojis: emojis,
+            confettiColors: confettiColors,
+            confettiNumber: emojis.length > 0 ? 100 : 500,
+        });
+    }
 
+    useEffect(() => {
+        if (isAuctionOver) {
+            if (auctionOwnerDTO.id === authenticatedUserId) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green, '#0000ff']);
+            } else if (myHighestBid === null) {
+                showConfetti([], ['#00ff00', '#ffffff']);
+            } else if (myHighestBid === data.topBids[0].amount) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green]);
+            } else {
+                showConfetti([], ['#000101', colors.grey, '#ffffff']);
+            }
+        }
+    }, [isAuctionOver]);
     if (isLoading) {
         return (
             <Grid
@@ -116,19 +138,6 @@ export function Auction() {
             </div>
         );
     }
-    useEffect(() => {
-        if (!isDeadlineFinished) {
-            if (auctionOwnerDTO.id === authenticatedUserId) {
-                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green, '#0000ff']);
-            } else if (myHighestBid === null) {
-                showConfetti([], ['#00ff00', '#ffffff']);
-            } else if (myHighestBid === data.topBids[0].amount) {
-                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green]);
-            } else {
-                showConfetti([], ['#000101', colors.grey, '#ffffff']);
-            }
-        }
-    }, [isDeadlineFinished]);
 
     return (
         <Grid
