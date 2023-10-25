@@ -145,12 +145,11 @@ export function QuestionBox({
                                 )}
                             </div>
                         )}
-                        {isOwner && isEditingAnswer && !isDeadlineFinished && (
+                        {isOwner && isEditingAnswer && isDeadlineFinished && (
                             <EditAnswerInput
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
                                 questionId={questionId}
-                                refetch={refetch}
                             />
                         )}
                         {isOwner && !reply && !isReplying && (
