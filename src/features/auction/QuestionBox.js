@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Typography, Button, TextField, Modal, Box } from '@mui/material';
+import { Avatar, Typography, Button, Modal, Box } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 import { EditAnswerInput } from './EditAnswerInput';
@@ -23,7 +23,6 @@ export function QuestionBox({
     const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
-    const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
@@ -45,13 +44,6 @@ export function QuestionBox({
         handleModalClose();
     };
 
-    const handleReply = () => {
-        setIsReplying(true);
-    };
-
-    const handleSendReply = () => {
-        setIsReplying(false);
-    };
     const handleOpenEditAnswer = () => {
         setIsEditingAnswer(true);
     };
@@ -153,12 +145,11 @@ export function QuestionBox({
                                 )}
                             </div>
                         )}
-                        {isOwner && isEditingAnswer && !isAuctionClosed && (
+                        {isOwner && isEditingAnswer && isDeadlineFinished && (
                             <EditAnswerInput
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
                                 questionId={questionId}
-                                refetch={refetch}
                             />
                         )}
                         {isOwner && !reply && !isReplying && (
@@ -181,6 +172,7 @@ export function QuestionBox({
                                         backgroundColor: '#fc2b2b',
                                     },
                                 }}
+                                onClick={handleModalOpen}
                             >
                                 Delete Question
                             </Button>
