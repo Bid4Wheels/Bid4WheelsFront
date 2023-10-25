@@ -1,16 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const errorSlice = createSlice({
-    name: 'error',
+    name: 'errorList',
     initialState: {
         errorList: [],
     },
     reducers: {
         addError: (state, action) => {
-            state.errorList.push(action.payload);
+            state.errorList.push({ id: new Date().getTime(), message: action.payload });
         },
         removeError: (state, action) => {
-            state.errorList = state.errorList.filter((error) => error !== action.payload);
+            state.errorList = state.errorList.filter((error) => error.id !== action.payload);
         },
     },
 });

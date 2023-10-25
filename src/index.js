@@ -18,10 +18,10 @@ const persistor = persistStore(store);
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <ErrorSnackbar />
             <ThemeProvider theme={theme}>
                 <PersistGate loading={null} persistor={persistor}>
                     <App />
+                    <ErrorSnackbar />
                 </PersistGate>
             </ThemeProvider>
         </Provider>

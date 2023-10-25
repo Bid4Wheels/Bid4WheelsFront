@@ -28,7 +28,7 @@ export function LogIn() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [logIn, { isLoading, isError }] = useLogInMutation();
+    const [logIn, { isLoading, isError, error }] = useLogInMutation();
 
     useEffect(() => {
         dispatch(removeUser());
@@ -38,10 +38,10 @@ export function LogIn() {
     }, []);
 
     useEffect(() => {
-        if (isError) {
-            dispatch(addError('Mensaje de error del backend'));
+        if (error) {
+            dispatch(addError(error.data));
         }
-    }, [isError]);
+    }, [error]);
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
