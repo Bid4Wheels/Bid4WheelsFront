@@ -181,6 +181,7 @@ export function QuestionBox({
                                         backgroundColor: '#fc2b2b',
                                     },
                                 }}
+                                onClick={handleModalOpen}
                             >
                                 Delete Question
                             </Button>
