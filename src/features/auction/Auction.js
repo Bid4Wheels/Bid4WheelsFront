@@ -51,6 +51,7 @@ export function Auction() {
     });
 
     const mergedBids = [...parsedBids, ...topBids];
+    const sortedBids = mergedBids.sort((a, b) => b.amount - a.amount);
 
     const dispatch = useDispatch();
     useEffect(() => {
@@ -251,7 +252,7 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        topBids={mergedBids}
+                        topBids={sortedBids}
                         myHighestBid={myHighestBid}
                         title={title}
                         auctionId={auctionId}
