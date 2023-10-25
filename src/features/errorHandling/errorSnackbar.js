@@ -8,8 +8,6 @@ const ErrorSnackbar = () => {
     const dispatch = useDispatch();
     const errorList = useSelector(errorSelector).errorList;
 
-    console.log(errorList);
-
     const handleClose = (id) => {
         dispatch(removeError(id));
     };
@@ -32,13 +30,22 @@ const ErrorSnackbar = () => {
                     >
                         <Alert
                             severity="error"
+                            sx={{
+                                borderRadius: '25px',
+                                alignContent: 'center',
+                                alignItems: 'center',
+                                '.MuiAlert-action': {
+                                    padding: '0px',
+                                    paddingLeft: '2px',
+                                },
+                            }}
                             action={
                                 <React.Fragment>
                                     <IconButton
                                         aria-label="close"
                                         color="inherit"
-                                        sx={{ p: 0.5 }}
                                         onClick={() => handleClose(error.id)}
+                                        sx={{ p: 0.5 }}
                                     >
                                         <CloseIcon />
                                     </IconButton>
