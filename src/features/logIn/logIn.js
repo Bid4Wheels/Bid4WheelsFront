@@ -39,6 +39,7 @@ export function LogIn() {
 
     useEffect(() => {
         if (error) {
+            console.log(error);
             dispatch(addError(error.data));
         }
     }, [error]);
