@@ -11,9 +11,11 @@ import { bidApi } from './auction/bidApi';
 import { authenticatedApi } from './mainApis/authenticatedApi';
 import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
+import errorReducer from './errorHandling/errorSlice';
 
 const reducers = combineReducers({
     user: userReducer,
+    errorList: errorReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,

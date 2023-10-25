@@ -20,6 +20,7 @@ import { removeUser, setUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { addError } from '../../store/errorHandling/errorSlice';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -35,6 +36,13 @@ export function LogIn() {
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
     }, []);
+
+    useEffect(() => {
+        if (isError) {
+            dispatch(addError('Mensaje de error del backend'));
+        }
+    }, [isError]);
+
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
