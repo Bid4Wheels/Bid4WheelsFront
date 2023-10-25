@@ -46,6 +46,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                             backgroundColor: color,
                             borderRadius: '20px',
                             display: 'flex',
+                            maxWidth: '100%',
                         }}
                     ></Box>
                     <Typography
