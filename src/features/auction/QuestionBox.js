@@ -13,7 +13,6 @@ export function QuestionBox({
     ownerId,
     auctionId,
     isDeadlineFinished,
-    refetch,
 }) {
     const questioner = question.question.user;
     const id = question.question.id;
@@ -159,7 +158,6 @@ export function QuestionBox({
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
                                 questionId={questionId}
-                                refetch={refetch}
                             />
                         )}
                         {isOwner && !reply && !isReplying && (

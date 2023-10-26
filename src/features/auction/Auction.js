@@ -254,7 +254,6 @@ export function Auction() {
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
                                 isDeadlineFinished={isDeadlineFinished}
-                                refetch={refetch}
                             />
                         ) : (
                             <></>

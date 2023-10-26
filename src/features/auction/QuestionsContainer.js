@@ -9,7 +9,6 @@ export function QuestionsContainer({
     authenticatedUserId,
     ownerId,
     isDeadlineFinished,
-    refetch,
 }) {
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
 
@@ -46,7 +45,6 @@ export function QuestionsContainer({
                     ownerId={ownerId}
                     auctionId={auctionId}
                     isDeadlineFinished={isDeadlineFinished}
-                    refetch={refetch}
                 />
             ))}
         </div>

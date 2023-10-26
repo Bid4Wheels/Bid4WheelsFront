@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Button, TextField } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { useAnswerQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
-export const EditAnswerInput = ({ answerText, handleClose, questionId, refetch }) => {
+export const EditAnswerInput = ({ answerText, handleClose, questionId }) => {
     const initialState = {
         answer: answerText || '',
     };
@@ -31,7 +31,6 @@ export const EditAnswerInput = ({ answerText, handleClose, questionId, refetch }
             },
         };
         await updateAnswer(body);
-        refetch();
         handleCloseEdit();
     }
     return (
