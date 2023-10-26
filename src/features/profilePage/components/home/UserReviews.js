@@ -52,17 +52,19 @@ export const UserReviews = () => {
 
     return (
         <Box>
-            {displayedReviews.map((review, index) => (
-                <ReviewCard
-                    key={index}
-                    userImage={review.userImage}
-                    userName={review.userName}
-                    reviewValue={review.reviewValue}
-                    reviewOrigin={review.reviewOrigin}
-                    review={review.review}
-                    reviewDate={review.reviewDate}
-                />
-            ))}
+            <Box height="500px">
+                {displayedReviews.map((review, index) => (
+                    <ReviewCard
+                        key={index}
+                        userImage={review.userImage}
+                        userName={review.userName}
+                        reviewValue={review.reviewValue}
+                        reviewOrigin={review.reviewOrigin}
+                        review={review.review}
+                        reviewDate={review.reviewDate}
+                    />
+                ))}
+            </Box>
             <Box display="flex" justifyContent="center" alignItems="flex-end" marginTop="20px">
                 <Pagination
                     count={Math.ceil(reviews.length / itemsPerPage)}

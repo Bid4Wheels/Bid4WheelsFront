@@ -11,7 +11,7 @@ export const ReviewCard = ({
     reviewDate,
 }) => {
     return (
-        <Box sx={{ display: 'flex', flex: '1' }}>
+        <Box sx={{ display: 'flex', flex: '1', maxHeight: '200px' }}>
             <Box
                 style={{
                     display: 'flex',
