@@ -53,8 +53,8 @@ export const ProfileCard = ({
                     color: 'black',
                     fontSize: theme.typography.XxLarge.fontSize,
                     fontWeight: 500,
-                    lineHeight: '26px',
                     letterSpacing: 0.46,
+                    textAlign: 'center',
                     marginTop: 2,
                     marginBottom: 2,
                 }}
@@ -154,7 +154,7 @@ export const ProfileCard = ({
                         style={{
                             height: '50px',
                             backgroundColor: '#FC4141',
-                            marginTop: '5%',
+                            marginTop: '1%',
                         }}
                         onClick={handleOpenDeleteModal}
                     >

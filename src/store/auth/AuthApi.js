@@ -1,16 +1,14 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseUrl } from '../../features/commons/Constants';
+import { unauthenticatedApi } from '../mainApis/unauthenticatedApi';
 
-export const authApi = createApi({
+const baseUrl = '/auth';
+
+export const authApi = unauthenticatedApi.injectEndpoints({
     reducerPath: 'authApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${baseUrl}/auth`,
-    }),
 
     endpoints: (builder) => ({
         logIn: builder.mutation({
             query: ({ email, password }) => ({
-                url: '/login',
+                url: `${baseUrl}/login`,
                 method: 'POST',
                 body: { email, password },
                 headers: {
@@ -19,6 +17,7 @@ export const authApi = createApi({
             }),
         }),
     }),
+    overrideExisting: false,
 });
 
 export const { useLogInMutation } = authApi;

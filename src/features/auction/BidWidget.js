@@ -1,12 +1,33 @@
-import { Box, Typography, Modal, Tooltip, TextField, Button } from '@mui/material';
+import {
+    Box,
+    Typography,
+    Modal,
+    Tooltip,
+    TextField,
+    Button,
+    CircularProgress,
+    Alert,
+} from '@mui/material';
 import React, { useState } from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import PlaceBidImg from '../commons/PlaceBidImg.png';
 import colors from '../../utils/desgin/Colors';
+import { useBidMutation } from '../../store/auction/bidApi';
 
-export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }) {
+export function BidWidget({
+    auctionData,
+    userId,
+    ownerId,
+    topBids,
+    title,
+    myHighestBid,
+    auctionId,
+    reload,
+    isDeadlineFinished,
+}) {
     const [myBid, setMyBid] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [bid, { isLoading, error }] = useBidMutation();
 
     const handleBidChange = (event) => {
         event.preventDefault();
@@ -18,11 +39,13 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
         !isNaN(parseInt(myBid)) && parseInt(myBid) >= auctionData.basePrice && checkHighestBid();
 
     function checkHighestBid() {
-        return highestBidDTO.amount ? myBid > highestBidDTO.amount : true;
+        return topBids.length > 0 ? myBid > topBids[0].amount : true;
     }
 
     const handlePlaceBid = () => {
-        console.log('Bid placed: ' + myBid); // Upload bid to backend when the functionality is available
+        bid({ amount: myBid, userId: userId, auctionId: auctionId });
+        setMyBid('');
+        handleModalClose();
     };
 
     const handleModalClose = () => {
@@ -34,7 +57,53 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
     };
 
     const isOwner = userId === ownerId;
-    console.log(isOwner);
+
+    function topBidsMap() {
+        if (topBids.length > 0) {
+            const top5Bids = topBids.slice(0, 5);
+            return top5Bids.map((bid, index) => (
+                <Box
+                    key={index}
+                    style={{
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 1fr',
+                        justifyContent: 'space-between',
+                        width: '90%',
+                        color: index == 0 ? colors.water_green : 'black',
+                        marginBottom: '5px',
+                    }}
+                    justifyItems="space-between"
+                >
+                    <Typography
+                        variant="SemiSmall"
+                        style={{
+                            textAlign: 'left',
+                            color: 'inherit',
+                            opacity: index == 4 ? '50%' : '100%',
+                        }}
+                    >
+                        {bid.userName}
+                    </Typography>
+                    <Typography
+                        variant="SemiSmall"
+                        style={{
+                            textAlign: 'right',
+                            color: 'inherit',
+                            opacity: index == 4 ? '50%' : '100%',
+                        }}
+                    >
+                        ${bid.amount}
+                    </Typography>
+                </Box>
+            ));
+        } else {
+            return (
+                <Typography variant="SemiSmall" style={{ textAlign: 'center' }}>
+                    No bids yet
+                </Typography>
+            );
+        }
+    }
 
     return (
         <Box
@@ -67,109 +136,83 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                 Highest Bid:
             </Typography>
             <Typography variant="Medium">
-                {highestBidDTO && highestBidDTO.amount
-                    ? '$' + highestBidDTO.amount
-                    : 'No one has bid yet'}
+                {topBids.length > 0 ? '$' + topBids[0].amount : 'No one has bid yet'}
             </Typography>
+
             {isOwner ? (
                 <>
                     <Typography variant="SemiSmall" fontWeight={700} marginY="15px">
                         Last Bids
                     </Typography>
-                    {/* Map top 5 highest bids, next is a placeholder */}
-                    {[
-                        { name: 'Chino', amount: '999999' },
-                        { name: 'Testing', amount: '12520' },
-                        { name: 'Alan', amount: '1001' },
-                        { name: 'Test', amount: '1000' },
-                        { name: 'Lucho', amount: '3' },
-                        // Add more bids here
-                    ].map((bid, index) => (
-                        <Box
-                            key={index}
-                            style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr 1fr',
-                                justifyContent: 'space-between',
-                                width: '90%',
-                                color: index == 0 ? colors.water_green : 'black',
-                                marginBottom: '5px',
-                            }}
-                            justifyItems="space-between"
-                        >
-                            <Typography
-                                variant="SemiSmall"
-                                style={{
-                                    textAlign: 'left',
-                                    color: 'inherit',
-                                    opacity: index == 4 ? '50%' : '100%',
-                                }}
-                            >
-                                {bid.name}
-                            </Typography>
-                            <Typography
-                                variant="SemiSmall"
-                                style={{
-                                    textAlign: 'right',
-                                    color: 'inherit',
-                                    opacity: index == 4 ? '50%' : '100%',
-                                }}
-                            >
-                                ${bid.amount}
-                            </Typography>
-                        </Box>
-                    ))}
+                    {topBidsMap()}
                 </>
             ) : (
                 <>
-                    <Typography variant="SemiSmall" marginY="30px">
-                        {/*eslint-disable-next-line react/no-unescaped-entities*/}
-                        You haven't made an offer yet!
-                    </Typography>
-                    <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
-                        Make your offer
-                    </Typography>
-                    <TextField
-                        variant="standard"
-                        inputProps={{
-                            maxLength: 200,
-                            type: 'text',
-                            style: { textAlign: 'center' },
-                        }}
-                        width="100%"
-                        color="water_green"
-                        value={myBid}
-                        onChange={handleBidChange}
-                        placeholder={`Starting at $${auctionData.basePrice}`}
-                    />
-                    <Tooltip
-                        title={
-                            isBidValid
-                                ? ''
-                                : 'Bid amount must be greater than both starting price and highest bid'
-                        }
-                    >
-                        <Box
-                            sx={{
-                                maxWidth: '120px',
-                                width: '70%',
-                                marginY: '30px',
-                                height: '30px',
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                color="water_green"
-                                sx={{
-                                    maxWidth: '150px',
+                    {isDeadlineFinished ? (
+                        <>
+                            <Typography variant="SemiSmall" marginTop="30px" fontWeight={700}>
+                                Your Highest Bid:
+                            </Typography>
+                            <Typography variant="SemiSmall" marginBottom="30px">
+                                {myHighestBid && myHighestBid != null
+                                    ? '$' + myHighestBid
+                                    : "You haven't made an offer yet!"}
+                            </Typography>
+                            <Typography variant="SemiSmall" fontWeight={700} marginBottom="15px">
+                                Make your offer
+                            </Typography>
+                            <TextField
+                                variant="standard"
+                                inputProps={{
+                                    maxLength: 200,
+                                    type: 'text',
+                                    style: { textAlign: 'center' },
                                 }}
-                                onClick={handleModalOpen}
-                                disabled={!isBidValid}
+                                width="100%"
+                                color="water_green"
+                                value={myBid}
+                                onChange={handleBidChange}
+                                placeholder={
+                                    topBids.length > 0
+                                        ? `Starting at $${topBids[0].amount}`
+                                        : `Starting at $${auctionData.basePrice}`
+                                }
+                            />
+                            <Tooltip
+                                title={
+                                    isBidValid
+                                        ? ''
+                                        : 'Bid amount must be greater than both starting price and highest bid'
+                                }
                             >
-                                PLACE BID
-                            </Button>
-                        </Box>
-                    </Tooltip>
+                                <Box
+                                    sx={{
+                                        maxWidth: '120px',
+                                        width: '70%',
+                                        marginY: '30px',
+                                        height: '30px',
+                                    }}
+                                >
+                                    <Button
+                                        variant="contained"
+                                        color="water_green"
+                                        sx={{
+                                            maxWidth: '150px',
+                                        }}
+                                        onClick={handleModalOpen}
+                                        disabled={!isBidValid}
+                                    >
+                                        PLACE BID
+                                    </Button>
+                                </Box>
+                            </Tooltip>
+                            {error && (
+                                <Alert severity="error">
+                                    There was an error while bidding. Please, try again
+                                </Alert>
+                            )}
+                        </>
+                    ) : null}
                 </>
             )}
             <Modal
@@ -243,6 +286,19 @@ export function BidWidget({ auctionData, userId, ownerId, highestBidDTO, title }
                             onClick={handlePlaceBid}
                         >
                             Bid
+                            {isLoading && (
+                                <CircularProgress
+                                    size={24}
+                                    sx={{
+                                        color: 'inherit',
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        marginTop: '-12px',
+                                        marginLeft: '-12px',
+                                    }}
+                                />
+                            )}
                         </Button>
                     </Box>
                 </Box>

@@ -55,10 +55,10 @@ const TechnicalInformation = ({
                         display: 'flex',
                         justifyContent: 'space-between',
                         alignItems: 'center',
-                        marginTop: '50px',
                         marginLeft: '80px',
                         flexWrap: 'wrap',
                         width: '100%',
+                        marginTop: '40px',
                     }}
                 >
                     <Box
@@ -106,7 +106,7 @@ const TechnicalInformation = ({
                                 options={colorOptions}
                                 sx={{
                                     width: 275,
-                                    marginTop: '60px',
+                                    marginTop: '20px',
                                     '&.Mui-focused .MuiInputLabel-outlined': {
                                         color: colors.water_green,
                                     },
@@ -128,7 +128,7 @@ const TechnicalInformation = ({
                                 options={fuelTypeOptions}
                                 sx={{
                                     width: 275,
-                                    marginTop: '60px',
+                                    marginTop: '20px',
                                     '&.Mui-focused .MuiInputLabel-outlined': {
                                         color: colors.water_green,
                                     },
@@ -146,7 +146,7 @@ const TechnicalInformation = ({
                                 color="water_green"
                             />
 
-                            <FormControl sx={{ marginTop: '50px' }}>
+                            <FormControl sx={{ marginTop: '20px' }}>
                                 <FormLabel
                                     id="demo-row-radio-buttons-group-label"
                                     sx={{ color: 'inherit', fontWeight: 'bold' }}
@@ -221,7 +221,7 @@ const TechnicalInformation = ({
                                     />
                                 </RadioGroup>
                             </FormControl>
-                            <FormControl sx={{ marginTop: '50px' }}>
+                            <FormControl sx={{ marginTop: '20px' }}>
                                 <FormLabel
                                     id="demo-row-radio-buttons-group-label"
                                     sx={{ color: 'inherit', fontWeight: 'bold' }}
@@ -346,7 +346,6 @@ const TechnicalInformation = ({
                             display: 'flex',
                             flexDirection: 'row',
                             width: '50%',
-                            height: '625px',
                             alignContent: 'center',
                             justifyContent: 'center',
                         }}
@@ -358,7 +357,6 @@ const TechnicalInformation = ({
                             display: 'flex',
                             flexDirection: 'column',
                             width: '50%',
-                            marginBottom: '60px',
                         }}
                     >
                         <Box style={{ display: 'flex', alignItems: 'center' }}>
@@ -403,6 +401,7 @@ const TechnicalInformation = ({
                         justifyContent: 'center',
                         alignItems: 'center',
                         marginBottom: '20px',
+                        marginTop: '30px',
                     }}
                 >
                     <Button

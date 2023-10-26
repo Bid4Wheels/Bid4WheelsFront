@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Grid,
     Typography,
@@ -11,12 +11,6 @@ import {
     AlertTitle,
 } from '@mui/material';
 import { useParams } from 'react-router';
-import {
-    differenceInHours,
-    differenceInDays,
-    differenceInMinutes,
-    differenceInSeconds,
-} from 'date-fns';
 import { TechnicalInfo } from './TechnicalInfo';
 import { ImageCarousel } from './ImageCarousel';
 import colors from '../../utils/desgin/Colors';
@@ -24,38 +18,51 @@ import { useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { useSelector } from 'react-redux';
 import { DangerZone } from './DeleteWidget';
 import { BidWidget } from './BidWidget';
+import { TimeBar } from '../commons/TimeBar';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
+import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { differenceInSeconds } from 'date-fns';
 
 export function Auction() {
+    const nav = useNavigate();
     const auctionId = useParams().auctionId;
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch: refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
-
     const title = data?.title || '';
     const description = data?.description || '';
     const deadline = data?.deadline || '';
     const auctionOwnerDTO = data?.auctionOwnerDTO || {};
-    const auctionHigestBidDTO = data?.auctionHighestBidDTO || {};
+    const creationDate = data?.createdAt || '';
+    const topBids = data?.topBids || [];
+    const myHighestBid = data?.myHighestBid || null;
 
-    const now = new Date();
-    const timeDifferenceInHours = differenceInHours(new Date(deadline), now);
-    const timeDifferenceInMinutes = differenceInMinutes(new Date(deadline), now);
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
-    const timeDifferenceInDays = differenceInDays(new Date(deadline), now);
+    const newBids = useSelector((state) => state.stomp.bids);
+    const parsedBids = newBids.map((bid) => {
+        const amount = JSON.parse(bid).amount;
+        const userName = `${JSON.parse(bid).firstName} ${JSON.parse(bid).lastName}`;
+        return { amount, userName };
+    });
 
-    let timerColor = colors.green;
-    if (timeDifferenceInDays < 0) {
-        timerColor = colors.grey;
-    } else if (timeDifferenceInDays < 1) {
-        timerColor = colors.yellow;
-        if (timeDifferenceInHours < 1) {
-            timerColor = colors.red;
-        }
-    }
+    const mergedBids = [...parsedBids, ...topBids];
+    const sortedBids = mergedBids.sort((a, b) => b.amount - a.amount);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(connectStomp(auctionId));
+
+        return () => {
+            dispatch(disconnectStomp());
+        };
+    }, [dispatch]);
+    const isAuctionClosed = differenceInSeconds(new Date(deadline), new Date()) < 0;
+    const isDeadlineFinished = new Date(deadline) > new Date();
 
     if (isLoading) {
         return (
@@ -107,6 +114,7 @@ export function Auction() {
                     <AlertTitle>Error</AlertTitle>
                     <strong>{error.data}</strong>
                 </Alert>
+                {nav('*')}
             </div>
         );
     }
@@ -139,22 +147,11 @@ export function Auction() {
                 </Box>
                 <Box
                     sx={{
-                        backgroundColor: timerColor,
-                        borderRadius: '5px',
-                        padding: '6px 15px',
-                        width: '95%',
+                        height: '32.5px',
+                        paddingTop: '0.5rem',
                     }}
                 >
-                    <Typography sx={{ fontWeight: 400, fontSize: '18px' }}>
-                        Time Left: {timeDifferenceInHours}:
-                        {timeDifferenceInMinutes < 10
-                            ? `0${timeDifferenceInMinutes}`
-                            : `${timeDifferenceInMinutes % 60}`}
-                        :
-                        {timeDifferenceInSeconds < 10
-                            ? `0${timeDifferenceInSeconds % 60}`
-                            : `${timeDifferenceInSeconds % 60}`}
-                    </Typography>
+                    <TimeBar creationDate={creationDate} deadline={deadline} />
                 </Box>
                 <Grid
                     container
@@ -165,7 +162,7 @@ export function Auction() {
                     {data.tags.map((tag) => (
                         <Grid item key={tag.tagName}>
                             <Chip
-                                label={tag.tagName}
+                                label={capitalizeFirstLetter(tag.tagName)}
                                 size="medium"
                                 sx={{
                                     backgroundColor: colors.water_green,
@@ -236,6 +233,7 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
+                                isDeadlineFinished={isDeadlineFinished}
                             />
                         ) : (
                             <></>
@@ -244,7 +242,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {authenticatedUserId === auctionOwnerDTO.id ? (
+                {authenticatedUserId === auctionOwnerDTO.id && isDeadlineFinished ? (
                     <DangerZone title={title} auctionId={auctionId} />
                 ) : (
                     <></>
@@ -254,8 +252,12 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        highestBidDTO={auctionHigestBidDTO}
+                        topBids={sortedBids}
+                        myHighestBid={myHighestBid}
                         title={title}
+                        auctionId={auctionId}
+                        reload={refetch}
+                        isDeadlineFinished={isDeadlineFinished}
                     />
                 }
             </Grid>

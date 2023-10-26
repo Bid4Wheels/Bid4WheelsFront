@@ -19,6 +19,12 @@ import { validatePassword } from '../../utils/validationFunctions';
 import { useChangePasswordMutation } from '../../store/user/UserApi';
 import { useSelector } from 'react-redux';
 import { userSelector } from '../../store/user/UserSlice';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { removeUser } from '../../store/user/UserSlice';
+import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
+import { auctionApi } from '../../store/auction/auctionApi';
+import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { useDispatch } from 'react-redux';
 
 function ChangePassword() {
     const [showNewPassword, setShowNewPassword] = useState(false);
@@ -39,6 +45,10 @@ function ChangePassword() {
         setToolTipOpen(false);
     };
 
+    const dispatch = useDispatch();
+
+    const navigate = useNavigate();
+
     const [changePassword] = useChangePasswordMutation();
 
     const userData = useSelector(userSelector);
@@ -58,11 +68,22 @@ function ChangePassword() {
         try {
             await changePassword(payload).unwrap();
             console.log('Password changed successfully');
+            dispatch(removeUser());
+            dispatch(authenticatedUserApi.util.resetApiState());
+            dispatch(auctionApi.util.resetApiState());
+            dispatch(tagsApiSlice.util.resetApiState());
+            navigate('/login');
+            navigate('/login');
         } catch (err) {
             console.error(err);
         }
     };
-
+    if (userData.validatedCode === false && userData.token) {
+        return <Navigate to={'/'} replace />;
+    }
+    if (userData.validatedCode === false) {
+        return <Navigate to={'/login'} replace />;
+    }
     return (
         <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
             <Grid item xs={12} sm={5} style={{ padding: '0 20px' }}>

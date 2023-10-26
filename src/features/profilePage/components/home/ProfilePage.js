@@ -53,6 +53,8 @@ export const ProfilePage = () => {
                 phone: userData.phoneNumber,
                 imageUrl: userData.imgURL,
             });
+        } else if (isError) {
+            nav('*');
         }
     }, [userData, isLoading, isError]);
 
@@ -85,6 +87,7 @@ export const ProfilePage = () => {
                     display: 'flex',
                     justifyContent: 'flex-end',
                     width: '100%',
+                    height: '5%',
                 }}
             >
                 <Box

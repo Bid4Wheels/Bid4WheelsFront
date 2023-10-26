@@ -1,24 +1,54 @@
 import React, { useState } from 'react';
-import { Avatar, Typography, Button, TextField } from '@mui/material';
+import { Avatar, Typography, Button, Modal, Box } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
+import { EditAnswerInput } from './EditAnswerInput';
+import CloseIcon from '@mui/icons-material/Close';
+import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+import { ResponseDeleteModal } from './ResponseDeleteModal';
 
-export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId }) {
-    const questioner = question.questionerDTO;
-    const reply = question.answer;
-    const questionText = question.question;
-    const date = question.date;
+export function QuestionBox({
+    question,
+    authenticatedUserId,
+    ownerId,
+    auctionId,
+    isDeadlineFinished,
+}) {
+    const questioner = question.question.user;
+    const id = question.question.id;
+    const reply = question.answer.answer;
+    const questionText = question.question.question;
+    const questionDate = question.question.timeOfQuestion;
+    const answerDate = question.answer.timeOfAnswer;
+    const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
-    const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
+    const [isEditingAnswer, setIsEditingAnswer] = useState(false);
+    const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
+    const handleOpenDeleteResponseModal = () => setOpenDeleteResponseModal(true);
+    const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [deleteQuestion, { isSuccess }] = useDeleteQuestionMutation();
 
-    const handleReply = () => {
-        setIsReplying(true);
+    const handleModalOpen = () => {
+        setIsModalOpen(true);
     };
 
-    const handleSendReply = () => {
-        setIsReplying(false);
+    const handleModalClose = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleDelete = () => {
+        deleteQuestion(questionId);
+        handleModalClose();
+    };
+
+    const handleOpenEditAnswer = () => {
+        setIsEditingAnswer(true);
+    };
+    const handleCloseEditAnswer = () => {
+        return setIsEditingAnswer(false);
     };
 
     return (
@@ -33,13 +63,13 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <div style={{ display: 'flex' }}>
                     <Avatar
-                        src={questioner.picture === 'default' ? null : questioner.picture}
+                        src={questioner.imgURL === 'default' ? null : questioner.imgURL}
                         sx={{ width: 65, height: 65, mr: '10px', mt: '10px' }}
                     ></Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
                             <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
-                                {questioner.username}
+                                {questioner.name + ' ' + questioner.lastName}
                             </Typography>
 
                             {isQuestioner && (
@@ -55,8 +85,9 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 </Typography>
                             )}
                         </div>
-                        <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>{date}</Typography>
-
+                        <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
+                            {questionDate}
+                        </Typography>
                         <Typography sx={{}}>{questionText}</Typography>
                         {reply && (
                             <div
@@ -70,10 +101,13 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                 <Typography sx={{ color: colors.water_green, fontWeight: 650 }}>
                                     Reply from owner:
                                 </Typography>
+                                <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
+                                    {answerDate}
+                                </Typography>
                                 <Typography sx={{ fontSize: '14px', color: '#8c8c8c' }}>
                                     {reply}
                                 </Typography>
-                                {isOwner && (
+                                {isOwner && isDeadlineFinished && (
                                     <div>
                                         <Button
                                             variant="contained"
@@ -85,6 +119,7 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                                 width: '80px',
                                                 padding: '5px',
                                             }}
+                                            onClick={handleOpenEditAnswer}
                                         >
                                             Edit
                                         </Button>
@@ -97,17 +132,34 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                                 marginTop: '10px',
                                                 padding: '5px',
                                             }}
+                                            onClick={handleOpenDeleteResponseModal}
                                         >
                                             Delete
                                         </Button>
+                                        <ResponseDeleteModal
+                                            open={openDeleteResponseModal}
+                                            onClose={handleCloseDeleteResponseModal}
+                                            questionId={id}
+                                        />
                                     </div>
                                 )}
                             </div>
                         )}
-                        {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} />
+                        {isOwner && isEditingAnswer && isDeadlineFinished && (
+                            <EditAnswerInput
+                                answerText={reply}
+                                handleClose={handleCloseEditAnswer}
+                                questionId={questionId}
+                            />
                         )}
-                        {isQuestioner && !reply && (
+                        {isOwner && !reply && !isReplying && (
+                            <ReplyInput
+                                authenticatedUserId={authenticatedUserId}
+                                id={id}
+                                isDeadlineFinished={isDeadlineFinished}
+                            />
+                        )}
+                        {isQuestioner && !reply && isDeadlineFinished && (
                             <Button
                                 variant="contained"
                                 sx={{
@@ -120,6 +172,7 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                                         backgroundColor: '#fc2b2b',
                                     },
                                 }}
+                                onClick={handleModalOpen}
                             >
                                 Delete Question
                             </Button>
@@ -127,6 +180,71 @@ export function QuestionBox({ question, authenticatedUserId, ownerId, auctionId 
                     </div>
                 </div>
             </div>
+            <Modal
+                open={isModalOpen}
+                onClose={handleModalClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Box
+                    sx={{
+                        borderRadius: '10px',
+                        backgroundColor: '#fff',
+                        width: '400px',
+                        height: '200px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <CloseIcon
+                        sx={{
+                            opacity: '50%',
+                            position: 'relative',
+                            left: '180px',
+                            cursor: 'pointer',
+                            mt: '7px',
+                            '&:hover': {
+                                opacity: '100%',
+                            },
+                        }}
+                        onClick={handleModalClose}
+                    />
+                    <Typography sx={{ fontSize: '25px', fontWeight: 660 }}>
+                        Delete Question?
+                    </Typography>
+                    <Typography sx={{ fontSize: '15px' }}>
+                        Deleting the question will also delete the response
+                    </Typography>
+                    <Box sx={{ mb: '30px' }}>
+                        <Button
+                            variant="contained"
+                            onClick={handleModalClose}
+                            style={{ backgroundColor: 'grey', marginRight: '10px' }}
+                        >
+                            Go back
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                backgroundColor: '#FC4141',
+                                '&:hover': {
+                                    backgroundColor: '#fc2b2b',
+                                },
+                            }}
+                            onClick={handleDelete}
+                        >
+                            Delete
+                        </Button>
+                    </Box>
+                </Box>
+            </Modal>
         </div>
     );
 }
