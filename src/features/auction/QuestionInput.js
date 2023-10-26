@@ -2,8 +2,6 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { usePostQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
-import { is } from 'date-fns/locale';
-import { set } from 'date-fns';
 
 export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
@@ -62,8 +60,8 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
 
             <Button
                 variant="contained"
-                style={{
-                    backgroundColor: isSendButtonDisabled() ? 'grey' : colors.water_green,
+                sx={{
+                    backgroundColor: colors.water_green,
                     color: 'white',
                     width: '15%',
                     marginTop: '10px',

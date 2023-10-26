@@ -75,15 +75,15 @@ export function ReplyInput({ authenticatedUserId, id }) {
                         }}
                         helperText={
                             isSendButtonDisabled()
-                                ? 'Question must be between 10 and 400 characters'
+                                ? 'Answer must be between 10 and 400 characters'
                                 : ''
                         }
                     />
 
                     <Button
                         variant="contained"
-                        style={{
-                            backgroundColor: isSendButtonDisabled() ? 'grey' : colors.water_green,
+                        sx={{
+                            backgroundColor: colors.water_green,
                             color: 'white',
                             width: '80px',
                             marginTop: '15px',
