@@ -4,7 +4,12 @@ import { QuestionBox } from './QuestionBox';
 import { useGetQuestionsAndAnswersByAuctionIdQuery } from '../../store/auction/questionsAndAnswersApi';
 import { CircularProgress, Grid } from '@mui/material';
 
-export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId, isAuctionClosed }) {
+export function QuestionsContainer({
+    auctionId,
+    authenticatedUserId,
+    ownerId,
+    isDeadlineFinished,
+}) {
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
 
     if (isLoading) {
@@ -24,11 +29,13 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId, is
                 width: '100%',
             }}
         >
-            <QuestionInput
-                auctionId={auctionId}
-                authenticatedUserId={authenticatedUserId}
-                ownerId={ownerId}
-            />
+            {isDeadlineFinished ? (
+                <QuestionInput
+                    auctionId={auctionId}
+                    authenticatedUserId={authenticatedUserId}
+                    ownerId={ownerId}
+                />
+            ) : null}
 
             {data.map((question, index) => (
                 <QuestionBox
@@ -37,7 +44,7 @@ export function QuestionsContainer({ auctionId, authenticatedUserId, ownerId, is
                     authenticatedUserId={authenticatedUserId}
                     ownerId={ownerId}
                     auctionId={auctionId}
-                    isAuctionClosed={isAuctionClosed}
+                    isDeadlineFinished={isDeadlineFinished}
                 />
             ))}
         </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Grid,
     Typography,
@@ -21,6 +21,8 @@ import { BidWidget } from './BidWidget';
 import { TimeBar } from '../commons/TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 import { QuestionsContainer } from './QuestionsContainer';
+import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { differenceInSeconds } from 'date-fns';
 
@@ -30,10 +32,9 @@ export function Auction() {
     const authenticatedUserId = useSelector((state) => state.user.userId);
     const [window, setWindow] = useState('info');
 
-    const { data, error, isLoading, refetch } = useGetAuctionByIdQuery(auctionId);
+    const { data, error, isLoading, refetch: refetch } = useGetAuctionByIdQuery(auctionId);
 
     const images = data?.auctionImageUrl.filter((image) => image !== 'default') || [];
-
     const title = data?.title || '';
     const description = data?.description || '';
     const deadline = data?.deadline || '';
@@ -42,7 +43,26 @@ export function Auction() {
     const topBids = data?.topBids || [];
     const myHighestBid = data?.myHighestBid || null;
 
+    const newBids = useSelector((state) => state.stomp.bids);
+    const parsedBids = newBids.map((bid) => {
+        const amount = JSON.parse(bid).amount;
+        const userName = `${JSON.parse(bid).firstName} ${JSON.parse(bid).lastName}`;
+        return { amount, userName };
+    });
+
+    const mergedBids = [...parsedBids, ...topBids];
+    const sortedBids = mergedBids.sort((a, b) => b.amount - a.amount);
+
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(connectStomp(auctionId));
+
+        return () => {
+            dispatch(disconnectStomp());
+        };
+    }, [dispatch]);
     const isAuctionClosed = differenceInSeconds(new Date(deadline), new Date()) < 0;
+    const isDeadlineFinished = new Date(deadline) > new Date();
 
     if (isLoading) {
         return (
@@ -213,7 +233,7 @@ export function Auction() {
                                 auctionId={auctionId}
                                 authenticatedUserId={authenticatedUserId}
                                 ownerId={auctionOwnerDTO.id}
-                                isAuctionClosed={isAuctionClosed}
+                                isDeadlineFinished={isDeadlineFinished}
                             />
                         ) : (
                             <></>
@@ -222,7 +242,7 @@ export function Auction() {
                 </Grid>
             </Grid>
             <Grid item xs={12} sm={4} sx={{ padding: '20px', margin: '0 auto', marginTop: '75px' }}>
-                {authenticatedUserId === auctionOwnerDTO.id ? (
+                {authenticatedUserId === auctionOwnerDTO.id && isDeadlineFinished ? (
                     <DangerZone title={title} auctionId={auctionId} />
                 ) : (
                     <></>
@@ -232,11 +252,12 @@ export function Auction() {
                         auctionData={data}
                         userId={authenticatedUserId}
                         ownerId={auctionOwnerDTO.id}
-                        topBids={topBids}
+                        topBids={sortedBids}
                         myHighestBid={myHighestBid}
                         title={title}
                         auctionId={auctionId}
                         reload={refetch}
+                        isDeadlineFinished={isDeadlineFinished}
                     />
                 }
             </Grid>

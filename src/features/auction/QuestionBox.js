@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Avatar, Typography, Button, TextField, Modal, Box } from '@mui/material';
+import { Avatar, Typography, Button, Modal, Box } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
+import { EditAnswerInput } from './EditAnswerInput';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 import { ResponseDeleteModal } from './ResponseDeleteModal';
@@ -11,7 +12,7 @@ export function QuestionBox({
     authenticatedUserId,
     ownerId,
     auctionId,
-    isAuctionClosed,
+    isDeadlineFinished,
 }) {
     const questioner = question.question.user;
     const id = question.question.id;
@@ -22,8 +23,8 @@ export function QuestionBox({
     const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
-    const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
+    const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
     const handleOpenDeleteResponseModal = () => setOpenDeleteResponseModal(true);
     const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
@@ -43,12 +44,11 @@ export function QuestionBox({
         handleModalClose();
     };
 
-    const handleReply = () => {
-        setIsReplying(true);
+    const handleOpenEditAnswer = () => {
+        setIsEditingAnswer(true);
     };
-
-    const handleSendReply = () => {
-        setIsReplying(false);
+    const handleCloseEditAnswer = () => {
+        return setIsEditingAnswer(false);
     };
 
     return (
@@ -88,7 +88,6 @@ export function QuestionBox({
                         <Typography sx={{ fontSize: '14px', color: '#9C9C9C' }}>
                             {questionDate}
                         </Typography>
-
                         <Typography sx={{}}>{questionText}</Typography>
                         {reply && (
                             <div
@@ -108,7 +107,7 @@ export function QuestionBox({
                                 <Typography sx={{ fontSize: '14px', color: '#8c8c8c' }}>
                                     {reply}
                                 </Typography>
-                                {isOwner && (
+                                {isOwner && isDeadlineFinished && (
                                     <div>
                                         <Button
                                             variant="contained"
@@ -120,6 +119,7 @@ export function QuestionBox({
                                                 width: '80px',
                                                 padding: '5px',
                                             }}
+                                            onClick={handleOpenEditAnswer}
                                         >
                                             Edit
                                         </Button>
@@ -145,28 +145,37 @@ export function QuestionBox({
                                 )}
                             </div>
                         )}
-                        {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
+                        {isOwner && isEditingAnswer && isDeadlineFinished && (
+                            <EditAnswerInput
+                                answerText={reply}
+                                handleClose={handleCloseEditAnswer}
+                                questionId={questionId}
+                            />
                         )}
-                        {!isAuctionClosed && isQuestioner && !reply && (
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: '#FC4141',
-                                        color: 'white',
-                                        mt: '10px',
-                                        width: '140px',
-                                        p: '5px',
-                                        '&:hover': {
-                                            backgroundColor: '#fc2b2b',
-                                        },
-                                    }}
-                                    onClick={handleModalOpen}
-                                >
-                                    Delete Question
-                                </Button>
-                            </div>
+                        {isOwner && !reply && !isReplying && (
+                            <ReplyInput
+                                authenticatedUserId={authenticatedUserId}
+                                id={id}
+                                isDeadlineFinished={isDeadlineFinished}
+                            />
+                        )}
+                        {isQuestioner && !reply && isDeadlineFinished && (
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#FC4141',
+                                    color: 'white',
+                                    mt: '10px',
+                                    width: '140px',
+                                    p: '5px',
+                                    '&:hover': {
+                                        backgroundColor: '#fc2b2b',
+                                    },
+                                }}
+                                onClick={handleModalOpen}
+                            >
+                                Delete Question
+                            </Button>
                         )}
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { useAnswerQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 
-export function ReplyInput({ authenticatedUserId, id }) {
+export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
     const [reply, setReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [answer, { isLoading, isError, error }] = useAnswerQuestionMutation();
@@ -27,7 +27,7 @@ export function ReplyInput({ authenticatedUserId, id }) {
 
     return (
         <div>
-            {!isReplying && (
+            {!isReplying && isDeadlineFinished && (
                 <Button
                     variant="contained"
                     style={{
