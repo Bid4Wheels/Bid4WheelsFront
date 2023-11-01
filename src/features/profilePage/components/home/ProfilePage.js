@@ -87,7 +87,7 @@ export const ProfilePage = () => {
                     display: 'flex',
                     justifyContent: 'flex-end',
                     width: '100%',
-                    height: '5%',
+                    height: '3.5%',
                 }}
             >
                 <Box
@@ -136,7 +136,7 @@ export const ProfilePage = () => {
             </Box>
             <Box
                 className="DataContainer"
-                sx={{ display: 'flex', marginX: '2rem', marginTop: '15px', height: '100%' }}
+                sx={{ display: 'flex', marginX: '2rem', marginTop: '15px', height: '100hv' }}
             >
                 <ProfileCard
                     canEdit={canEdit}
@@ -154,14 +154,19 @@ export const ProfilePage = () => {
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        paddingLeft: '5%',
+                        paddingLeft: '2.5%',
                         height: '100%',
                         width: '60%',
+                        maxWidth: '60%',
                     }}
                 >
                     <Box
                         className="BiddedAuctions"
-                        sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            height: '50%',
+                        }}
                     >
                         <Typography
                             sx={{
@@ -218,7 +223,7 @@ export const ProfilePage = () => {
                             display: 'flex',
                             flexDirection: 'column',
                             height: '50%',
-                            marginTop: '130px',
+                            marginTop: '4%',
                         }}
                     >
                         <Typography

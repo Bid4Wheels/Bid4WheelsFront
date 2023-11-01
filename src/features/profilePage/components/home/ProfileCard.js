@@ -29,8 +29,8 @@ export const ProfileCard = ({
     return (
         <Box
             sx={{
-                paddingLeft: '50px',
-                paddingRight: '50px',
+                paddingLeft: '2.5%',
+                paddingRight: '2.5%',
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 12,
@@ -39,8 +39,10 @@ export const ProfileCard = ({
                 background: 'white',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '10px',
-                paddingTop: '10px',
+                gap: '0.75%',
+                paddingTop: '2.5%',
+                paddingBottom: '2.5%',
+                marginBottom: '1%',
             }}
         >
             <Avatar

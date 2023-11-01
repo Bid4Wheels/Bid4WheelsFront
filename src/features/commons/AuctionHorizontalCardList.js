@@ -27,7 +27,7 @@ const AuctionHorizontalCardList = ({ auctionList }) => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
                 <ArrowBackIosNewRounded onClick={() => handleScroll('left')} />
                 <div
                     ref={cardContainerRef}
