@@ -20,7 +20,6 @@ import { removeUser, setUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
-import { addError } from '../../store/errorHandling/errorSlice';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -28,7 +27,7 @@ export function LogIn() {
     const [showPassword, setShowPassword] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [logIn, { isLoading, isError, error }] = useLogInMutation();
+    const [logIn, { isLoading, isError }] = useLogInMutation();
 
     useEffect(() => {
         dispatch(removeUser());
@@ -36,13 +35,6 @@ export function LogIn() {
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
     }, []);
-
-    useEffect(() => {
-        if (error) {
-            console.log(error);
-            dispatch(addError(error.data));
-        }
-    }, [error]);
 
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);

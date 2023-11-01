@@ -14,6 +14,7 @@ import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
 import errorReducer from './errorHandling/errorSlice';
+import { rtkQueryErrorLogger } from './errorHandling/errorMiddleware';
 
 const reducers = combineReducers({
     user: userReducer,
@@ -48,5 +49,6 @@ export const store = configureStore({
             unauthenticatedApi.middleware,
             questionsAndAnswersApi.middleware,
             stompMiddleware,
+            rtkQueryErrorLogger,
         ),
 });

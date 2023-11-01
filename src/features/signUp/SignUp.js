@@ -23,8 +23,6 @@ import {
     validateEmail,
     validatePhoneNumber,
 } from '../../utils/validationFunctions';
-import { useDispatch } from 'react-redux';
-import { addError } from '../../store/errorHandling/errorSlice';
 
 export function SignUp() {
     const [email, setEmail] = useState('');
@@ -38,14 +36,7 @@ export function SignUp() {
     const [acceptTerms, setAcceptTerms] = useState(false);
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
     const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const [signUp, { isLoading, error }] = useSignUpMutation();
-
-    useEffect(() => {
-        if (error) {
-            dispatch(addError(error.data));
-        }
-    }, [error]);
+    const [signUp, { isLoading }] = useSignUpMutation();
 
     const handleSignUp = async () => {
         const payload = {

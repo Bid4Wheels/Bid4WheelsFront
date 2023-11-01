@@ -9,7 +9,6 @@ import { useGetValidationCodeMutation } from '../../store/user/UserApi';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Navigate } from 'react-router-dom';
-import { addError } from '../../store/errorHandling/errorSlice';
 
 function ValidateIdentity() {
     const [validationCode, setValidationCode] = useState('');
@@ -50,7 +49,6 @@ function ValidateIdentity() {
                     },
                 );
         } catch (error) {
-            dispatch(addError(error.data));
             setValidationCode('');
         }
     };
