@@ -18,6 +18,8 @@ import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import { useSignUpMutation } from '../../store/user/UserApi';
 import colors from '../../utils/desgin/Colors';
+import { useDispatch } from 'react-redux';
+import { showMessage } from '../../store/success/successSlice';
 import {
     validatePassword,
     validateEmail,
@@ -37,6 +39,7 @@ export function SignUp() {
     const [passwordTooltipOpen, setPasswordTooltipOpen] = useState(false);
     const navigate = useNavigate();
     const [signUp, { isLoading }] = useSignUpMutation();
+    const dispatch = useDispatch();
 
     const handleSignUp = async () => {
         const payload = {
@@ -50,6 +53,7 @@ export function SignUp() {
         try {
             await signUp(payload).unwrap();
             console.log('Sign up successful!');
+            dispatch(showMessage('Sign up successful!'));
             navigate('/login');
         } catch (error) {
             console.log('Sign up failed.');

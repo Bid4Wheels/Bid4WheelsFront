@@ -13,10 +13,12 @@ import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
+import successSnackbarReducer from './success/successSlice';
 
 const reducers = combineReducers({
     user: userReducer,
     stomp: stompReducer,
+    successSnackbar: successSnackbarReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
