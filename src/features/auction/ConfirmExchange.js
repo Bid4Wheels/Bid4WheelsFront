@@ -10,14 +10,11 @@ import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
-import { Review } from './Review';
 import { ExchangeConfirmed } from './ExchangeConfirmed';
 
 export function ConfirmExchange() {
     const nav = useNavigate();
     const dispatch = useDispatch();
-    const [showReview, setShowReview] = useState(false);
-    const [isBuyer, setIsBuyer] = useState(false);
 
     const navigateToLogin = () => {
         dispatch(removeUser());
@@ -27,11 +24,12 @@ export function ConfirmExchange() {
         nav('/login');
     };
 
-    const handleShowReview = () => {
-        setShowReview(true);
+    const [confirmed, setConfirmed] = useState(false);
+    const handleConfirm = () => {
+        setConfirmed(true);
     };
 
-    if (!showReview) {
+    if (!confirmed) {
         return (
             <Box
                 sx={{
@@ -102,7 +100,7 @@ export function ConfirmExchange() {
                             marginBottom: '2.5%',
                             fontSize: theme.typography.Small.fontSize,
                         }}
-                        onClick={handleShowReview}
+                        onClick={handleConfirm}
                     >
                         CONFIRM EXCHANGE
                     </Button>
@@ -125,5 +123,5 @@ export function ConfirmExchange() {
         );
     }
 
-    return <Review navigateToLogin={navigateToLogin} isBuyer={isBuyer} />;
+    return <ExchangeConfirmed />;
 }

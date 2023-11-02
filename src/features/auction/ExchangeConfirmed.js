@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Typography, Grid, CircularProgress } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
@@ -10,6 +10,7 @@ import { authenticatedUserApi, useGetUserByIdQuery } from '../../store/user/auth
 import { auctionApi, useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
+import { Review } from './Review';
 
 export function ExchangeConfirmed() {
     const userId = useParams().userId;
@@ -25,91 +26,106 @@ export function ExchangeConfirmed() {
         dispatch(tagsApiSlice.util.resetApiState());
         nav('/login');
     };
+    const [showReview, setShowReview] = useState(false);
+    const [isBuyer, setIsBuyer] = useState(false);
 
-    return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                height: '100%',
-                width: '100%',
-            }}
-        >
+    const handleShowReview = () => {
+        setShowReview(true);
+    };
+
+    if (!showReview) {
+        return (
             <Box
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    height: '30%',
-                    width: '30%',
+                    height: '100%',
+                    width: '100%',
                 }}
             >
-                <Typography
+                <img
+                    src={confirm_exchange}
+                    alt="confirm exchange"
+                    style={{ width: '22%', height: 'auto' }}
+                />
+                <img src={B4W_logo} alt="B4W logo" style={{ width: '22%', height: 'auto' }} />
+                <Box
                     sx={{
-                        color: 'black',
-                        fontSize: theme.typography.Large.fontSize,
-                        fontWeight: 500,
-                        marginTop: '2%',
-                        marginBottom: '0.5%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        height: '30%',
+                        width: '30%',
                     }}
                 >
-                    Confirmation done
-                </Typography>
-                <Typography
-                    align="center"
+                    <Typography
+                        sx={{
+                            color: 'black',
+                            fontSize: theme.typography.Large.fontSize,
+                            fontWeight: 500,
+                            marginTop: '2%',
+                            marginBottom: '0.5%',
+                        }}
+                    >
+                        Confirmation done
+                    </Typography>
+                    <Typography
+                        align="center"
+                        sx={{
+                            color: 'black',
+                            fontSize: theme.typography.Small.fontSize,
+                            fontWeight: 350,
+                        }}
+                    >
+                        Thank you {user.name}, your exchange for {auction.brand}, {auction.model} (
+                        {auction.modelYear}) has been confirmed successfully.
+                    </Typography>
+                </Box>
+                <Box
                     sx={{
-                        color: 'black',
-                        fontSize: theme.typography.Small.fontSize,
-                        fontWeight: 350,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        height: '30%',
+                        width: '30%',
                     }}
                 >
-                    Thank you {user.name}, your exchange for {auction.brand}, {auction.model} (
-                    {auction.modelYear}) has been confirmed successfully.
-                </Typography>
+                    <Button
+                        style={{
+                            backgroundColor: colors.water_green,
+                            color: 'white',
+                            textTransform: 'none',
+                            paddingTop: '2.5%',
+                            paddingBottom: '2.5%',
+                            width: '40%',
+                            height: 'fit-content',
+                            marginTop: '7.5%',
+                            marginBottom: '2.5%',
+                            fontSize: theme.typography.Small.fontSize,
+                        }}
+                        onClick={handleShowReview}
+                    >
+                        RATE MY EXPERIENCE
+                    </Button>
+                    <Button
+                        style={{
+                            backgroundColor: 'grey',
+                            color: 'white',
+                            textTransform: 'none',
+                            paddingTop: '2.5%',
+                            paddingBottom: '2.5%',
+                            width: '40%',
+                            height: 'fit-content',
+                            fontSize: theme.typography.Small.fontSize,
+                        }}
+                        onClick={navigateToLogin}
+                    >
+                        GO TO LOGIN
+                    </Button>
+                </Box>
             </Box>
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    height: '30%',
-                    width: '30%',
-                }}
-            >
-                <Button
-                    style={{
-                        backgroundColor: colors.water_green,
-                        color: 'white',
-                        textTransform: 'none',
-                        paddingTop: '2.5%',
-                        paddingBottom: '2.5%',
-                        width: '40%',
-                        height: 'fit-content',
-                        marginTop: '7.5%',
-                        marginBottom: '2.5%',
-                        fontSize: theme.typography.Small.fontSize,
-                    }}
-                    onClick={navigateToLogin}
-                >
-                    RATE MY EXPERIENCE
-                </Button>
-                <Button
-                    style={{
-                        backgroundColor: 'grey',
-                        color: 'white',
-                        textTransform: 'none',
-                        paddingTop: '2.5%',
-                        paddingBottom: '2.5%',
-                        width: '40%',
-                        height: 'fit-content',
-                        fontSize: theme.typography.Small.fontSize,
-                    }}
-                    onClick={navigateToLogin}
-                >
-                    GO TO LOGIN
-                </Button>
-            </Box>
-        </Box>
-    );
+        );
+    }
+    return <Review isBuyer={isBuyer} />;
 }
