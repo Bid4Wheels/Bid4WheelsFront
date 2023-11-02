@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Avatar, Typography, Button, TextField, Modal, Box } from '@mui/material';
+import { Avatar, Typography, Button, Modal, Box } from '@mui/material';
 import colors from '../../utils/desgin/Colors';
 import { ReplyInput } from './ReplyInput';
 import { EditAnswerInput } from './EditAnswerInput';
@@ -13,8 +13,7 @@ export function QuestionBox({
     authenticatedUserId,
     ownerId,
     auctionId,
-    isAuctionClosed,
-    refetch,
+    isDeadlineFinished,
 }) {
     const questioner = question.question.user;
     const id = question.question.id;
@@ -25,7 +24,6 @@ export function QuestionBox({
     const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
-    const [ownerReply, setOwnerReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [isEditingAnswer, setIsEditingAnswer] = useState(false);
     const [openDeleteResponseModal, setOpenDeleteResponseModal] = useState(false);
@@ -137,7 +135,7 @@ export function QuestionBox({
                                 <Typography sx={{ fontSize: '14px', color: '#8c8c8c' }}>
                                     {reply}
                                 </Typography>
-                                {isOwner && (
+                                {isOwner && isDeadlineFinished && (
                                     <div>
                                         <Button
                                             variant="contained"
@@ -175,36 +173,37 @@ export function QuestionBox({
                                 )}
                             </div>
                         )}
-                        {isOwner && isEditingAnswer && !isAuctionClosed && (
+                        {isOwner && isEditingAnswer && isDeadlineFinished && (
                             <EditAnswerInput
                                 answerText={reply}
                                 handleClose={handleCloseEditAnswer}
                                 questionId={questionId}
-                                refetch={refetch}
                             />
                         )}
                         {isOwner && !reply && !isReplying && (
-                            <ReplyInput authenticatedUserId={authenticatedUserId} id={id} />
+                            <ReplyInput
+                                authenticatedUserId={authenticatedUserId}
+                                id={id}
+                                isDeadlineFinished={isDeadlineFinished}
+                            />
                         )}
-                        {!isAuctionClosed && isQuestioner && !reply && (
-                            <div>
-                                <Button
-                                    variant="contained"
-                                    sx={{
-                                        backgroundColor: '#FC4141',
-                                        color: 'white',
-                                        mt: '10px',
-                                        width: '140px',
-                                        p: '5px',
-                                        '&:hover': {
-                                            backgroundColor: '#fc2b2b',
-                                        },
-                                    }}
-                                    onClick={handleModalOpen}
-                                >
-                                    Delete Question
-                                </Button>
-                            </div>
+                        {isQuestioner && !reply && isDeadlineFinished && (
+                            <Button
+                                variant="contained"
+                                sx={{
+                                    backgroundColor: '#FC4141',
+                                    color: 'white',
+                                    mt: '10px',
+                                    width: '140px',
+                                    p: '5px',
+                                    '&:hover': {
+                                        backgroundColor: '#fc2b2b',
+                                    },
+                                }}
+                                onClick={handleModalOpen}
+                            >
+                                Delete Question
+                            </Button>
                         )}
                     </div>
                 </div>
