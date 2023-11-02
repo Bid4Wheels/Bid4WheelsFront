@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Button, Box, Typography, Avatar } from '@mui/material';
+import { Button, Box, Typography, Avatar, Rating } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
@@ -25,6 +25,7 @@ export const ProfileCard = ({
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const handleOpenDeleteModal = () => setOpenDeleteModal(true);
     const handleCloseDeleteModal = () => setOpenDeleteModal(false);
+    const reviewValue = useState(0);
 
     return (
         <Box
@@ -56,11 +57,20 @@ export const ProfileCard = ({
                     letterSpacing: 0.46,
                     textAlign: 'center',
                     marginTop: 2,
-                    marginBottom: 2,
                 }}
             >
                 {Username}
             </Typography>
+            <Rating
+                precision={0.5}
+                value={reviewValue}
+                sx={{
+                    '& .MuiRating-iconFilled': {
+                        color: colors.water_green,
+                    },
+                }}
+                disabled
+            ></Rating>
             <Box
                 sx={{
                     display: 'flex',

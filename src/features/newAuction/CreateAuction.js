@@ -23,7 +23,7 @@ const CreateAuction = () => {
     const [modelValue, setModelValue] = useState('');
     const [startingPrice, setStartingPrice] = useState('');
     const [years, setYears] = useState('');
-    const [title, setTitle] = useState('Title');
+    const [title, setTitle] = useState('');
     const [mileage, setMileage] = useState('');
     const [showAuctionInformation, setShowAuctionInformation] = useState(false);
     const [description, setDescription] = useState();

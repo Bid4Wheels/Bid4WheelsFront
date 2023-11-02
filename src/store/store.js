@@ -11,19 +11,18 @@ import { bidApi } from './auction/bidApi';
 import { authenticatedApi } from './mainApis/authenticatedApi';
 import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
+import { stompMiddleware } from './stomp/stompMiddleware';
+import { stompReducer } from './stomp/stompSlice';
 
 const reducers = combineReducers({
     user: userReducer,
+    stomp: stompReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
     [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
     [tagsApiSlice.reducerPath]: tagsApiSlice.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
-    [bidApi.reducerPath]: bidApi.reducer,
-    [authenticatedApi.reducerPath]: authenticatedApi.reducer,
-    [unauthenticatedApi.reducerPath]: unauthenticatedApi.reducer,
-    [questionsAndAnswersApi.reducerPath]: questionsAndAnswersApi.reducer,
 });
 
 const persistConfig = {
@@ -36,7 +35,7 @@ const persistedReducer = persistReducer(persistConfig, reducers);
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware({ serializableCheck: false }).concat(
+        getDefaultMiddleware().concat(
             userApi.middleware,
             authApi.middleware,
             authenticatedUserApi.middleware,
@@ -46,5 +45,6 @@ export const store = configureStore({
             authenticatedApi.middleware,
             unauthenticatedApi.middleware,
             questionsAndAnswersApi.middleware,
+            stompMiddleware,
         ),
 });

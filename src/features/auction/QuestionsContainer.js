@@ -8,8 +8,7 @@ export function QuestionsContainer({
     auctionId,
     authenticatedUserId,
     ownerId,
-    isAuctionClosed,
-    refetch,
+    isDeadlineFinished,
 }) {
     const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
 
@@ -30,11 +29,13 @@ export function QuestionsContainer({
                 width: '100%',
             }}
         >
-            <QuestionInput
-                auctionId={auctionId}
-                authenticatedUserId={authenticatedUserId}
-                ownerId={ownerId}
-            />
+            {isDeadlineFinished ? (
+                <QuestionInput
+                    auctionId={auctionId}
+                    authenticatedUserId={authenticatedUserId}
+                    ownerId={ownerId}
+                />
+            ) : null}
 
             {data.map((question, index) => (
                 <QuestionBox
@@ -43,8 +44,7 @@ export function QuestionsContainer({
                     authenticatedUserId={authenticatedUserId}
                     ownerId={ownerId}
                     auctionId={auctionId}
-                    isAuctionClosed={isAuctionClosed}
-                    refetch={refetch}
+                    isDeadlineFinished={isDeadlineFinished}
                 />
             ))}
         </div>
