@@ -2,10 +2,13 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { usePostQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+import { showMessage } from '../../store/success/successSlice';
+import { useDispatch } from 'react-redux';
 
 export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
     const [makeQuestion, { data, isError, error }] = usePostQuestionMutation();
+    const dispatch = useDispatch();
 
     if (authenticatedUserId === ownerId) {
         return null;
@@ -17,6 +20,7 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
             auctionId: auctionId,
         };
         makeQuestion(body);
+        dispatch(showMessage('Question sent'));
 
         if (isError) {
             console.log(error);

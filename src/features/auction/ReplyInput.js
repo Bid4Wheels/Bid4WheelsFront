@@ -2,11 +2,14 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { useAnswerQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+import { showMessage } from '../../store/success/successSlice';
+import { useDispatch } from 'react-redux';
 
 export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
     const [reply, setReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [answer, { isLoading, isError, error }] = useAnswerQuestionMutation();
+    const dispatch = useDispatch();
 
     const handleReply = () => {
         setIsReplying(true);
@@ -23,6 +26,7 @@ export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
         answer(body);
         setReply('');
         setIsReplying(false);
+        dispatch(showMessage('Answer sent'));
     };
 
     return (
