@@ -22,6 +22,12 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
             console.log(error);
         }
     };
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            handleSendQuestion();
+        }
+    };
 
     return (
         <div
@@ -36,15 +42,17 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                 Make a question
             </Typography>
 
-            <TextField
-                label="Make a question to the owner"
-                variant="standard"
-                sx={{
-                    width: '100%',
-                }}
-                onChange={(e) => setQuestion(e.target.value)}
-                value={question}
-            />
+            <form onKeyDown={handleKeyPress}>
+                <TextField
+                    label="Make a question to the owner"
+                    variant="standard"
+                    sx={{
+                        width: '100%',
+                    }}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    value={question}
+                />
+            </form>
 
             <Button
                 variant="contained"
