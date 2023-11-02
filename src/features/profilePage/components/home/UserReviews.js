@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ReviewCard } from './ReviewCard';
-import { Box, Pagination } from '@mui/material';
+import { Box, Pagination, Rating, Typography } from '@mui/material';
+import theme from '../../../../utils/desgin/Theme';
+import colors from '../../../../utils/desgin/Colors';
 
 const reviews = [
     {
@@ -38,7 +40,7 @@ const reviews = [
     },
 ];
 
-export const UserReviews = () => {
+export const UserReviews = ({ isReviewFilterOn, filterValue }) => {
     const itemsPerPage = 3;
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -52,6 +54,33 @@ export const UserReviews = () => {
 
     return (
         <Box>
+            {isReviewFilterOn && (
+                <Box display={'flex'} alignItems={'end'}>
+                    <Typography
+                        fontWeight="bold"
+                        fontSize={theme.typography.Medium}
+                        fontFamily={theme.typography.fontFamily}
+                    >
+                        Showing filter results for
+                    </Typography>
+                    <Rating
+                        value={filterValue}
+                        size="large"
+                        readOnly
+                        sx={{
+                            '& .MuiRating-iconFilled': {
+                                color: colors.water_green,
+                            },
+                            mt: '5px',
+                            ml: '10px',
+                        }}
+                        precision={0.5}
+                    ></Rating>
+                    <Typography fontSize={'22px'} onClick={() => !isReviewFilterOn}>
+                        clear filter
+                    </Typography>
+                </Box>
+            )}
             <Box height="500px">
                 {displayedReviews.map((review, index) => (
                     <ReviewCard

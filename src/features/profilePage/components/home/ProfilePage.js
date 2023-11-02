@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box, Typography, Card, CardContent, Rating, CardActions } from '@mui/material';
 import { ProfileCard } from './ProfileCard';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
@@ -12,6 +12,8 @@ import {
     useGetAuctionsByBidderIdQuery,
 } from '../../../../store/auction/auctionApi';
 import { UserReviews } from './UserReviews';
+import CloseIcon from '@mui/icons-material/Close';
+import { is } from 'date-fns/locale';
 
 export const ProfilePage = () => {
     const nav = useNavigate();
@@ -21,6 +23,8 @@ export const ProfilePage = () => {
     const userId = queryUserId || currentUser.userId;
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const [reviewIsClicked, setReviewIsClicked] = useState(false);
+    const [ratingFilter, setRatingFilter] = useState(2.5);
+    const [isFilterAplied, setIsFilterAplied] = useState(false);
     const handleHistoryClick = () => {
         setHistoryIsClicked(true);
         setReviewIsClicked(false);
@@ -35,6 +39,16 @@ export const ProfilePage = () => {
         setIsFilterReviewsClicked(true);
         // Add any other logic you need when the button is clicked
     };
+
+    const handleRatingChange = (event) => {
+        setRatingFilter(event.target.value);
+    };
+    const handleFilterClick = () => {
+        // Add any other logic you need when the button is clicked
+        setIsFilterReviewsClicked(false);
+        setIsFilterAplied(true);
+    };
+    console.log(isFilterAplied);
     const {
         data: biddedData,
         isLoading: isUserLoading,
@@ -93,6 +107,7 @@ export const ProfilePage = () => {
         nav('/newAuction');
     };
 
+    console.log(ratingFilter);
     return (
         <Box sx={{ padding: '1%', height: '80vh' }}>
             <Box
@@ -109,7 +124,7 @@ export const ProfilePage = () => {
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
-                        alignItems: 'flex-end',
+                        alignItems: 'end',
                         right: '25px',
                     }}
                 >
@@ -153,27 +168,122 @@ export const ProfilePage = () => {
                         </Button>
                     </div>
                     {reviewIsClicked && (
-                        <Button
-                            variant={isFilterReviewsClicked ? 'contained' : 'outlined'} // Set variant based on isFilterReviewsClicked state
-                            style={{
-                                backgroundColor: isFilterReviewsClicked
-                                    ? colors.water_green
-                                    : 'transparent',
-                                color: isFilterReviewsClicked ? 'white' : colors.water_green,
-                                borderColor: colors.water_green,
-                                boxShadow: theme.shadows[3],
-                                fontSize: theme.typography.Small.fontSize,
-                                fontWeight: 500,
-                                letterSpacing: '0.4px',
-                                textTransform: 'uppercase',
-                                width: '100%',
-                            }}
-                            onClick={() => {
-                                setIsFilterReviewsClicked(!isFilterReviewsClicked); // Toggle the state on click
-                            }}
-                        >
-                            Filter Reviews
-                        </Button>
+                        <div>
+                            {!isFilterReviewsClicked ? (
+                                <Button
+                                    variant="outlined"
+                                    sx={{
+                                        backgroundColor: 'white',
+                                        color: colors.water_green,
+                                        borderColor: colors.water_green,
+                                        boxShadow: theme.shadows[3],
+                                        fontSize: theme.typography.Small.fontSize,
+                                        fontWeight: 500,
+                                        letterSpacing: '0.4px',
+                                        textTransform: 'uppercase',
+                                        '&:hover': {
+                                            borderColor: colors.water_green,
+                                        },
+                                        paddingX: '35px',
+                                    }}
+                                    onClick={() => {
+                                        setIsFilterReviewsClicked(!isFilterReviewsClicked);
+                                    }}
+                                >
+                                    Filter Reviews
+                                </Button>
+                            ) : (
+                                <Box display={'flex'} flexDirection={'column'} alignItems={'end'}>
+                                    <Button
+                                        variant="outlined"
+                                        startIcon={<CloseIcon />}
+                                        sx={{
+                                            backgroundColor: 'transparent',
+                                            color: colors.water_green,
+                                            borderColor: colors.water_green,
+                                            boxShadow: theme.shadows[3],
+                                            fontSize: theme.typography.Small.fontSize,
+                                            fontWeight: 500,
+                                            letterSpacing: '0.4px',
+                                            textTransform: 'uppercase',
+                                            '&:hover': {
+                                                borderColor: colors.water_green,
+                                            },
+                                            width: 'fit-content',
+                                            paddingX: '60px',
+                                        }}
+                                        onClick={() => {
+                                            setIsFilterReviewsClicked(!isFilterReviewsClicked);
+                                            setRatingFilter(2.5);
+                                        }}
+                                    >
+                                        Close
+                                    </Button>
+                                    <Card
+                                        variant="outlined"
+                                        sx={{
+                                            width: '322px',
+                                            height: '201px',
+                                            marginTop: '10px',
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            borderColor: colors.water_green,
+                                            position: 'relative',
+                                        }}
+                                    >
+                                        <CardContent sx={{ marginTop: '5px' }}>
+                                            <Typography
+                                                fontSize={theme.typography.Medium}
+                                                fontWeight={500}
+                                                fontFamily={theme.typography.fontFamily}
+                                            >
+                                                Filter reviews by rating
+                                            </Typography>
+                                        </CardContent>
+                                        <CardActions
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                            }}
+                                        >
+                                            <Rating
+                                                value={ratingFilter}
+                                                precision={0.5}
+                                                size="large"
+                                                sx={{
+                                                    '& .MuiRating-iconFilled': {
+                                                        color: colors.water_green,
+                                                    },
+                                                    mt: '5px',
+                                                    ml: '10px',
+                                                    marginBottom: '20px',
+                                                }}
+                                                onChange={handleRatingChange}
+                                            ></Rating>
+                                            <Button
+                                                variant="contained"
+                                                sx={{
+                                                    width: '107px',
+                                                    height: '44px',
+                                                    backgroundColor: colors.water_green,
+                                                    color: 'white',
+                                                    textTransform: 'none',
+                                                    fontSize: theme.typography.Small.fontSize,
+                                                    fontWeight: 500,
+                                                    '&:hover': {
+                                                        backgroundColor: colors.water_green,
+                                                    },
+                                                }}
+                                                onClick={handleFilterClick}
+                                            >
+                                                Filter
+                                            </Button>
+                                        </CardActions>
+                                    </Card>
+                                </Box>
+                            )}
+                        </div>
                     )}
                 </Box>
             </Box>
@@ -336,7 +446,10 @@ export const ProfilePage = () => {
                     </Box>
                 ) : (
                     <Box flex="1" sx={{ display: 'flex', ml: '60px', alignItems: 'center' }}>
-                        <UserReviews></UserReviews>
+                        <UserReviews
+                            isReviewFilterOn={isFilterAplied}
+                            filterValue={ratingFilter}
+                        ></UserReviews>
                     </Box>
                 )}
             </Box>
