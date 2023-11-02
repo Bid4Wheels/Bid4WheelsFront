@@ -84,7 +84,7 @@ export function QuestionBox({
                     <Avatar
                         src={questioner.imgURL === 'default' ? null : questioner.imgURL}
                         sx={{ width: 65, height: 65, mr: '10px', mt: '10px', cursor: 'pointer' }}
-                        onClick={() => handleUserPageRedirect}
+                        onClick={() => handleUserPageRedirect()}
                     ></Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -97,7 +97,7 @@ export function QuestionBox({
                                         textDecoration: 'underline',
                                     },
                                 }}
-                                onClick={() => handleUserPageRedirect}
+                                onClick={() => handleUserPageRedirect()}
                             >
                                 {questioner.name + ' ' + questioner.lastName}
                             </Typography>

@@ -55,7 +55,7 @@ export function TechnicalInfo({ info, user }) {
                                     height: '80px',
                                     cursor: 'pointer',
                                 }}
-                                onClick={() => handleUserPageRedirect}
+                                onClick={() => handleUserPageRedirect()}
                             />
                         ) : (
                             <Avatar
@@ -85,7 +85,7 @@ export function TechnicalInfo({ info, user }) {
                                     textDecoration: 'underline',
                                 },
                             }}
-                            onClick={() => handleUserPageRedirect}
+                            onClick={() => handleUserPageRedirect()}
                         >
                             {user.name}
                         </Typography>
