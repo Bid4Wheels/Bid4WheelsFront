@@ -80,7 +80,7 @@ export function Auction() {
             } else if (myHighestBid === data.topBids[0].amount) {
                 showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green]);
             } else {
-                showConfetti([], ['#000101', colors.grey, '#ffffff']);
+                showConfetti(['😢', '😭'], ['#000101', colors.grey, '#ffffff']);
             }
         }
     }, [isAuctionOver]);
