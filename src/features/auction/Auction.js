@@ -61,8 +61,19 @@ export function Auction() {
             dispatch(disconnectStomp());
         };
     }, [dispatch]);
-    const isAuctionClosed = differenceInSeconds(new Date(deadline), new Date()) < 0;
+    const isAuctionClosingSoon = differenceInSeconds(new Date(deadline), new Date()) < 24 * 60 * 60;
     const isDeadlineFinished = new Date(deadline) > new Date();
+
+    useEffect(() => {
+        if (isAuctionClosingSoon) {
+            const refreshInterval = setInterval(() => {
+                refetch();
+            }, 10000);
+            return () => {
+                clearInterval(refreshInterval);
+            };
+        }
+    }, [isAuctionClosingSoon, refetch]);
 
     if (isLoading) {
         return (
