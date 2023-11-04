@@ -32,7 +32,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
             sx={{
                 width: '100%',
                 height: '100%',
-                borderRadius: '20px',
+                borderRadius: '5px',
                 backgroundColor: colors.grey,
                 position: 'relative',
             }}
@@ -44,7 +44,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                             width: `${percentage}%`,
                             height: '100%',
                             backgroundColor: color,
-                            borderRadius: '20px',
+                            borderRadius: '5px',
                             display: 'flex',
                             maxWidth: '100%',
                         }}
