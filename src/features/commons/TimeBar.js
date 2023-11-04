@@ -55,7 +55,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                             left: '10px',
                             top: '50%',
                             transform: 'translateY(-50%)',
-                            fontWeight: 400,
+                            fontWeight: 600,
                             fontSize: size,
                         }}
                     >
@@ -71,7 +71,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                         left: '10px',
                         top: '50%',
                         transform: 'translateY(-50%)',
-                        fontWeight: 400,
+                        fontWeight: 600,
                         fontSize: size,
                     }}
                 >
@@ -86,6 +86,7 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                         top: '50%',
                         transform: 'translateY(-50%)',
                         fontSize: size,
+                        fontWeight: 600,
                     }}
                 >
                     Latest: <b>${latestBid}</b>

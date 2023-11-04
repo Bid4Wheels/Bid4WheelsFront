@@ -43,7 +43,6 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                         sx={{
                             height: '204px',
                             width: '317px',
-                            borderBottom: '0px',
                         }}
                         component="img"
                         src={image}
@@ -89,7 +88,9 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                             sx={{
                                 display: 'flex',
                                 flexWrap: 'wrap',
+                                columnGap: '10px',
                                 gap: '5px',
+                                maxWidth: '317px',
                             }}
                         >
                             {tags.map((tag, index) => (
