@@ -53,14 +53,13 @@ export function LogIn() {
         const payload = { email, password };
         let redirectPath = '/';
 
-        if (winningAuctionId) {
-            redirectPath = `/finish/${winningAuctionId}`;
-        }
-
         try {
             const response = await logIn(payload).unwrap();
             const { token, id } = response;
             dispatch(setUser({ token, id, email }));
+            if (winningAuctionId) {
+                redirectPath = `/¨${id}/${winningAuctionId}`;
+            }
             nav(redirectPath);
         } catch (err) {
             console.error(err);

@@ -28,9 +28,8 @@ function App() {
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/changePassword" Component={ChangePassword} />
                     <Route path="/changePass" Component={inputMail} />
-                    <Route path="/:userId/:auctionId" Component={ConfirmExchange} />
                     <Route
-                        path="/finished/:auctionId"
+                        path="/:userId/:auctionId"
                         element={
                             <WinningRoute>
                                 <ConfirmExchange></ConfirmExchange>
