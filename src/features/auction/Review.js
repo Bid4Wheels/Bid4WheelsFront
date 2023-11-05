@@ -1,11 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Button, Typography, TextField, Rating } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
 import B4W_logo from '../commons/bid4wheels_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
+import { usePostOwnerReview, usePostWinnerReview } from '../../store/auction/reviewApi';
 
 export function Review({ navigateToLogin, isBuyer }) {
+    const [rating, setRating] = useState(0);
+    const [review, setReview] = useState(' ');
+    const [sendReviewWinner] = usePostWinnerReview();
+    const [sendReviewOwner] = usePostOwnerReview();
+    const [auctionId] = useState(1);
+    const sendReview = () => {
+        const body = {
+            rating: rating,
+            review: review,
+        };
+        if (isBuyer) {
+            sendReviewWinner({ body, auctionId });
+        } else {
+            sendReviewOwner({ body, auctionId });
+        }
+    };
     return (
         <Box
             sx={{
@@ -76,12 +93,18 @@ export function Review({ navigateToLogin, isBuyer }) {
                     multiline
                     rowsMax={4}
                     inputProps={{ maxLength: 380 }}
+                    onChange={(e) => setReview(e.target.value)}
+                    value={review}
                 />
                 <Rating
                     name="half-rating"
                     defaultValue={2.5}
                     precision={0.5}
                     sx={{ color: colors.water_green, mt: '20px', fontSize: '30px' }}
+                    value={rating}
+                    onChange={(event, newValue) => {
+                        setRating(newValue);
+                    }}
                 />
             </Box>
             <Box
@@ -104,7 +127,10 @@ export function Review({ navigateToLogin, isBuyer }) {
                         marginBottom: '2.5%',
                         fontSize: theme.typography.Small.fontSize,
                     }}
-                    onClick={navigateToLogin}
+                    onClick={() => {
+                        navigateToLogin();
+                        sendReview();
+                    }}
                 >
                     SUBMIT
                 </Button>
@@ -118,7 +144,9 @@ export function Review({ navigateToLogin, isBuyer }) {
                         height: 'fit-content',
                         fontSize: theme.typography.Small.fontSize,
                     }}
-                    onClick={navigateToLogin}
+                    onClick={() => {
+                        navigateToLogin();
+                    }}
                 >
                     GO TO LOGIN
                 </Button>
