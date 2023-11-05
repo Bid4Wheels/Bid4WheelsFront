@@ -13,6 +13,7 @@ import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
+import { reviewApi } from './auction/reviewApi';
 
 const reducers = combineReducers({
     user: userReducer,
@@ -23,6 +24,7 @@ const reducers = combineReducers({
     [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
     [tagsApiSlice.reducerPath]: tagsApiSlice.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
 });
 
 const persistConfig = {
