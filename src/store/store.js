@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { userApi } from './user/UserApi';
 import userReducer from './user/UserSlice';
+import winningActionReducer from './auction/winningAuctionSlice';
 import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
 import { authenticatedUserApi } from './user/authenticatedUserApi';
@@ -16,6 +17,7 @@ import { stompReducer } from './stomp/stompSlice';
 
 const reducers = combineReducers({
     user: userReducer,
+    winningAuction: winningActionReducer,
     stomp: stompReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
@@ -11,6 +11,7 @@ import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
 import { Review } from './Review';
+import { removeWinningAuction } from '../../store/auction/winningAuctionSlice';
 
 export function ConfirmExchange() {
     const nav = useNavigate();
@@ -25,6 +26,10 @@ export function ConfirmExchange() {
         dispatch(tagsApiSlice.util.resetApiState());
         nav('/login');
     };
+
+    useEffect(() => {
+        dispatch(removeWinningAuction());
+    }, [dispatch]);
 
     const handleShowReview = () => {
         setShowReview(true);

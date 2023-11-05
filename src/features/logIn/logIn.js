@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Alert,
     Box,
@@ -20,6 +20,7 @@ import { removeUser, setUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { selectWinningAuction } from '../../store/auction/winningAuctionSlice';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -28,6 +29,7 @@ export function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [logIn, { isLoading, isError }] = useLogInMutation();
+    const winningAuctionId = useSelector((state) => state.winningAuction);
 
     useEffect(() => {
         dispatch(removeUser());
@@ -49,11 +51,17 @@ export function LogIn() {
 
     const handleLogIn = async () => {
         const payload = { email, password };
+        let redirectPath = '/';
+
+        if (winningAuctionId) {
+            redirectPath = `/finish/${winningAuctionId}`;
+        }
+
         try {
             const response = await logIn(payload).unwrap();
             const { token, id } = response;
             dispatch(setUser({ token, id, email }));
-            nav('/');
+            nav(redirectPath);
         } catch (err) {
             console.error(err);
         }
