@@ -18,8 +18,18 @@ export function QuestionBox({
     const id = question.question.id;
     const reply = question.answer.answer;
     const questionText = question.question.question;
-    const questionDate = question.question.timeOfQuestion;
-    const answerDate = question.answer.timeOfAnswer;
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}/${month}/${day} ${hours}:${minutes}`;
+    };
+
+    const questionDate = formatTime(question.question.timeOfQuestion);
+    const answerDate = formatTime(question.answer.timeOfAnswer);
     const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
