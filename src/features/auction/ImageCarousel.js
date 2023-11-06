@@ -89,7 +89,7 @@ export function ImageCarousel({ images }) {
                     display: 'flex',
                     flexWrap: 'wrap',
                     transform: `translateX(${direction * (currentIndex - nextIndex) * 50}%)`,
-                    transition: 'transform 0.2s ease-in-out',
+                    transition: 'transform 0.5s ease-in-out',
                 }}
             >
                 {images.slice(currentIndex, currentIndex + 2).map((image, index) => (
