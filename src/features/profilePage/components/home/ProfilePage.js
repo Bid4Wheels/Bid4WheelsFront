@@ -13,7 +13,43 @@ import {
 } from '../../../../store/auction/auctionApi';
 import { UserReviews } from './UserReviews';
 import CloseIcon from '@mui/icons-material/Close';
-import { is } from 'date-fns/locale';
+import { FilteredReviewsHeader } from './FilteredReviewsHeader';
+
+const reviews = [
+    {
+        userImage: 'default',
+        userName: 'John Doe',
+        reviewDate: '10/5',
+        reviewValue: 4.5,
+        reviewOrigin: 'Verified Purchase',
+        review: "I absolutely adore this product! It has made a significant impact on my daily life. The quality is unmatched, and I can't imagine my life without it now. Highly recommended!",
+    },
+    {
+        userImage: 'default',
+        userName: 'Jane Smith',
+        reviewValue: 3.0,
+        reviewDate: '10/3',
+        reviewOrigin: 'Verified Purchase',
+        review: "It's decent, but there's room for improvement. I expected more considering the price. The functionality is good, but there are some minor issues that need to be addressed.",
+    },
+    {
+        userImage: 'default',
+        userName: 'Alice Johnson',
+        reviewValue: 5.0,
+        reviewDate: '9/8',
+        reviewOrigin: 'Verified Purchase',
+        review: "I can't express how thrilled I am with this product. It has exceeded my expectations in every way possible. The build quality is exceptional, and the features it offers are nothing short of amazing. The product's performance is outstanding, and I've noticed a significant improvement in my daily tasks. This has become an indispensable part of my daily routine. I highly recommend it to everyone looking for a top-notch solution to their needs. It's worth every penny and more!",
+    },
+
+    {
+        userImage: 'default',
+        userName: 'John Doe',
+        reviewValue: 4.5,
+        reviewDate: '7/12',
+        reviewOrigin: 'Verified Purchase',
+        review: "I absolutely adore this product! It has made a significant impact on my daily life. The quality is unmatched, and I can't imagine my life without it now. Highly recommended!",
+    },
+];
 
 export const ProfilePage = () => {
     const nav = useNavigate();
@@ -24,7 +60,9 @@ export const ProfilePage = () => {
     const [historyIsClicked, setHistoryIsClicked] = useState(true);
     const [reviewIsClicked, setReviewIsClicked] = useState(false);
     const [ratingFilter, setRatingFilter] = useState(2.5);
+    const [ratingValue, setRatingValue] = useState(0);
     const [isFilterAplied, setIsFilterAplied] = useState(false);
+    const [displayedReviews, setDisplayedReviews] = useState(reviews);
     const handleHistoryClick = () => {
         setHistoryIsClicked(true);
         setReviewIsClicked(false);
@@ -46,9 +84,14 @@ export const ProfilePage = () => {
     const handleFilterClick = () => {
         // Add any other logic you need when the button is clicked
         setIsFilterReviewsClicked(false);
+        setRatingValue(ratingFilter);
+        setDisplayedReviews(reviews.filter((review) => review.reviewValue == ratingFilter));
         setIsFilterAplied(true);
     };
-    console.log(isFilterAplied);
+    const handleClearFilter = () => {
+        setIsFilterAplied(false);
+        setDisplayedReviews(reviews);
+    };
     const {
         data: biddedData,
         isLoading: isUserLoading,
@@ -106,8 +149,6 @@ export const ProfilePage = () => {
     const handleCreateAuctionClick = () => {
         nav('/newAuction');
     };
-
-    console.log(ratingFilter);
     return (
         <Box sx={{ padding: '1%', height: '80vh' }}>
             <Box
@@ -445,11 +486,36 @@ export const ProfilePage = () => {
                         </Box>
                     </Box>
                 ) : (
-                    <Box flex="1" sx={{ display: 'flex', ml: '60px', alignItems: 'center' }}>
-                        <UserReviews
-                            isReviewFilterOn={isFilterAplied}
-                            filterValue={ratingFilter}
-                        ></UserReviews>
+                    <Box
+                        flex="1"
+                        sx={{
+                            display: 'flex',
+                            ml: '60px',
+                            alignItems: 'start',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        {isFilterAplied && (
+                            <Box display={'flex'} alignItems={'end'}>
+                                <FilteredReviewsHeader filterValue={ratingValue} />
+                                <Typography
+                                    fontSize={'22px'}
+                                    sx={{
+                                        cursor: 'pointer',
+                                        textDecoration: 'underline',
+                                        ml: '20px',
+                                        color: 'grey',
+                                        '&:hover': {
+                                            color: 'black',
+                                        },
+                                    }}
+                                    onClick={handleClearFilter}
+                                >
+                                    clear filter
+                                </Typography>
+                            </Box>
+                        )}
+                        <UserReviews reviews={displayedReviews}></UserReviews>
                     </Box>
                 )}
             </Box>
