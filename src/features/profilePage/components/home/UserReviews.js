@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { ReviewCard } from './ReviewCard';
-import { Box, Pagination, Rating, Typography } from '@mui/material';
-import theme from '../../../../utils/desgin/Theme';
-import colors from '../../../../utils/desgin/Colors';
+import { Box, Pagination } from '@mui/material';
 
 export const UserReviews = ({ reviews }) => {
     const itemsPerPage = 3;
