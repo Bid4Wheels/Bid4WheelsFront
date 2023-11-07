@@ -13,18 +13,29 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
     const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
     const totalSeconds = differenceInSeconds(new Date(deadline), new Date(creationDate));
     const isTimeBarShown = timeElapsedInSeconds < totalSeconds;
-    const percentage = Math.floor(((totalSeconds - timeElapsedInSeconds) / totalSeconds) * 100);
+    var percentage = Math.floor(((totalSeconds - timeElapsedInSeconds) / totalSeconds) * 100);
     const size = isSmall ? 'small' : '18px';
 
     let color = colors.green;
-    if (days < 1) {
-        color = colors.yellow;
-        if (hours < 1) {
-            color = colors.red;
-            if (hours < 0) {
-                color = colors.grey;
-            }
+
+    if (days >= 1) {
+        percentage = 100;
+    } else if (hours >= 1) {
+        if (minutes >= 1) {
+            percentage = ((hours + minutes / 60) / 24) * 100;
+        } else {
+            color = colors.yellow;
+            percentage = 100;
         }
+    } else if (minutes >= 1) {
+        percentage = (minutes / 60) * 100;
+        color = colors.yellow;
+    } else if (minutes === 1) {
+        color = colors.red;
+        percentage = 100;
+    } else {
+        percentage = (seconds / 60) * 100;
+        color = colors.red;
     }
 
     return (
