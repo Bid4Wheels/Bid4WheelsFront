@@ -82,7 +82,7 @@ export function BidWidget({
                             opacity: index == 4 ? '50%' : '100%',
                         }}
                     >
-                        {bid.userName}
+                        {bid.userName + ' ' + bid.userLastName}
                     </Typography>
                     <Typography
                         variant="SemiSmall"
