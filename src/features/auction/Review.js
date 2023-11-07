@@ -4,13 +4,16 @@ import confirm_exchange from '../commons/confirm_exchange.png';
 import B4W_logo from '../commons/bid4wheels_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
-import { usePostOwnerReview, usePostWinnerReview } from '../../store/auction/reviewApi';
+import {
+    usePostOwnerReviewMutation,
+    usePostWinnerReviewMutation,
+} from '../../store/auction/reviewApi';
 
 export function Review({ navigateToLogin, isBuyer }) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState(' ');
-    const [sendReviewWinner] = usePostWinnerReview();
-    const [sendReviewOwner] = usePostOwnerReview();
+    const [sendReviewWinner] = usePostWinnerReviewMutation();
+    const [sendReviewOwner] = usePostOwnerReviewMutation();
     const [auctionId] = useState(1);
     const sendReview = () => {
         const body = {
