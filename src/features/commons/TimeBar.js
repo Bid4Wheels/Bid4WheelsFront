@@ -1,17 +1,27 @@
 import { Box, Typography } from '@mui/material';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { differenceInSeconds } from 'date-fns';
 
 export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = null }) {
     const now = new Date();
-    const timeDifferenceInSeconds = differenceInSeconds(new Date(deadline), now);
-    const days = Math.floor(timeDifferenceInSeconds / (60 * 60 * 24));
-    const hours = Math.floor((timeDifferenceInSeconds % (60 * 60 * 24)) / (60 * 60));
-    const minutes = Math.floor((timeDifferenceInSeconds % (60 * 60)) / 60);
-    const seconds = timeDifferenceInSeconds % 60;
-    const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
     const totalSeconds = differenceInSeconds(new Date(deadline), new Date(creationDate));
+    const [remainingSeconds, setRemainingSeconds] = useState(totalSeconds);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const newRemainingSeconds = differenceInSeconds(new Date(deadline), new Date());
+            setRemainingSeconds(newRemainingSeconds);
+        }, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [deadline]);
+
+    const days = Math.floor(remainingSeconds / (60 * 60 * 24));
+    const hours = Math.floor((remainingSeconds % (60 * 60 * 24)) / (60 * 60));
+    const minutes = Math.floor((remainingSeconds % (60 * 60)) / 60);
+    const seconds = remainingSeconds % 60;
+    const timeElapsedInSeconds = differenceInSeconds(now, new Date(creationDate));
     const isTimeBarShown = timeElapsedInSeconds < totalSeconds;
     var percentage = Math.floor(((totalSeconds - timeElapsedInSeconds) / totalSeconds) * 100);
     const size = isSmall ? 'small' : '18px';
