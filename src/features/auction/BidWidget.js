@@ -74,16 +74,23 @@ export function BidWidget({
                     }}
                     justifyItems="space-between"
                 >
-                    <Typography
-                        variant="SemiSmall"
+                    <Box
                         style={{
-                            textAlign: 'left',
-                            color: 'inherit',
-                            opacity: index == 4 ? '50%' : '100%',
+                            display: 'flex',
+                            flexWrap: 'wrap',
                         }}
                     >
-                        {bid.userName + ' ' + bid.userLastName}
-                    </Typography>
+                        <Typography
+                            variant="SemiSmall"
+                            style={{
+                                textAlign: 'left',
+                                color: 'inherit',
+                                opacity: index == 4 ? '50%' : '100%',
+                            }}
+                        >
+                            {bid.userName + ' ' + bid.userLastName}
+                        </Typography>
+                    </Box>
                     <Typography
                         variant="SemiSmall"
                         style={{
