@@ -12,6 +12,14 @@ export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
         setIsReplying(true);
     };
 
+    const isSendButtonDisabled = () => {
+        if (reply.length >= 10 && reply.length <= 400) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     const handleSend = () => {
         const body = {
             id: id,
@@ -65,17 +73,23 @@ export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
                                 color: '#8c8c8c',
                             },
                         }}
+                        helperText={
+                            isSendButtonDisabled()
+                                ? 'Answer must be between 10 and 400 characters'
+                                : ''
+                        }
                     />
 
                     <Button
                         variant="contained"
-                        style={{
+                        sx={{
                             backgroundColor: colors.water_green,
                             color: 'white',
                             width: '80px',
                             marginTop: '15px',
                         }}
                         onClick={handleSend}
+                        disabled={isSendButtonDisabled()}
                     >
                         Send
                     </Button>
