@@ -25,31 +25,56 @@ export const UserReviews = ({ userId }) => {
     const displayedReviews = reviews.slice(startIndex, endIndex);
 
     return (
-        <Box display="flex">
-            {isLoading ? (
-                <CircularProgress size={60} /> // Loading spinner
-            ) : userReviews && userReviews.length === 0 ? (
-                <Typography variant="h6">No reviews available.</Typography>
-            ) : (
-                displayedReviews.map((review) => (
-                    <ReviewCard
-                        key={review.id} // Replace 'id' with the actual review identifier
-                        userImage={review.reviewer.imageURL}
-                        userName={review.reviewer.name}
-                        reviewValue={review.rating}
-                        reviewOrigin={review.auctionName}
-                        review={review.review}
-                        reviewDate={review.createdAt}
-                    />
-                ))
-            )}
+        <Box
+            flex="1"
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                ml: '60px',
+                height: '100%',
+            }}
+        >
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    justifyContent: 'center',
+                }}
+            >
+                {isLoading ? (
+                    <CircularProgress size={60} /> // Loading spinner
+                ) : userReviews && userReviews.length === 0 ? (
+                    <Typography variant="h6">No reviews available.</Typography>
+                ) : (
+                    displayedReviews.map((review) => (
+                        <ReviewCard
+                            key={review.id}
+                            userImage={review.reviewer.imageURL}
+                            userName={review.reviewer.name}
+                            userLastName={review.reviewer.lastName}
+                            reviewValue={review.rating}
+                            reviewOrigin={review.auctionName}
+                            review={review.review}
+                            reviewDate={review.createdAt}
+                        />
+                    ))
+                )}
+            </Box>
             {userReviews && userReviews.length > 0 && (
-                <Box display="flex" justifyContent="center" alignItems="center" marginTop="20px">
+                <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="flex-end"
+                    marginTop="20px"
+                    height="5%"
+                >
                     <Pagination
-                        count={Math.ceil(userReviews.length / itemsPerPage)}
+                        count={Math.ceil(reviews.length / itemsPerPage)}
                         page={currentPage}
                         onChange={(event, page) => handlePageChange(page)}
-                        color="primary"
+                        color="water_green"
+                        sx={{ marginTop: '20px' }} // Adjust the margin at the top
                     />
                 </Box>
             )}

@@ -9,6 +9,7 @@ export const ReviewCard = ({
     reviewOrigin,
     review,
     reviewDate,
+    userLastName,
 }) => {
     return (
         <Box sx={{ display: 'flex', flex: '1', maxHeight: '200px' }}>
@@ -40,7 +41,7 @@ export const ReviewCard = ({
                         }}
                     >
                         <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
-                            {userName}
+                            {userName + ' ' + userLastName}
                         </Typography>
                         <Rating
                             precision={0.5}

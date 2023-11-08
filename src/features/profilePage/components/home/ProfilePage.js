@@ -335,17 +335,7 @@ export const ProfilePage = () => {
                         </Box>
                     </Box>
                 ) : (
-                    <Box
-                        flex="1"
-                        sx={{
-                            display: 'flex',
-                            ml: '60px',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <UserReviews userId={userId}></UserReviews>
-                    </Box>
+                    <UserReviews userId={userId}></UserReviews>
                 )}
             </Box>
         </Box>
