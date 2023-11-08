@@ -6,6 +6,7 @@ import { EditAnswerInput } from './EditAnswerInput';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 import { ResponseDeleteModal } from './ResponseDeleteModal';
+import { useNavigate } from 'react-router-dom';
 
 export function QuestionBox({
     question,
@@ -40,6 +41,7 @@ export function QuestionBox({
     const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteQuestion, { isSuccess }] = useDeleteQuestionMutation();
+    const navigate = useNavigate();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -54,6 +56,21 @@ export function QuestionBox({
         handleModalClose();
     };
 
+    const handleUserPageRedirect = () => {
+        if (questioner) {
+            navigate(`/user/${questioner.id}`);
+        } else {
+            navigate(`*`);
+        }
+    };
+
+    const handleReply = () => {
+        setIsReplying(true);
+    };
+
+    const handleSendReply = () => {
+        setIsReplying(false);
+    };
     const handleOpenEditAnswer = () => {
         setIsEditingAnswer(true);
     };
@@ -74,11 +91,22 @@ export function QuestionBox({
                 <div style={{ display: 'flex' }}>
                     <Avatar
                         src={questioner.imgURL === 'default' ? null : questioner.imgURL}
-                        sx={{ width: 65, height: 65, mr: '10px', mt: '10px' }}
+                        sx={{ width: 65, height: 65, mr: '10px', mt: '10px', cursor: 'pointer' }}
+                        onClick={() => handleUserPageRedirect()}
                     ></Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
+                            <Typography
+                                sx={{
+                                    fontSize: '22px',
+                                    fontWeight: 480,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                                onClick={() => handleUserPageRedirect()}
+                            >
                                 {questioner.name + ' ' + questioner.lastName}
                             </Typography>
 
