@@ -4,7 +4,6 @@ import colors from '../../utils/desgin/Colors';
 import CloseIcon from '@mui/icons-material/Close';
 import { Filter } from '../filter/Filter';
 import {
-    useGetAuctionListQuery,
     useGetEndingAuctionListQuery,
     useGetFilteredAuctionsMutation,
     useGetNewAuctionListQuery,
@@ -22,12 +21,12 @@ export function Dashboard() {
         data: newData,
         isError: newIsError,
         isFetching: newIsLoading,
-    } = useGetNewAuctionListQuery(page, size);
+    } = useGetNewAuctionListQuery(page);
     const {
         data: endingData,
         isError: endingIsError,
         isFetching: endingIsLoading,
-    } = useGetEndingAuctionListQuery(page, size, { pollingInterval: 10000 });
+    } = useGetEndingAuctionListQuery(page, { pollingInterval: 10000 });
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
     console.log(ref?.current);
