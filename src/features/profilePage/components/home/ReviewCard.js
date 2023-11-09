@@ -12,7 +12,7 @@ export const ReviewCard = ({
     userLastName,
 }) => {
     return (
-        <Box sx={{ display: 'flex', flex: '1', maxHeight: '200px' }}>
+        <Box sx={{ display: 'flex', maxHeight: '200px' }}>
             <Box
                 style={{
                     display: 'flex',
