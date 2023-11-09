@@ -32,6 +32,7 @@ export const UserReviews = ({ userId }) => {
                 flexDirection: 'column',
                 ml: '60px',
                 height: '100%',
+                width: '100%',
             }}
         >
             <Box
