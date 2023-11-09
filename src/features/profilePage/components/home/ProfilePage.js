@@ -352,9 +352,9 @@ export const ProfilePage = () => {
                         sx={{
                             display: 'flex',
                             flexDirection: 'column',
-                            paddingLeft: '5%',
+                            paddingLeft: '2.5%',
                             height: '100%',
-                            width: '65%',
+                            width: '67.5%',
                         }}
                     >
                         <Box
