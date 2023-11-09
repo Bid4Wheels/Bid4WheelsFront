@@ -1,21 +1,24 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Box, Button, Typography, Grid, CircularProgress } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
 import B4W_logo from '../commons/bid4wheels_logo.svg';
 import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { removeUser } from '../../store/user/UserSlice';
-import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
-import { auctionApi } from '../../store/auction/auctionApi';
+import { authenticatedUserApi, useGetUserByIdQuery } from '../../store/user/authenticatedUserApi';
+import { auctionApi, useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
-import { ExchangeConfirmed } from './ExchangeConfirmed';
+import { Review } from './Review';
 
-export function ConfirmExchange() {
+export function ExchangeConfirmed() {
+    const userId = useParams().userId;
+    const auctionId = useParams().auctionId;
+    const user = useGetUserByIdQuery(userId).data || '';
+    const auction = useGetAuctionByIdQuery(auctionId).data || '';
     const nav = useNavigate();
     const dispatch = useDispatch();
-
     const navigateToLogin = () => {
         dispatch(removeUser());
         dispatch(authenticatedUserApi.util.resetApiState());
@@ -23,13 +26,14 @@ export function ConfirmExchange() {
         dispatch(tagsApiSlice.util.resetApiState());
         nav('/login');
     };
+    const [showReview, setShowReview] = useState(false);
+    const [isBuyer, setIsBuyer] = useState(false);
 
-    const [confirmed, setConfirmed] = useState(false);
-    const handleConfirm = () => {
-        setConfirmed(true);
+    const handleShowReview = () => {
+        setShowReview(true);
     };
 
-    if (!confirmed) {
+    if (!showReview) {
         return (
             <Box
                 sx={{
@@ -64,7 +68,7 @@ export function ConfirmExchange() {
                             marginBottom: '0.5%',
                         }}
                     >
-                        Congratulations username!
+                        Confirmation done
                     </Typography>
                     <Typography
                         align="center"
@@ -74,10 +78,8 @@ export function ConfirmExchange() {
                             fontWeight: 350,
                         }}
                     >
-                        Your auction for{' '}
-                        <span style={{ fontWeight: 500 }}>Toyota Corolla (2019)</span> is now over!
-                        Use the following button to confirm that the car has been exchanged
-                        successfully.
+                        Thank you {user.name}, your exchange for {auction.brand}, {auction.model} (
+                        {auction.modelYear}) has been confirmed successfully.
                     </Typography>
                 </Box>
                 <Box
@@ -94,22 +96,25 @@ export function ConfirmExchange() {
                             backgroundColor: colors.water_green,
                             color: 'white',
                             textTransform: 'none',
+                            paddingTop: '2.5%',
+                            paddingBottom: '2.5%',
                             width: '40%',
                             height: 'fit-content',
                             marginTop: '7.5%',
                             marginBottom: '2.5%',
                             fontSize: theme.typography.Small.fontSize,
                         }}
-                        onClick={handleConfirm}
+                        onClick={handleShowReview}
                     >
-                        CONFIRM EXCHANGE
+                        RATE MY EXPERIENCE
                     </Button>
                     <Button
                         style={{
                             backgroundColor: 'grey',
                             color: 'white',
                             textTransform: 'none',
-                            marginBottom: '30px',
+                            paddingTop: '2.5%',
+                            paddingBottom: '2.5%',
                             width: '40%',
                             height: 'fit-content',
                             fontSize: theme.typography.Small.fontSize,
@@ -122,6 +127,5 @@ export function ConfirmExchange() {
             </Box>
         );
     }
-
-    return <ExchangeConfirmed />;
+    return <Review isBuyer={isBuyer} />;
 }
