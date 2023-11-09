@@ -9,6 +9,7 @@ import { ThemeProvider } from '@emotion/react';
 import theme from './utils/desgin/Theme';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
+import ErrorSnackbar from './features/errorHandling/errorSnackbar';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -20,6 +21,7 @@ root.render(
             <ThemeProvider theme={theme}>
                 <PersistGate loading={null} persistor={persistor}>
                     <App />
+                    <ErrorSnackbar />
                 </PersistGate>
             </ThemeProvider>
         </Provider>

@@ -52,7 +52,6 @@ function ValidateIdentity() {
                     },
                 );
         } catch (error) {
-            console.log(error);
             setValidationCode('');
         }
     };
