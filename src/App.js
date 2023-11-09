@@ -28,12 +28,13 @@ function App() {
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/changePassword" Component={ChangePassword} />
                     <Route path="/changePass" Component={inputMail} />
+                    <Route path="/finished/:auctionId" element={<WinningRoute />} />
                     <Route
                         path="/:userId/:auctionId"
                         element={
-                            <WinningRoute>
+                            <PrivateRoute>
                                 <ConfirmExchange></ConfirmExchange>
-                            </WinningRoute>
+                            </PrivateRoute>
                         }
                     />
                     <Route

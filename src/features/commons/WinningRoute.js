@@ -5,12 +5,12 @@ import { updateWinningAuction } from '../../store/auction/winningAuctionSlice';
 import { useParams } from 'react-router-dom';
 
 export const WinningRoute = ({ children }) => {
-    const loggedIn = !!useSelector((state) => state.user.token);
+    const id = useSelector((state) => state.user.userId);
     const dispatch = useDispatch();
     const { auctionId } = useParams();
     dispatch(updateWinningAuction(auctionId));
-    if (loggedIn) {
-        return <>{children}</>;
+    if (!!id) {
+        return <Navigate to={`/${id}/${auctionId}`} replace />;
     } else {
         return <Navigate to={'/login'} replace />;
     }
