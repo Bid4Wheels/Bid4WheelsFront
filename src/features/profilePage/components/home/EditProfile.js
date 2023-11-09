@@ -278,6 +278,7 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                         type="text"
                         margin="normal"
                         variant="standard"
+                        helperText={!validateName(userInfo.name) ? 'Name can not be empty.' : ''}
                         fullWidth
                         onChange={handleNameChange}
                         value={userInfo.name}
@@ -288,6 +289,11 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                         type="text"
                         margin="normal"
                         variant="standard"
+                        helperText={
+                            !validateLastName(userInfo.lastName)
+                                ? 'Last name can not be empty.'
+                                : ''
+                        }
                         fullWidth
                         onChange={handleLastNameChange}
                         value={userInfo.lastName}
@@ -299,6 +305,11 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                     type="tel"
                     margin="normal"
                     variant="standard"
+                    helperText={
+                        !validatePhoneNumber(userInfo.phone)
+                            ? 'Invalid phone number, it must be at least 15 digits long.'
+                            : ''
+                    }
                     fullWidth
                     onChange={handlePhoneChange}
                     value={userInfo.phone}

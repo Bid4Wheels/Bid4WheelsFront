@@ -6,6 +6,7 @@ import { EditAnswerInput } from './EditAnswerInput';
 import CloseIcon from '@mui/icons-material/Close';
 import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 import { ResponseDeleteModal } from './ResponseDeleteModal';
+import { useNavigate } from 'react-router-dom';
 
 export function QuestionBox({
     question,
@@ -18,8 +19,18 @@ export function QuestionBox({
     const id = question.question.id;
     const reply = question.answer.answer;
     const questionText = question.question.question;
-    const questionDate = question.question.timeOfQuestion;
-    const answerDate = question.answer.timeOfAnswer;
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}/${month}/${day} ${hours}:${minutes}`;
+    };
+
+    const questionDate = formatTime(question.question.timeOfQuestion);
+    const answerDate = formatTime(question.answer.timeOfAnswer);
     const questionId = question.question.id;
     const isQuestioner = questioner.id === authenticatedUserId;
     const isOwner = ownerId === authenticatedUserId;
@@ -30,6 +41,7 @@ export function QuestionBox({
     const handleCloseDeleteResponseModal = () => setOpenDeleteResponseModal(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteQuestion, { isSuccess }] = useDeleteQuestionMutation();
+    const navigate = useNavigate();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -44,6 +56,21 @@ export function QuestionBox({
         handleModalClose();
     };
 
+    const handleUserPageRedirect = () => {
+        if (questioner) {
+            navigate(`/user/${questioner.id}`);
+        } else {
+            navigate(`*`);
+        }
+    };
+
+    const handleReply = () => {
+        setIsReplying(true);
+    };
+
+    const handleSendReply = () => {
+        setIsReplying(false);
+    };
     const handleOpenEditAnswer = () => {
         setIsEditingAnswer(true);
     };
@@ -64,11 +91,22 @@ export function QuestionBox({
                 <div style={{ display: 'flex' }}>
                     <Avatar
                         src={questioner.imgURL === 'default' ? null : questioner.imgURL}
-                        sx={{ width: 65, height: 65, mr: '10px', mt: '10px' }}
+                        sx={{ width: 65, height: 65, mr: '10px', mt: '10px', cursor: 'pointer' }}
+                        onClick={() => handleUserPageRedirect()}
                     ></Avatar>
                     <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <div style={{ display: 'flex', flexDirection: 'row' }}>
-                            <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
+                            <Typography
+                                sx={{
+                                    fontSize: '22px',
+                                    fontWeight: 480,
+                                    cursor: 'pointer',
+                                    '&:hover': {
+                                        textDecoration: 'underline',
+                                    },
+                                }}
+                                onClick={() => handleUserPageRedirect()}
+                            >
                                 {questioner.name + ' ' + questioner.lastName}
                             </Typography>
 

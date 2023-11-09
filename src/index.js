@@ -10,6 +10,7 @@ import theme from './utils/desgin/Theme';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { SuccessSnackbar } from './features/commons/SuccessSnackbar';
+import ErrorSnackbar from './features/errorHandling/errorSnackbar';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
@@ -22,6 +23,7 @@ root.render(
                 <PersistGate loading={null} persistor={persistor}>
                     <App />
                     <SuccessSnackbar />
+                    <ErrorSnackbar />
                 </PersistGate>
             </ThemeProvider>
         </Provider>
