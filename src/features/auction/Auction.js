@@ -24,7 +24,7 @@ import { QuestionsContainer } from './QuestionsContainer';
 import { connectStomp, disconnectStomp } from '../../store/stomp/stompSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { differenceInSeconds } from 'date-fns';
+import JSConfetti from 'js-confetti';
 
 export function Auction() {
     const nav = useNavigate();
@@ -74,7 +74,29 @@ export function Auction() {
             };
         }
     }, [isAuctionClosingSoon, refetch]);
+    const isAuctionOver = new Date(deadline) < new Date();
+    function showConfetti(emojis, confettiColors) {
+        const confetti = new JSConfetti();
+        confetti.addConfetti({
+            emojis: emojis,
+            confettiColors: confettiColors,
+            confettiNumber: emojis.length > 0 ? 100 : 500,
+        });
+    }
 
+    useEffect(() => {
+        if (isAuctionOver) {
+            if (auctionOwnerDTO.id === authenticatedUserId) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green, '#0000ff']);
+            } else if (myHighestBid === null) {
+                showConfetti([], ['#00ff00', '#ffffff']);
+            } else if (myHighestBid === data.topBids[0].amount) {
+                showConfetti(['🎉', '🎊', '🎈'], [colors.red, colors.water_green]);
+            } else {
+                showConfetti(['😢', '😭'], ['#000101', colors.grey, '#ffffff']);
+            }
+        }
+    }, [isAuctionOver]);
     if (isLoading) {
         return (
             <Grid

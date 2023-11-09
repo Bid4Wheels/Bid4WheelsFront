@@ -17,6 +17,7 @@ export const ProfileCard = ({
     UserId,
     Name,
     Surname,
+    ReviewValue,
     refetchUserData,
 }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
@@ -25,7 +26,6 @@ export const ProfileCard = ({
     const [openDeleteModal, setOpenDeleteModal] = useState(false);
     const handleOpenDeleteModal = () => setOpenDeleteModal(true);
     const handleCloseDeleteModal = () => setOpenDeleteModal(false);
-    const reviewValue = useState(0);
 
     return (
         <Box
@@ -63,13 +63,13 @@ export const ProfileCard = ({
             </Typography>
             <Rating
                 precision={0.5}
-                value={reviewValue}
+                value={ReviewValue}
                 sx={{
                     '& .MuiRating-iconFilled': {
                         color: colors.water_green,
                     },
                 }}
-                disabled
+                readOnly
             ></Rating>
             <Box
                 sx={{
