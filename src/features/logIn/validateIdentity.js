@@ -26,7 +26,10 @@ function ValidateIdentity() {
     }
 
     const handleCodeChange = (event) => {
-        setValidationCode(event.target.value);
+        const inputValue = event.target.value;
+        const onlyNumbers = inputValue.replace(/[^0-9]/g, '');
+
+        setValidationCode(onlyNumbers);
     };
 
     const handleContinueClick = async () => {
@@ -49,7 +52,6 @@ function ValidateIdentity() {
                     },
                 );
         } catch (error) {
-            console.log(error);
             setValidationCode('');
         }
     };
