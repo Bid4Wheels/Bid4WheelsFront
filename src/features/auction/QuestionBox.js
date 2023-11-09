@@ -7,6 +7,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDeleteQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
 import { ResponseDeleteModal } from './ResponseDeleteModal';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { showMessage } from '../../store/success/successSlice';
 
 export function QuestionBox({
     question,
@@ -42,6 +44,7 @@ export function QuestionBox({
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteQuestion, { isSuccess }] = useDeleteQuestionMutation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleModalOpen = () => {
         setIsModalOpen(true);
@@ -53,6 +56,7 @@ export function QuestionBox({
 
     const handleDelete = () => {
         deleteQuestion(questionId);
+        dispatch(showMessage('Question deleted'));
         handleModalClose();
     };
 

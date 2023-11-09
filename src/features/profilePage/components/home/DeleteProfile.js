@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDeleteUserMutation } from '../../../../store/user/authenticatedUserApi';
 import { removeUser } from '../../../../store/user/UserSlice';
 import { useDispatch } from 'react-redux';
+import { addError } from '../../../../store/errorHandling/errorSlice';
 
 export function DeleteAccountModal({ open, onClose, userId }) {
     const handleCloseDeleteAccountModal = () => {
@@ -22,7 +23,7 @@ export function DeleteAccountModal({ open, onClose, userId }) {
             dispatch(removeUser());
             nav('/login');
         } catch (error) {
-            console.error('Error al eliminar la cuenta:', error);
+            dispatch(addError(error.data));
         }
     };
     const modalStyle = {

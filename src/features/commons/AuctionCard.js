@@ -5,6 +5,7 @@ import { differenceInHours, differenceInDays } from 'date-fns';
 import colors from '../../utils/desgin/Colors';
 import { TimeBar } from './TimeBar';
 import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
+import theme from '../../utils/desgin/Theme';
 
 const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestBid }) => {
     const now = new Date();
@@ -31,6 +32,8 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                     display: 'inline-block',
                     margin: '10px',
                     transition: 'transform 0.2s ease-in-out',
+                    border: 'none',
+                    boxShadow: 'none',
                     ':hover': { transform: 'scale(1.05)' },
                 }}
                 onClick={() => nav(`/auction/${id}`)}
@@ -38,10 +41,8 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                 <CardActionArea>
                     <CardMedia
                         sx={{
-                            border: `2px solid ${color}`,
                             height: '204px',
                             width: '317px',
-                            borderBottom: '0px',
                         }}
                         component="img"
                         src={image}
@@ -55,7 +56,14 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                             },
                         }}
                     >
-                        <Typography gutterBottom variant="XSmall" component="div">
+                        <Typography
+                            gutterBottom
+                            variant="XSmall"
+                            component="div"
+                            sx={{
+                                fontWeight: 850,
+                            }}
+                        >
                             {carName}
                         </Typography>
                         <Box
@@ -76,15 +84,26 @@ const AuctionCard = ({ id, creationDate, endDate, image, carName, tags, highestB
                             />
                         </Box>
 
-                        <Box display="flex" gap="3px">
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexWrap: 'wrap',
+                                columnGap: '10px',
+                                gap: '5px',
+                                maxWidth: '317px',
+                            }}
+                        >
                             {tags.map((tag, index) => (
                                 <Box
                                     key={index}
                                     sx={{
                                         backgroundColor: colors.grey,
-                                        borderRadius: '10px',
-                                        padding: '4px 8px',
-                                        display: 'inline-block',
+                                        fontWeight: 700,
+                                        borderRadius: '5px',
+                                        paddingTop: '4px',
+                                        paddingBottom: '2px',
+                                        paddingLeft: '8px',
+                                        paddingRight: '8px',
                                     }}
                                 >
                                     <Typography gutterBottom variant="XSmall" component="div">

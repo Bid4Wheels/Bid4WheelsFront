@@ -13,11 +13,16 @@ import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
+import successSnackbarReducer from './success/successSlice';
+import errorReducer from './errorHandling/errorSlice';
+import { rtkQueryErrorLogger } from './errorHandling/errorMiddleware';
 import { reviewApi } from './auction/reviewApi';
 
 const reducers = combineReducers({
     user: userReducer,
     stomp: stompReducer,
+    successSnackbar: successSnackbarReducer,
+    errorList: errorReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
@@ -49,5 +54,6 @@ export const store = configureStore({
             questionsAndAnswersApi.middleware,
             reviewApi.middleware,
             stompMiddleware,
+            rtkQueryErrorLogger,
         ),
 });
