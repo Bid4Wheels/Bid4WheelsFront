@@ -27,7 +27,7 @@ export function Dashboard() {
         data: endingData,
         isError: endingIsError,
         isFetching: endingIsLoading,
-    } = useGetEndingAuctionListQuery(page, size);
+    } = useGetEndingAuctionListQuery(page, size, { pollingInterval: 10000 });
     const [GetFilteredAuctions, { data, isError, isLoading }] = useGetFilteredAuctionsMutation();
     const ref = useRef();
     console.log(ref?.current);

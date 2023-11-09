@@ -61,19 +61,8 @@ export function Auction() {
             dispatch(disconnectStomp());
         };
     }, [dispatch]);
-    const isAuctionClosingSoon = differenceInSeconds(new Date(deadline), new Date()) < 24 * 60 * 60;
     const isDeadlineFinished = new Date(deadline) > new Date();
 
-    useEffect(() => {
-        if (isAuctionClosingSoon) {
-            const refreshInterval = setInterval(() => {
-                refetch();
-            }, 10000);
-            return () => {
-                clearInterval(refreshInterval);
-            };
-        }
-    }, [isAuctionClosingSoon, refetch]);
     const isAuctionOver = new Date(deadline) < new Date();
     function showConfetti(emojis, confettiColors) {
         const confetti = new JSConfetti();
@@ -97,6 +86,7 @@ export function Auction() {
             }
         }
     }, [isAuctionOver]);
+
     if (isLoading) {
         return (
             <Grid
