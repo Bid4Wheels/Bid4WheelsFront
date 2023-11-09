@@ -37,7 +37,9 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     };
     const handleKeyPress = (event) => {
         event.preventDefault();
-        handleSendQuestion();
+        if (!isSendButtonDisabled()) {
+            handleSendQuestion();
+        }
     };
 
     return (
