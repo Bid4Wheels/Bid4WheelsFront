@@ -100,6 +100,13 @@ export const auctionApi = authenticatedApi.injectEndpoints({
             query: (userId) => `${baseUrl}/bidder/${userId}`,
             providesTags: ['userAuctions'],
         }),
+        finishAuction: builder.mutation({
+            query: (auctionId) => ({
+                url: `${baseUrl}/finish/${auctionId}`,
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['AuctionList', 'userAuctions'],
+        }),
         deleteAuction: builder.mutation({
             query: (id) => ({
                 url: `${baseUrl}/${id}`,
@@ -122,4 +129,5 @@ export const {
     useGetNewAuctionListQuery,
     useGetEndingAuctionListQuery,
     useGetAuctionsByBidderIdQuery,
+    useFinishAuctionMutation,
 } = auctionApi;

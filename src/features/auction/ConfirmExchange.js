@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
@@ -15,7 +15,6 @@ import { ExchangeConfirmed } from './ExchangeConfirmed';
 export function ConfirmExchange() {
     const nav = useNavigate();
     const dispatch = useDispatch();
-
     const navigateToLogin = () => {
         dispatch(removeUser());
         dispatch(authenticatedUserApi.util.resetApiState());
