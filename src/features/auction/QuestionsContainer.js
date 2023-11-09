@@ -10,7 +10,15 @@ export function QuestionsContainer({
     ownerId,
     isDeadlineFinished,
 }) {
-    const { data, isLoading } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
+    const {
+        data,
+        isLoading,
+        refetch: refetch,
+    } = useGetQuestionsAndAnswersByAuctionIdQuery(auctionId);
+
+    useEffect(() => {
+        refetch({ force: true });
+    }, [auctionId, authenticatedUserId, data]);
 
     if (isLoading) {
         return (

@@ -10,6 +10,9 @@ export const questionsAndAnswersApi = authenticatedApi.injectEndpoints({
                 url: `${baseUrl}/${auctionId}`,
                 method: 'GET',
             }),
+            forceRefetch({ currentArg, previousArg }) {
+                return currentArg !== previousArg;
+            },
             providesTags: ['questionsAndAnswers'],
         }),
         postQuestion: builder.mutation({
