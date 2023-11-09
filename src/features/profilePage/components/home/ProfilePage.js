@@ -110,6 +110,7 @@ export const ProfilePage = () => {
         mail: '',
         phone: '',
         imageUrl: 'default',
+        rating: 0,
     });
     const fullNameBuilder = (name, lastName) => {
         return name + ' ' + lastName;
@@ -123,6 +124,7 @@ export const ProfilePage = () => {
                 mail: userData.email,
                 phone: userData.phoneNumber,
                 imageUrl: userData.imgURL,
+                rating: userData.rating == 'NaN' ? 0 : userData.rating,
             });
         } else if (isError) {
             nav('*');
@@ -341,6 +343,7 @@ export const ProfilePage = () => {
                     UserId={userId}
                     Name={userProfileData.name}
                     Surname={userProfileData.surname}
+                    ReviewValue={userProfileData.rating}
                     refetchUserData={refetchUserData}
                 />
                 {historyIsClicked ? (
