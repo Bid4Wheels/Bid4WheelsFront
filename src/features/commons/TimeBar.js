@@ -48,6 +48,8 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
         color = colors.red;
     }
 
+    const slidingWidth = `${percentage}%`;
+
     return (
         <Box
             sx={{
@@ -62,12 +64,13 @@ export function TimeBar({ creationDate, deadline, isSmall = false, latestBid = n
                 <>
                     <Box
                         sx={{
-                            width: `${percentage}%`,
+                            width: slidingWidth,
                             height: '100%',
                             backgroundColor: color,
                             borderRadius: '20px',
                             display: 'flex',
                             maxWidth: '100%',
+                            transition: 'width 1s',
                         }}
                     ></Box>
                     <Typography
