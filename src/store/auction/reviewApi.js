@@ -19,7 +19,24 @@ export const reviewApi = authenticatedApi.injectEndpoints({
                 body: body,
             }),
         }),
+        getReviewsById: builder.query({
+            query: (userId) => ({
+                url: `${baseUrl}/${userId}`,
+                method: 'GET',
+            }),
+        }),
+        getFilteredReviews: builder.mutation({
+            query: ({ rate, userId }) => ({
+                url: `${baseUrl}/filter?rate=${rate}&userId=${userId}`,
+                method: 'GET',
+            }),
+        }),
     }),
 });
 
-export const { usePostWinnerReview, usePostOwnerReview } = reviewApi;
+export const {
+    usePostWinnerReview,
+    usePostOwnerReview,
+    useGetReviewsByIdQuery,
+    useGetFilteredReviewsMutation,
+} = reviewApi;

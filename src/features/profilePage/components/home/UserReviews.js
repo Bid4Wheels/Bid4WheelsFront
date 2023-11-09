@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ReviewCard } from './ReviewCard';
 import { Box, Pagination } from '@mui/material';
+import { timeFormater } from '../../../../utils/timeFormater';
 
 export const UserReviews = ({ reviews }) => {
     const itemsPerPage = 3;
@@ -20,12 +21,12 @@ export const UserReviews = ({ reviews }) => {
                 {displayedReviews.map((review, index) => (
                     <ReviewCard
                         key={index}
-                        userImage={review.userImage}
-                        userName={review.userName}
-                        reviewValue={review.reviewValue}
-                        reviewOrigin={review.reviewOrigin}
+                        userImage={review.reviewer.imgURL}
+                        userName={review.reviewer.name + ' ' + review.reviewer.lastName}
+                        reviewValue={review.rating}
+                        reviewOrigin={review.auctionName}
                         review={review.review}
-                        reviewDate={review.reviewDate}
+                        reviewDate={timeFormater(review.createdAt)}
                     />
                 ))}
             </Box>
