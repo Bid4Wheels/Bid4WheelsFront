@@ -2,14 +2,25 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { useAnswerQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+import { showMessage } from '../../store/success/successSlice';
+import { useDispatch } from 'react-redux';
 
 export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
     const [reply, setReply] = useState('');
     const [isReplying, setIsReplying] = useState(false);
     const [answer, { isLoading, isError, error }] = useAnswerQuestionMutation();
+    const dispatch = useDispatch();
 
     const handleReply = () => {
         setIsReplying(true);
+    };
+
+    const isSendButtonDisabled = () => {
+        if (reply.length >= 10 && reply.length <= 400) {
+            return false;
+        } else {
+            return true;
+        }
     };
 
     const handleSend = () => {
@@ -23,6 +34,7 @@ export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
         answer(body);
         setReply('');
         setIsReplying(false);
+        dispatch(showMessage('Answer sent'));
     };
 
     return (
@@ -65,17 +77,23 @@ export function ReplyInput({ authenticatedUserId, id, isDeadlineFinished }) {
                                 color: '#8c8c8c',
                             },
                         }}
+                        helperText={
+                            isSendButtonDisabled()
+                                ? 'Answer must be between 10 and 400 characters'
+                                : ''
+                        }
                     />
 
                     <Button
                         variant="contained"
-                        style={{
+                        sx={{
                             backgroundColor: colors.water_green,
                             color: 'white',
                             width: '80px',
                             marginTop: '15px',
                         }}
                         onClick={handleSend}
+                        disabled={isSendButtonDisabled()}
                     >
                         Send
                     </Button>

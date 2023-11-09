@@ -20,11 +20,12 @@ import {
 import { validatePhoneNumber } from '../../../../utils/validationFunctions';
 import { useNavigate } from 'react-router-dom';
 import { useSendValidationCodeMutation } from '../../../../store/user/UserApi';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from '../../../../store/user/UserSlice';
 import { DeleteAccountModal } from './DeleteProfile';
 import { resizeFile } from '../../../../utils/resize';
 import { pushImage } from '../../../../utils/requests';
+import { showMessage } from '../../../../store/success/successSlice';
 
 export function EditProfileModal({
     open,
@@ -152,6 +153,7 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
     const [updateUser] = useUpdateUserMutation();
     const navigate = useNavigate();
     const { data: uploadUrl } = useGetUploadImageUrlQuery();
+    const dispatch = useDispatch();
 
     function handleUploadImage(image, url) {
         return resizeFile(image, 500, 500).then((result) => pushImage(url, result));
@@ -178,6 +180,7 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                     await handleUploadImage(localImage, uploadUrl);
                     refetchUserData();
                 }
+                dispatch(showMessage('Profile updated successfully'));
                 console.log('si');
                 onClose();
             } catch (error) {
@@ -275,6 +278,7 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                         type="text"
                         margin="normal"
                         variant="standard"
+                        helperText={!validateName(userInfo.name) ? 'Name can not be empty.' : ''}
                         fullWidth
                         onChange={handleNameChange}
                         value={userInfo.name}
@@ -285,6 +289,11 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                         type="text"
                         margin="normal"
                         variant="standard"
+                        helperText={
+                            !validateLastName(userInfo.lastName)
+                                ? 'Last name can not be empty.'
+                                : ''
+                        }
                         fullWidth
                         onChange={handleLastNameChange}
                         value={userInfo.lastName}
@@ -296,6 +305,11 @@ function formToComplete({ userInfo, setUserInfo, userId, onClose, localImage, re
                     type="tel"
                     margin="normal"
                     variant="standard"
+                    helperText={
+                        !validatePhoneNumber(userInfo.phone)
+                            ? 'Invalid phone number, it must be at least 15 digits long.'
+                            : ''
+                    }
                     fullWidth
                     onChange={handlePhoneChange}
                     value={userInfo.phone}

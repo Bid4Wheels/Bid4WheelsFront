@@ -2,14 +2,25 @@ import { Button, TextField, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import colors from '../../utils/desgin/Colors';
 import { usePostQuestionMutation } from '../../store/auction/questionsAndAnswersApi';
+import { showMessage } from '../../store/success/successSlice';
+import { useDispatch } from 'react-redux';
 
 export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
     const [question, setQuestion] = useState('');
     const [makeQuestion, { data, isError, error }] = usePostQuestionMutation();
+    const dispatch = useDispatch();
 
     if (authenticatedUserId === ownerId) {
         return null;
     }
+
+    const isSendButtonDisabled = () => {
+        if (question.length >= 10 && question.length <= 400) {
+            return false;
+        } else {
+            return true;
+        }
+    };
 
     const handleSendQuestion = () => {
         const body = {
@@ -17,6 +28,8 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
             auctionId: auctionId,
         };
         makeQuestion(body);
+        dispatch(showMessage('Question sent'));
+        setQuestion('');
 
         if (isError) {
             console.log(error);
@@ -44,19 +57,23 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                 }}
                 onChange={(e) => setQuestion(e.target.value)}
                 value={question}
+                helperText={
+                    isSendButtonDisabled() ? 'Question must be between 10 and 400 characters' : ''
+                }
             />
 
             <Button
                 variant="contained"
-                style={{
+                sx={{
                     backgroundColor: colors.water_green,
                     color: 'white',
                     width: '15%',
-                    marginTop: '15px',
+                    marginTop: '10px',
                 }}
                 onClick={() => {
                     handleSendQuestion();
                 }}
+                disabled={isSendButtonDisabled()}
             >
                 Send
             </Button>
