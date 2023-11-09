@@ -11,6 +11,7 @@ export const reviewApi = authenticatedApi.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
+            invalidatesTags: ['reviews'],
         }),
         postOwnerReview: builder.mutation({
             query: ({ body, auctionId }) => ({
@@ -18,8 +19,14 @@ export const reviewApi = authenticatedApi.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
+            invalidatesTags: ['reviews'],
+        }),
+        getUserReviews: builder.query({
+            query: (userId) => `${baseUrl}/${userId}`,
+            providesTags: ['reviews'],
         }),
     }),
 });
 
-export const { usePostWinnerReview, usePostOwnerReview } = reviewApi;
+export const { usePostWinnerReviewMutation, usePostOwnerReviewMutation, useGetUserReviewsQuery } =
+    reviewApi;

@@ -518,7 +518,7 @@ export const ProfilePage = () => {
                                 </Typography>
                             </Box>
                         )}
-                        <UserReviews reviews={displayedReviews}></UserReviews>
+                        <UserReviews userId={userId}></UserReviews>
                     </Box>
                 )}
             </Box>
