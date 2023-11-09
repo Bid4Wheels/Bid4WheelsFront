@@ -36,10 +36,8 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
         }
     };
     const handleKeyPress = (event) => {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            handleSendQuestion();
-        }
+        event.preventDefault();
+        handleSendQuestion();
     };
 
     return (
@@ -55,7 +53,7 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                 Make a question
             </Typography>
 
-            <form onKeyDown={handleKeyPress}>
+            <form onSubmit={handleKeyPress}>
                 <TextField
                     label="Make a question to the owner"
                     variant="standard"
@@ -65,7 +63,9 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                     onChange={(e) => setQuestion(e.target.value)}
                     value={question}
                     helperText={
-                        isSendButtonDisabled() ? 'Question must be between 10 and 400 characters' : ''
+                        isSendButtonDisabled()
+                            ? 'Question must be between 10 and 400 characters'
+                            : ''
                     }
                 />
             </form>
