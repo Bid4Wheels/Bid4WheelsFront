@@ -9,6 +9,8 @@ import { useCreateAuctionMutation, useGetImageLinksMutation } from '../../store/
 import { useSelector } from 'react-redux';
 import { pushImage } from '../../utils/requests';
 import { resizeFile } from '../../utils/resize';
+import { useDispatch } from 'react-redux';
+import { showMessage } from '../../store/success/successSlice';
 
 const CreateAuction = () => {
     const [selectedDoors, setSelectedDoors] = useState('');
@@ -32,6 +34,7 @@ const CreateAuction = () => {
     const [droppedImages, setDroppedImages] = useState([]);
     const user = useSelector((state) => state.user);
     const userId = user.userId;
+    const dispatch = useDispatch();
 
     const [makeAuction, { data, isError, error }] = useCreateAuctionMutation();
     const [getLinks, { data: imageLinks }] = useGetImageLinksMutation();
@@ -86,6 +89,7 @@ const CreateAuction = () => {
         };
 
         makeAuction(body);
+        dispatch(showMessage('Auction created successfully!'));
 
         if (isError) {
             console.log(error);

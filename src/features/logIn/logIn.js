@@ -20,6 +20,7 @@ import { removeUser, setUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { showMessage } from '../../store/success/successSlice';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -35,6 +36,7 @@ export function LogIn() {
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
     }, []);
+
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
@@ -53,6 +55,7 @@ export function LogIn() {
             const response = await logIn(payload).unwrap();
             const { token, id } = response;
             dispatch(setUser({ token, id, email }));
+            dispatch(showMessage('Login successful!'));
             nav('/');
         } catch (err) {
             console.error(err);

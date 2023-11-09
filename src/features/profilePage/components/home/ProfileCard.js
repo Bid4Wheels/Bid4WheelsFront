@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import MailIcon from '@mui/icons-material/Mail';
 import PhoneIcon from '@mui/icons-material/Phone';
-import { Button, Box, Typography, Avatar } from '@mui/material';
+import { Button, Box, Typography, Avatar, Rating } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import theme from '../../../../utils/desgin/Theme';
 import colors from '../../../../utils/desgin/Colors';
@@ -17,6 +17,7 @@ export const ProfileCard = ({
     UserId,
     Name,
     Surname,
+    ReviewValue,
     refetchUserData,
 }) => {
     const [openEditModal, setOpenEditModal] = useState(false);
@@ -58,11 +59,20 @@ export const ProfileCard = ({
                     letterSpacing: 0.46,
                     textAlign: 'center',
                     marginTop: 2,
-                    marginBottom: 2,
                 }}
             >
                 {Username}
             </Typography>
+            <Rating
+                precision={0.5}
+                value={ReviewValue}
+                sx={{
+                    '& .MuiRating-iconFilled': {
+                        color: colors.water_green,
+                    },
+                }}
+                readOnly
+            ></Rating>
             <Box
                 sx={{
                     display: 'flex',
