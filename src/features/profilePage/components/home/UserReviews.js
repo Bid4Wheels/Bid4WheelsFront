@@ -30,12 +30,19 @@ export const UserReviews = ({ reviews }) => {
                     />
                 ))}
             </Box>
-            <Box display="flex" justifyContent="center" alignItems="flex-end" marginTop="20px">
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="flex-end"
+                marginTop="20px"
+                height="5%"
+            >
                 <Pagination
                     count={Math.ceil(reviews.length / itemsPerPage)}
                     page={currentPage}
                     onChange={(event, page) => handlePageChange(page)}
                     color="water_green"
+                    sx={{ marginTop: '20px' }} // Adjust the margin at the top
                 />
             </Box>
         </Box>
