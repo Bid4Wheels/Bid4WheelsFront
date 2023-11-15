@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Typography } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
 import B4W_logo from '../commons/bid4wheels_logo.svg';
@@ -7,15 +7,15 @@ import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { removeUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
-import { auctionApi } from '../../store/auction/auctionApi';
+import { auctionApi, useFinishAuctionMutation } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
 import { ExchangeConfirmed } from './ExchangeConfirmed';
 
 export function ConfirmExchange() {
     const nav = useNavigate();
+    const { userId, auctionId } = useParams();
     const dispatch = useDispatch();
-
     const navigateToLogin = () => {
         dispatch(removeUser());
         dispatch(authenticatedUserApi.util.resetApiState());
@@ -27,6 +27,7 @@ export function ConfirmExchange() {
     const [confirmed, setConfirmed] = useState(false);
     const handleConfirm = () => {
         setConfirmed(true);
+        useFinishAuctionMutation(auctionId);
     };
 
     if (!confirmed) {
