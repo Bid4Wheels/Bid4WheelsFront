@@ -30,23 +30,20 @@ export const ProfileCard = ({
     return (
         <Box
             sx={{
-                paddingLeft: '50px',
-                paddingRight: '50px',
                 display: 'flex',
                 flexDirection: 'column',
                 borderRadius: 12,
                 border: '3px solid',
                 borderColor: colors.water_green,
-                background: 'white',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '10px',
-                paddingTop: '10px',
+                padding: '25px',
             }}
         >
             <Avatar
                 src={imgUrl === 'default' ? null : imgUrl}
-                sx={{ width: 274, height: 274, marginBottom: 2 }}
+                sx={{ width: 200, height: 200, marginBottom: '10px' }}
             ></Avatar>
             <Typography
                 variant="h4"
