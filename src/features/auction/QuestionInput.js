@@ -35,6 +35,12 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
             console.log(error);
         }
     };
+    const handleKeyPress = (event) => {
+        event.preventDefault();
+        if (!isSendButtonDisabled()) {
+            handleSendQuestion();
+        }
+    };
 
     return (
         <div
@@ -49,18 +55,22 @@ export function QuestionInput({ auctionId, authenticatedUserId, ownerId }) {
                 Make a question
             </Typography>
 
-            <TextField
-                label="Make a question to the owner"
-                variant="standard"
-                sx={{
-                    width: '100%',
-                }}
-                onChange={(e) => setQuestion(e.target.value)}
-                value={question}
-                helperText={
-                    isSendButtonDisabled() ? 'Question must be between 10 and 400 characters' : ''
-                }
-            />
+            <form onSubmit={handleKeyPress}>
+                <TextField
+                    label="Make a question to the owner"
+                    variant="standard"
+                    sx={{
+                        width: '100%',
+                    }}
+                    onChange={(e) => setQuestion(e.target.value)}
+                    value={question}
+                    helperText={
+                        isSendButtonDisabled()
+                            ? 'Question must be between 10 and 400 characters'
+                            : ''
+                    }
+                />
+            </form>
 
             <Button
                 variant="contained"
