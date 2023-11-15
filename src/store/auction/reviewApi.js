@@ -19,14 +19,26 @@ export const reviewApi = authenticatedApi.injectEndpoints({
                 method: 'POST',
                 body: body,
             }),
-            invalidatesTags: ['reviews'],
         }),
-        getUserReviews: builder.query({
-            query: (userId) => `${baseUrl}/${userId}`,
+        getReviewsById: builder.query({
+            query: (userId) => ({
+                url: `${baseUrl}/${userId}`,
+                method: 'GET',
+            }),
             providesTags: ['reviews'],
+        }),
+        getFilteredReviews: builder.mutation({
+            query: ({ rate, userId }) => ({
+                url: `${baseUrl}/filter?rate=${rate}&userId=${userId}`,
+                method: 'GET',
+            }),
         }),
     }),
 });
 
-export const { usePostWinnerReviewMutation, usePostOwnerReviewMutation, useGetUserReviewsQuery } =
-    reviewApi;
+export const {
+    usePostWinnerReviewMutation,
+    usePostOwnerReviewMutation,
+    useGetReviewsByIdQuery,
+    useGetFilteredReviewsMutation,
+} = reviewApi;
