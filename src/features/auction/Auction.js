@@ -62,6 +62,7 @@ export function Auction() {
         };
     }, [dispatch]);
     const isDeadlineFinished = new Date(deadline) > new Date();
+
     const isAuctionOver = new Date(deadline) < new Date();
     function showConfetti(emojis, confettiColors) {
         const confetti = new JSConfetti();
@@ -85,6 +86,7 @@ export function Auction() {
             }
         }
     }, [isAuctionOver]);
+
     if (isLoading) {
         return (
             <Grid

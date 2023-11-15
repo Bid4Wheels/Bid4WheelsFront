@@ -14,42 +14,10 @@ import {
 import { UserReviews } from './UserReviews';
 import CloseIcon from '@mui/icons-material/Close';
 import { FilteredReviewsHeader } from './FilteredReviewsHeader';
-
-const reviews = [
-    {
-        userImage: 'default',
-        userName: 'John Doe',
-        reviewDate: '10/5',
-        reviewValue: 4.5,
-        reviewOrigin: 'Verified Purchase',
-        review: "I absolutely adore this product! It has made a significant impact on my daily life. The quality is unmatched, and I can't imagine my life without it now. Highly recommended!",
-    },
-    {
-        userImage: 'default',
-        userName: 'Jane Smith',
-        reviewValue: 3.0,
-        reviewDate: '10/3',
-        reviewOrigin: 'Verified Purchase',
-        review: "It's decent, but there's room for improvement. I expected more considering the price. The functionality is good, but there are some minor issues that need to be addressed.",
-    },
-    {
-        userImage: 'default',
-        userName: 'Alice Johnson',
-        reviewValue: 5.0,
-        reviewDate: '9/8',
-        reviewOrigin: 'Verified Purchase',
-        review: "I can't express how thrilled I am with this product. It has exceeded my expectations in every way possible. The build quality is exceptional, and the features it offers are nothing short of amazing. The product's performance is outstanding, and I've noticed a significant improvement in my daily tasks. This has become an indispensable part of my daily routine. I highly recommend it to everyone looking for a top-notch solution to their needs. It's worth every penny and more!",
-    },
-
-    {
-        userImage: 'default',
-        userName: 'John Doe',
-        reviewValue: 4.5,
-        reviewDate: '7/12',
-        reviewOrigin: 'Verified Purchase',
-        review: "I absolutely adore this product! It has made a significant impact on my daily life. The quality is unmatched, and I can't imagine my life without it now. Highly recommended!",
-    },
-];
+import {
+    useGetReviewsByIdQuery,
+    useGetFilteredReviewsMutation,
+} from '../../../../store/auction/reviewApi';
 
 export const ProfilePage = () => {
     const nav = useNavigate();
@@ -62,7 +30,12 @@ export const ProfilePage = () => {
     const [ratingFilter, setRatingFilter] = useState(2.5);
     const [ratingValue, setRatingValue] = useState(0);
     const [isFilterAplied, setIsFilterAplied] = useState(false);
-    const [displayedReviews, setDisplayedReviews] = useState(reviews);
+    const { data: reviewsData } = useGetReviewsByIdQuery(userId);
+    const [displayedReviews, setDisplayedReviews] = useState([]);
+    const [getFilteredReviews] = useGetFilteredReviewsMutation();
+    useEffect(() => {
+        setDisplayedReviews(reviewsData || []);
+    }, [reviewsData]);
     const handleHistoryClick = () => {
         setHistoryIsClicked(true);
         setReviewIsClicked(false);
@@ -73,24 +46,27 @@ export const ProfilePage = () => {
     };
     const [isFilterReviewsClicked, setIsFilterReviewsClicked] = useState(false);
 
-    const handleFilterReviewsClick = () => {
-        setIsFilterReviewsClicked(true);
-        // Add any other logic you need when the button is clicked
-    };
-
     const handleRatingChange = (event) => {
         setRatingFilter(event.target.value);
     };
-    const handleFilterClick = () => {
-        // Add any other logic you need when the button is clicked
+    const handleFilterClick = async () => {
         setIsFilterReviewsClicked(false);
         setRatingValue(ratingFilter);
-        setDisplayedReviews(reviews.filter((review) => review.reviewValue == ratingFilter));
+        try {
+            const filteredReviews = await getFilteredReviews({
+                rate: ratingFilter,
+                userId: userId,
+            });
+            setDisplayedReviews(filteredReviews.data || []);
+        } catch (e) {
+            console.log(e);
+        }
         setIsFilterAplied(true);
     };
     const handleClearFilter = () => {
         setIsFilterAplied(false);
-        setDisplayedReviews(reviews);
+        setDisplayedReviews(reviewsData || []);
+        setRatingValue(0);
     };
     const {
         data: biddedData,
@@ -518,7 +494,22 @@ export const ProfilePage = () => {
                                 </Typography>
                             </Box>
                         )}
-                        <UserReviews userId={userId}></UserReviews>
+                        {displayedReviews.length === 0 ? (
+                            <Typography
+                                sx={{
+                                    color: 'black',
+                                    fontSize: theme.typography.Medium,
+                                    paddingLeft: '2.5%',
+                                    fontWeight: 500,
+                                    alignSelf: 'start',
+                                    marginTop: '5%',
+                                }}
+                            >
+                                This user has not received any reviews.
+                            </Typography>
+                        ) : (
+                            <UserReviews reviews={displayedReviews}></UserReviews>
+                        )}
                     </Box>
                 )}
             </Box>

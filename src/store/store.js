@@ -54,6 +54,7 @@ export const store = configureStore({
             authenticatedApi.middleware,
             unauthenticatedApi.middleware,
             questionsAndAnswersApi.middleware,
+            reviewApi.middleware,
             stompMiddleware,
             rtkQueryErrorLogger,
         ),
