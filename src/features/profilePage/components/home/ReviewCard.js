@@ -41,7 +41,7 @@ export const ReviewCard = ({
                         }}
                     >
                         <Typography sx={{ fontSize: '22px', fontWeight: 480 }}>
-                            {userName + ' ' + userLastName}
+                            {userName}
                         </Typography>
                         <Rating
                             precision={0.5}
