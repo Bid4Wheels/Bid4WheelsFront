@@ -14,6 +14,7 @@ import { RouteWithHeader } from './features/commons/RouteWithHeader';
 import { inputMail } from './features/logIn/inputMail';
 import { ConfirmExchange } from './features/auction/ConfirmExchange';
 import { NotFound } from './features/errorPage/NotFound';
+import { WinningRoute } from './features/commons/WinningRoute';
 
 //if you need to make a route private insert PrivateRoute in the element of the route,
 // if you need to have the header, use RouteWithHeader in the element of the route, in case of needing both use first PrivateRoute
@@ -27,7 +28,15 @@ function App() {
                     <Route path="/validateIdentity" Component={ValidateIdentity} />
                     <Route path="/changePassword" Component={ChangePassword} />
                     <Route path="/changePass" Component={inputMail} />
-                    <Route path="/:userId/:auctionId" Component={ConfirmExchange} />
+                    <Route path="/finished/:auctionId" element={<WinningRoute />} />
+                    <Route
+                        path="/:userId/:auctionId"
+                        element={
+                            <PrivateRoute>
+                                <ConfirmExchange></ConfirmExchange>
+                            </PrivateRoute>
+                        }
+                    />
                     <Route
                         path="/auction/:auctionId"
                         element={

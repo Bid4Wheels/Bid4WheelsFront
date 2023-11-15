@@ -10,6 +10,8 @@ import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi, useFinishAuctionMutation } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
+import { Review } from './Review';
+import { removeWinningAuction } from '../../store/auction/winningAuctionSlice';
 import { ExchangeConfirmed } from './ExchangeConfirmed';
 
 export function ConfirmExchange() {
