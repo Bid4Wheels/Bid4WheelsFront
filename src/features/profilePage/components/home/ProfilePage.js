@@ -318,6 +318,7 @@ export const ProfilePage = () => {
                         alignItems: 'center',
                         width: '35%',
                         marginRight: '5%',
+                        ml: '20px',
                     }}
                 >
                     <ProfileCard

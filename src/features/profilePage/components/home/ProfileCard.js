@@ -39,6 +39,7 @@ export const ProfileCard = ({
                 justifyContent: 'center',
                 gap: '10px',
                 padding: '25px',
+                width: '90%',
             }}
         >
             <Avatar
