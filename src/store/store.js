@@ -1,6 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { userApi } from './user/UserApi';
 import userReducer from './user/UserSlice';
+import winningActionReducer from './auction/winningAuctionSlice';
 import { authApi } from './auth/AuthApi';
 import { persistReducer } from 'redux-persist';
 import { authenticatedUserApi } from './user/authenticatedUserApi';
@@ -13,16 +14,24 @@ import { unauthenticatedApi } from './mainApis/unauthenticatedApi';
 import { questionsAndAnswersApi } from './auction/questionsAndAnswersApi';
 import { stompMiddleware } from './stomp/stompMiddleware';
 import { stompReducer } from './stomp/stompSlice';
+import successSnackbarReducer from './success/successSlice';
+import errorReducer from './errorHandling/errorSlice';
+import { rtkQueryErrorLogger } from './errorHandling/errorMiddleware';
+import { reviewApi } from './auction/reviewApi';
 
 const reducers = combineReducers({
     user: userReducer,
+    winningAuction: winningActionReducer,
     stomp: stompReducer,
+    successSnackbar: successSnackbarReducer,
+    errorList: errorReducer,
     [userApi.reducerPath]: userApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
     [authenticatedUserApi.reducerPath]: authenticatedUserApi.reducer,
     [tagsApiSlice.reducerPath]: tagsApiSlice.reducer,
     [auctionApi.reducerPath]: auctionApi.reducer,
+    [reviewApi.reducerPath]: reviewApi.reducer,
 });
 
 const persistConfig = {
@@ -45,6 +54,8 @@ export const store = configureStore({
             authenticatedApi.middleware,
             unauthenticatedApi.middleware,
             questionsAndAnswersApi.middleware,
+            reviewApi.middleware,
             stompMiddleware,
+            rtkQueryErrorLogger,
         ),
 });

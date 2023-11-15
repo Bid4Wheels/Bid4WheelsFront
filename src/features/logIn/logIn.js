@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     Alert,
     Box,
@@ -20,6 +20,8 @@ import { removeUser, setUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
+import { selectWinningAuction } from '../../store/auction/winningAuctionSlice';
+import { showMessage } from '../../store/success/successSlice';
 
 export function LogIn() {
     const nav = useNavigate();
@@ -28,6 +30,7 @@ export function LogIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [logIn, { isLoading, isError }] = useLogInMutation();
+    const winningAuctionId = useSelector((state) => state.winningAuction);
 
     useEffect(() => {
         dispatch(removeUser());
@@ -35,6 +38,7 @@ export function LogIn() {
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
     }, []);
+
     const handleTogglePassword = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
@@ -49,11 +53,19 @@ export function LogIn() {
 
     const handleLogIn = async () => {
         const payload = { email, password };
+        let redirectPath = '/';
+
         try {
             const response = await logIn(payload).unwrap();
             const { token, id } = response;
             dispatch(setUser({ token, id, email }));
-            nav('/');
+            dispatch(showMessage('Login successful!'));
+            if (winningAuctionId) {
+                redirectPath = `/${id}/${winningAuctionId}`;
+                nav(redirectPath);
+            } else {
+                nav('/');
+            }
         } catch (err) {
             console.error(err);
         }

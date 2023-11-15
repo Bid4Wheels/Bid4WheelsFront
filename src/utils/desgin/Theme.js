@@ -1,3 +1,4 @@
+import { ratingClasses } from '@mui/material';
 import colors from './Colors';
 import { createTheme } from '@mui/material/styles';
 
@@ -36,6 +37,17 @@ const theme = createTheme({
             light: colors.black_grey,
             dark: colors.black_grey,
             contrastText: '#FFFFFF',
+        },
+    },
+    components: {
+        MuiRating: {
+            styleOverrides: {
+                root: {
+                    [`&.${ratingClasses.disabled}`]: {
+                        opacity: 1,
+                    },
+                },
+            },
         },
     },
 });

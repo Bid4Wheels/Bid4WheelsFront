@@ -10,7 +10,7 @@ export const auctionApi = authenticatedApi.injectEndpoints({
             providesTags: ['Auction'],
         }),
         getAuctionList: builder.query({
-            query: (page, size) => ({ url: `${baseUrl}/`, params: { page, size } }),
+            query: (page) => ({ url: `${baseUrl}/`, params: { page } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -22,7 +22,7 @@ export const auctionApi = authenticatedApi.injectEndpoints({
             },
         }),
         getNewAuctionList: builder.query({
-            query: (page, size) => ({ url: `${baseUrl}/new`, params: { page, size } }),
+            query: (page) => ({ url: `${baseUrl}/new`, params: { page } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -42,7 +42,7 @@ export const auctionApi = authenticatedApi.injectEndpoints({
             providesTags: ['AuctionList'],
         }),
         getEndingAuctionList: builder.query({
-            query: (page, size) => ({ url: `${baseUrl}/ending`, params: { page, size } }),
+            query: (page) => ({ url: `${baseUrl}/ending`, params: { page } }),
             forceRefetch({ currentArg, previousArg }) {
                 return currentArg !== previousArg;
             },
@@ -100,6 +100,13 @@ export const auctionApi = authenticatedApi.injectEndpoints({
             query: (userId) => `${baseUrl}/bidder/${userId}`,
             providesTags: ['userAuctions'],
         }),
+        finishAuction: builder.mutation({
+            query: (auctionId) => ({
+                url: `${baseUrl}/finish/${auctionId}`,
+                method: 'PATCH',
+            }),
+            invalidatesTags: ['AuctionList', 'userAuctions'],
+        }),
         deleteAuction: builder.mutation({
             query: (id) => ({
                 url: `${baseUrl}/${id}`,
@@ -122,4 +129,5 @@ export const {
     useGetNewAuctionListQuery,
     useGetEndingAuctionListQuery,
     useGetAuctionsByBidderIdQuery,
+    useFinishAuctionMutation,
 } = auctionApi;
