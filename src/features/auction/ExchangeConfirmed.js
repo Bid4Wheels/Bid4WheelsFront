@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Button, Typography, Grid, CircularProgress } from '@mui/material';
 import confirm_exchange from '../commons/confirm_exchange.png';
@@ -9,13 +9,13 @@ import { removeUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi, useGetUserByIdQuery } from '../../store/user/authenticatedUserApi';
 import { auctionApi, useGetAuctionByIdQuery } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Review } from './Review';
 
 export function ExchangeConfirmed() {
     const userId = useParams().userId;
     const auctionId = useParams().auctionId;
-    const user = useGetUserByIdQuery(userId).data || '';
+    const user = useSelector((state) => state.user);
     const auction = useGetAuctionByIdQuery(auctionId).data || '';
     const nav = useNavigate();
     const dispatch = useDispatch();
@@ -32,6 +32,14 @@ export function ExchangeConfirmed() {
     const handleShowReview = () => {
         setShowReview(true);
     };
+
+    useEffect(() => {
+        if (user.userId === auction.auctionOwnerDTO.id) {
+            setIsBuyer(false);
+        } else {
+            setIsBuyer(true);
+        }
+    }, [user.id, auction.ownerId]);
 
     if (!showReview) {
         return (
