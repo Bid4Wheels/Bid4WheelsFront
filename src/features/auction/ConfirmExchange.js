@@ -16,6 +16,7 @@ import { ExchangeConfirmed } from './ExchangeConfirmed';
 
 export function ConfirmExchange() {
     const nav = useNavigate();
+    const [finishAuction] = useFinishAuctionMutation();
     const { userId, auctionId } = useParams();
     const dispatch = useDispatch();
     const navigateToLogin = () => {
@@ -23,13 +24,15 @@ export function ConfirmExchange() {
         dispatch(authenticatedUserApi.util.resetApiState());
         dispatch(auctionApi.util.resetApiState());
         dispatch(tagsApiSlice.util.resetApiState());
+        dispatch(removeWinningAuction());
         nav('/login');
     };
 
     const [confirmed, setConfirmed] = useState(false);
     const handleConfirm = () => {
         setConfirmed(true);
-        useFinishAuctionMutation(auctionId);
+        finishAuction(auctionId);
+        dispatch(removeWinningAuction());
     };
 
     if (!confirmed) {

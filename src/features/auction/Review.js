@@ -8,22 +8,36 @@ import {
     usePostOwnerReviewMutation,
     usePostWinnerReviewMutation,
 } from '../../store/auction/reviewApi';
+import { useNavigate } from 'react-router';
+import { useDispatch } from 'react-redux';
+import { removeUser } from '../../store/user/UserSlice';
+import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
+import { auctionApi } from '../../store/auction/auctionApi';
+import { tagsApiSlice } from '../../store/auction/tagsApi';
 
-export function Review({ navigateToLogin, isBuyer }) {
+export function Review({ isBuyer, auctionId}) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState(' ');
     const [sendReviewWinner] = usePostWinnerReviewMutation();
     const [sendReviewOwner] = usePostOwnerReviewMutation();
-    const [auctionId] = useState(1);
+    const nav = useNavigate();
+    const dispatch = useDispatch();
+    const navigateToLogin = () => {
+        dispatch(removeUser());
+        dispatch(authenticatedUserApi.util.resetApiState());
+        dispatch(auctionApi.util.resetApiState());
+        dispatch(tagsApiSlice.util.resetApiState());
+        nav('/login');
+    };
     const sendReview = () => {
         const body = {
             rating: rating,
             review: review,
         };
         if (isBuyer) {
-            sendReviewWinner({ body, auctionId });
-        } else {
             sendReviewOwner({ body, auctionId });
+        } else {
+            sendReviewWinner({ body, auctionId });
         }
     };
     return (
@@ -131,8 +145,8 @@ export function Review({ navigateToLogin, isBuyer }) {
                         fontSize: theme.typography.Small.fontSize,
                     }}
                     onClick={() => {
-                        navigateToLogin();
                         sendReview();
+                        navigateToLogin();
                     }}
                 >
                     SUBMIT

@@ -310,208 +310,227 @@ export const ProfilePage = () => {
                 className="DataContainer"
                 sx={{ display: 'flex', marginX: '2rem', marginTop: '15px', height: '100%' }}
             >
-                <ProfileCard
-                    canEdit={canEdit}
-                    Username={userProfileData.username}
-                    Email={userProfileData.mail}
-                    Phone={userProfileData.phone}
-                    imgUrl={userProfileData.imageUrl}
-                    UserId={userId}
-                    Name={userProfileData.name}
-                    Surname={userProfileData.surname}
-                    ReviewValue={userProfileData.rating}
-                    refetchUserData={refetchUserData}
-                />
-                {historyIsClicked ? (
-                    <Box flex="1">
-                        <Box
-                            className="AuctionLists"
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                paddingLeft: '5%',
-                                height: '100%',
-                            }}
-                        >
+                <Box
+                    className="ProfileCard"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        width: '35%',
+                        marginRight: '5%',
+                        ml: '20px',
+                    }}
+                >
+                    <ProfileCard
+                        canEdit={canEdit}
+                        Username={userProfileData.username}
+                        Email={userProfileData.mail}
+                        Phone={userProfileData.phone}
+                        imgUrl={userProfileData.imageUrl}
+                        UserId={userId}
+                        Name={userProfileData.name}
+                        Surname={userProfileData.surname}
+                        ReviewValue={userProfileData.rating}
+                        refetchUserData={refetchUserData}
+                    />
+                </Box>
+                <Box
+                    className="rest"
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        width: '65%',
+                        height: '100%',
+                    }}
+                >
+                    {historyIsClicked ? (
+                        <Box flex="1">
                             <Box
-                                className="BiddedAuctions"
-                                sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
-                            >
-                                <Typography
-                                    sx={{
-                                        color: 'black',
-                                        fontSize: theme.typography.Medium.fontSize,
-                                        paddingLeft: '2.5%',
-                                        fontWeight: 500,
-                                    }}
-                                >
-                                    Bids made
-                                </Typography>
-                                {biddedAuctionsData.length === 0 ? (
-                                    canEdit ? (
-                                        <>
-                                            <Typography
-                                                sx={{
-                                                    color: 'black',
-                                                    fontSize: theme.typography.Small.fontSize,
-                                                    paddingLeft: '2.5%',
-                                                    paddingBottom: '5%',
-                                                    fontWeight: 500,
-                                                    alignSelf: 'center',
-                                                    marginTop: '5%',
-                                                }}
-                                            >
-                                                You have not bid in any auctions
-                                            </Typography>
-                                        </>
-                                    ) : (
-                                        <Typography
-                                            sx={{
-                                                color: 'black',
-                                                fontSize: theme.typography.Small.fontSize,
-                                                paddingLeft: '2.5%',
-                                                fontWeight: 500,
-                                                alignSelf: 'center',
-                                                marginTop: '5%',
-                                            }}
-                                        >
-                                            This user has not bid in any auctions yet
-                                        </Typography>
-                                    )
-                                ) : (
-                                    <>
-                                        <AuctionHorizontalCardList
-                                            auctionList={biddedAuctionsData}
-                                        ></AuctionHorizontalCardList>
-                                    </>
-                                )}
-                            </Box>
-                            <Box
-                                className="PublishedAuctions"
+                                className="AuctionLists"
                                 sx={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    height: '50%',
-                                    marginTop: '130px',
+                                    paddingLeft: '5%',
+                                    height: '100%',
                                 }}
                             >
-                                <Typography
-                                    sx={{
-                                        color: 'black',
-                                        fontSize: theme.typography.Medium.fontSize,
-                                        paddingLeft: '2.5%',
-                                        fontWeight: 500,
-                                    }}
+                                <Box
+                                    className="BiddedAuctions"
+                                    sx={{ display: 'flex', flexDirection: 'column', height: '50%' }}
                                 >
-                                    Published auctions
-                                </Typography>
-                                {userAuctionsData.length === 0 ? (
-                                    canEdit ? (
-                                        <>
+                                    <Typography
+                                        sx={{
+                                            color: 'black',
+                                            fontSize: theme.typography.Medium.fontSize,
+                                            paddingLeft: '2.5%',
+                                            fontWeight: 500,
+                                        }}
+                                    >
+                                        Bids made
+                                    </Typography>
+                                    {biddedAuctionsData.length === 0 ? (
+                                        canEdit ? (
+                                            <>
+                                                <Typography
+                                                    sx={{
+                                                        color: 'black',
+                                                        fontSize: theme.typography.Small.fontSize,
+                                                        paddingLeft: '2.5%',
+                                                        paddingBottom: '5%',
+                                                        fontWeight: 500,
+                                                        alignSelf: 'center',
+                                                        marginTop: '5%',
+                                                    }}
+                                                >
+                                                    You have not bid in any auctions
+                                                </Typography>
+                                            </>
+                                        ) : (
                                             <Typography
                                                 sx={{
                                                     color: 'black',
                                                     fontSize: theme.typography.Small.fontSize,
                                                     paddingLeft: '2.5%',
-                                                    paddingBottom: '5%',
                                                     fontWeight: 500,
                                                     alignSelf: 'center',
                                                     marginTop: '5%',
                                                 }}
                                             >
-                                                You have not created any auctions
+                                                This user has not bid in any auctions yet
                                             </Typography>
-                                            <Button
-                                                style={{
-                                                    backgroundColor: colors.water_green,
-                                                    color: 'white',
-                                                    textTransform: 'none',
-                                                    padding: '20px',
-                                                    width: 'fit-content',
-                                                    height: 'fit-content',
-                                                    marginLeft: '2.5%',
+                                        )
+                                    ) : (
+                                        <>
+                                            <AuctionHorizontalCardList
+                                                auctionList={biddedAuctionsData}
+                                            ></AuctionHorizontalCardList>
+                                        </>
+                                    )}
+                                </Box>
+                                <Box
+                                    className="PublishedAuctions"
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        height: '50%',
+                                        marginTop: '130px',
+                                    }}
+                                >
+                                    <Typography
+                                        sx={{
+                                            color: 'black',
+                                            fontSize: theme.typography.Medium.fontSize,
+                                            paddingLeft: '2.5%',
+                                            fontWeight: 500,
+                                        }}
+                                    >
+                                        Published auctions
+                                    </Typography>
+                                    {userAuctionsData.length === 0 ? (
+                                        canEdit ? (
+                                            <>
+                                                <Typography
+                                                    sx={{
+                                                        color: 'black',
+                                                        fontSize: theme.typography.Small.fontSize,
+                                                        paddingLeft: '2.5%',
+                                                        paddingBottom: '5%',
+                                                        fontWeight: 500,
+                                                        alignSelf: 'center',
+                                                        marginTop: '5%',
+                                                    }}
+                                                >
+                                                    You have not created any auctions
+                                                </Typography>
+                                                <Button
+                                                    style={{
+                                                        backgroundColor: colors.water_green,
+                                                        color: 'white',
+                                                        padding: '20px',
+                                                        marginLeft: '2.5%',
+                                                        fontSize: theme.typography.Small.fontSize,
+                                                        fontWeight: 500,
+                                                        alignSelf: 'center',
+                                                        marginBottom: '15px',
+                                                    }}
+                                                    onClick={handleCreateAuctionClick}
+                                                >
+                                                    Create new auction
+                                                </Button>
+                                            </>
+                                        ) : (
+                                            <Typography
+                                                sx={{
+                                                    color: 'black',
                                                     fontSize: theme.typography.Small.fontSize,
+                                                    paddingLeft: '2.5%',
                                                     fontWeight: 500,
                                                     alignSelf: 'center',
                                                     marginTop: '5%',
                                                 }}
-                                                onClick={handleCreateAuctionClick}
                                             >
-                                                Create new auction
-                                            </Button>
-                                        </>
+                                                This user has not created any auctions yet
+                                            </Typography>
+                                        )
                                     ) : (
-                                        <Typography
-                                            sx={{
-                                                color: 'black',
-                                                fontSize: theme.typography.Small.fontSize,
-                                                paddingLeft: '2.5%',
-                                                fontWeight: 500,
-                                                alignSelf: 'center',
-                                                marginTop: '5%',
-                                            }}
-                                        >
-                                            This user has not created any auctions yet
-                                        </Typography>
-                                    )
-                                ) : (
-                                    <>
-                                        <AuctionHorizontalCardList
-                                            auctionList={userAuctionsData}
-                                        ></AuctionHorizontalCardList>
-                                    </>
-                                )}
+                                        <>
+                                            <AuctionHorizontalCardList
+                                                auctionList={userAuctionsData}
+                                            ></AuctionHorizontalCardList>
+                                        </>
+                                    )}
+                                </Box>
                             </Box>
                         </Box>
-                    </Box>
-                ) : (
-                    <Box
-                        flex="1"
-                        sx={{
-                            display: 'flex',
-                            ml: '60px',
-                            alignItems: 'start',
-                            flexDirection: 'column',
-                        }}
-                    >
-                        {isFilterAplied && (
-                            <Box display={'flex'} alignItems={'end'}>
-                                <FilteredReviewsHeader filterValue={ratingValue} />
+                    ) : (
+                        <Box
+                            flex="1"
+                            sx={{
+                                display: 'flex',
+                                ml: '60px',
+                                alignItems: 'start',
+                                flexDirection: 'column',
+                            }}
+                        >
+                            {isFilterAplied && (
+                                <Box display={'flex'} alignItems={'end'}>
+                                    <FilteredReviewsHeader filterValue={ratingValue} />
+                                    <Typography
+                                        fontSize={'22px'}
+                                        sx={{
+                                            cursor: 'pointer',
+                                            textDecoration: 'underline',
+                                            ml: '20px',
+                                            color: 'grey',
+                                            '&:hover': {
+                                                color: 'black',
+                                            },
+                                        }}
+                                        onClick={handleClearFilter}
+                                    >
+                                        clear filter
+                                    </Typography>
+                                </Box>
+                            )}
+                            {displayedReviews.length === 0 ? (
                                 <Typography
-                                    fontSize={'22px'}
                                     sx={{
-                                        cursor: 'pointer',
-                                        textDecoration: 'underline',
-                                        ml: '20px',
-                                        color: 'grey',
-                                        '&:hover': {
-                                            color: 'black',
-                                        },
+                                        color: 'black',
+                                        fontSize: theme.typography.Medium,
+                                        paddingLeft: '2.5%',
+                                        fontWeight: 500,
+                                        alignSelf: 'start',
+                                        marginTop: '5%',
                                     }}
-                                    onClick={handleClearFilter}
                                 >
-                                    clear filter
+                                    This user has not received any reviews.
                                 </Typography>
-                            </Box>
-                        )}
-                        {displayedReviews.length === 0 ? (
-                            <Typography
-                                sx={{
-                                    color: 'black',
-                                    fontSize: theme.typography.Medium,
-                                    paddingLeft: '2.5%',
-                                    fontWeight: 500,
-                                    alignSelf: 'start',
-                                    marginTop: '5%',
-                                }}
-                            >
-                                This user has not received any reviews.
-                            </Typography>
-                        ) : (
-                            <UserReviews reviews={displayedReviews}></UserReviews>
-                        )}
-                    </Box>
-                )}
+                            ) : (
+                                <UserReviews reviews={displayedReviews}></UserReviews>
+                            )}
+                        </Box>
+                    )}
+                </Box>
             </Box>
         </Box>
     );
