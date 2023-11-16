@@ -15,12 +15,11 @@ import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 
-export function Review({ isBuyer }) {
+export function Review({ isBuyer, auctionId}) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState(' ');
     const [sendReviewWinner] = usePostWinnerReviewMutation();
     const [sendReviewOwner] = usePostOwnerReviewMutation();
-    const [auctionId] = useState(1);
     const nav = useNavigate();
     const dispatch = useDispatch();
     const navigateToLogin = () => {
@@ -36,9 +35,9 @@ export function Review({ isBuyer }) {
             review: review,
         };
         if (isBuyer) {
-            sendReviewWinner({ body, auctionId });
-        } else {
             sendReviewOwner({ body, auctionId });
+        } else {
+            sendReviewWinner({ body, auctionId });
         }
     };
     return (

@@ -135,5 +135,5 @@ export function ExchangeConfirmed() {
             </Box>
         );
     }
-    return <Review isBuyer={isBuyer} navigateToLogin={navigateToLogin} />;
+    return <Review isBuyer={isBuyer} navigateToLogin={navigateToLogin} auctionId={auctionId} />;
 }
