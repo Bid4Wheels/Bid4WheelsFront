@@ -7,7 +7,11 @@ import theme from '../../utils/desgin/Theme';
 import colors from '../../utils/desgin/Colors';
 import { removeUser } from '../../store/user/UserSlice';
 import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
-import { auctionApi, useFinishAuctionMutation } from '../../store/auction/auctionApi';
+import {
+    auctionApi,
+    useFinishAuctionMutation,
+    useGetAuctionByIdQuery,
+} from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 import { useDispatch } from 'react-redux';
 import { Review } from './Review';
@@ -18,6 +22,7 @@ export function ConfirmExchange() {
     const nav = useNavigate();
     const [finishAuction] = useFinishAuctionMutation();
     const { userId, auctionId } = useParams();
+    const auction = useGetAuctionByIdQuery(auctionId).data || '';
     const dispatch = useDispatch();
     const navigateToLogin = () => {
         dispatch(removeUser());
@@ -81,9 +86,11 @@ export function ConfirmExchange() {
                         }}
                     >
                         Your auction for{' '}
-                        <span style={{ fontWeight: 500 }}>Toyota Corolla (2019)</span> is now over!
-                        Use the following button to confirm that the car has been exchanged
-                        successfully.
+                        <span style={{ fontWeight: 500 }}>
+                            {`${auction.brand}, ${auction.model} (${auction.modelYear})`}
+                        </span>{' '}
+                        is now over! Use the following button to confirm that the car has been
+                        exchanged successfully.
                     </Typography>
                 </Box>
                 <Box
