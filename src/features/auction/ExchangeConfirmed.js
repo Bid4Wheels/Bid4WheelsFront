@@ -34,12 +34,12 @@ export function ExchangeConfirmed() {
     };
 
     useEffect(() => {
-        if (user.userId === auction.auctionOwnerDTO.id) {
+        if (user.userId === auction?.auctionOwnerDTO?.id) {
             setIsBuyer(false);
         } else {
             setIsBuyer(true);
         }
-    }, [user.id, auction.ownerId]);
+    }, [user.id, auction]);
 
     if (!showReview) {
         return (
