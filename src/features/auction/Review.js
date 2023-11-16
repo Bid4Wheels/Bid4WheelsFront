@@ -15,7 +15,7 @@ import { authenticatedUserApi } from '../../store/user/authenticatedUserApi';
 import { auctionApi } from '../../store/auction/auctionApi';
 import { tagsApiSlice } from '../../store/auction/tagsApi';
 
-export function Review({ isBuyer, auctionId}) {
+export function Review({ isBuyer, auctionId }) {
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState(' ');
     const [sendReviewWinner] = usePostWinnerReviewMutation();
